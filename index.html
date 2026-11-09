@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casa Cascola</title>
+    <link rel="shortcut icon" href="Img/image.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <header>
+        <a class="header_logo" href="#Home"><img src="Img/image.png" alt=" Cascola" width="100px" height="auto"></a>
+        <nav></nav>
+    </header>
+
+      <main>
+    <!-- 1. A casa -->
+    <section class="palco" id="casa" data-palco data-modo="abertura" aria-label="Casa Cascola em 3D">
+      <canvas class="palco__cena" data-cena aria-hidden="true"></canvas>
+      <div class="pinos" data-pinos></div>
+
+      <div class="carregando" role="status" data-carregando>
+        <span class="carregando__barra"><span data-carregando-barra></span></span>
+      </div>
+
+      <aside class="gaveta" data-gaveta data-aberta="false" aria-label="Produtos Cascola">
+      </aside>
+      <aside class="painel" data-painel hidden aria-live="polite">
+        <button class="painel__fechar" type="button" data-acao="fechar" aria-label="Fechar">
+          
+        </button>
+      </aside>
+      <p class="palco__aviso" data-aviso hidden></p>
+    </section>
+  </main>
+
+
+    <script src="js/app.js"></script>
+</body>
+</html>
