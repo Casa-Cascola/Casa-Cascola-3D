@@ -1,30 +1,1053 @@
+:root{
+    --LogoAzul:#003d7d;
+    --Logolaranja:#e6691d;
+    --fonte: 'Archivo Variable', 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --condensada: 'wdth' 68;
+}
+
+
 *{
     padding: 0px;
     margin: 0px;
-    box-sizing: 0 ;
+    box-sizing: border-box;
 }
 
-body,html{
+body{
+    font-family: var(--fonte);
     width: 100vw;
     height: 100vh;
 }
 
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1;
+  font-variation-settings: var(--condensada);
+  font-weight: 850;
+  letter-spacing: -.005em;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--Logolaranja);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+main>section {
+  scroll-margin-top: 64px;
+}
+
 header{
     padding: 10px 50px;
-    background-color: #003d7d;
+    background-color:var(--LogoAzul);
     height: 5em;
     display: flex;
     justify-content: space-between;
 }
-main{
-    height: 90vh;
-    width: 100%;
-}
-.palco{
-    height: 90vh;
+
+/* Ficha do produto: aparece quando alguém toca em "Mais detalhes" */
+
+.largura {
+  width: min(1200px, 100%);
+  margin-inline: auto;
+  padding-inline:  clamp(16px, 4vw, 48px);
 }
 
-.palco__cena{
-    width:100%;
-    height:900;
+/* BOTÂO PARA VER CASA 3D */
+
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 1.6rem;
+  border-radius: 8px;
+  border: 0;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: .01em;
+  text-decoration: none;
+  font-variation-settings: 'wdth' 90;
+  transition: background-color .2s, color .2s;
+}
+
+.botao--laranja {
+  background: var(--Logolaranja);
+  color:white;
+}
+
+
+.botao--laranja:hover {
+  background: #ff994a;
+}
+
+
+/* CASA 3D */
+.palco {
+  position: relative;
+  margin-top:64px;
+  height: calc(100vh - 64px);
+  height: calc(100svh - 64px);
+  min-height: 520px;
+  overflow: hidden;
+  background: linear-gradient(#244f86, #b6d3f1 70%);
+  isolation: isolate;
+}
+
+.palco__poster,
+.palco__cena {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.palco__poster {
+  object-fit: cover;
+  transition: opacity .9s;
+}
+
+.palco__cena {
+  opacity: 0;
+  transition: opacity .9s;
+  touch-action: pan-y;
+  outline: none;
+}
+
+.palco.is-pronto .palco__cena {
+  opacity: 1;
+}
+
+.palco.is-pronto .palco__poster {
+  opacity: 0;
+}
+
+.palco__veu {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity .6s;
+  background:
+    linear-gradient(180deg, rgba(10, 33, 72, .45) 0, rgba(10, 33, 72, 0) 16%),
+    radial-gradient(ellipse 62% 88% at 0% 100%, rgba(10, 33, 72, .92) 0, rgba(10, 33, 72, .62) 45%, rgba(10, 33, 72, 0) 100%);
+}
+
+.palco[data-modo="explorar"] .palco__veu {
+  opacity: .35;
+}
+
+.abertura {
+  position: absolute;
+  left: clamp(16px, 4vw, 48px);
+  bottom: clamp(32px, 8vh, 88px);
+  z-index: 5;
+  width: min(640px, calc(100% - 2 * clamp(16px, 4vw, 48px)));
+  color: white;
+  transition: opacity .5s, transform .5s;
+}
+
+.abertura h1 {
+  font-size: clamp(3.2rem, 7.6vw, 6.6rem);
+  line-height: .92;
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+
+.abertura p {
+  margin-top: 1.1rem;
+  max-width: 30em;
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+  color: rgba(255, 255, 255, .92);
+}
+
+.abertura__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 1.75rem;
+}
+
+.palco[data-modo="explorar"] .abertura {
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+}
+
+
+.carregando {
+  position: absolute;
+  left: clamp(16px, 4vw, 48px);
+  right: clamp(16px, 4vw, 48px);
+  bottom: 0;
+  z-index: 6;
+  height: 4px;
+  transition: opacity .5s;
+}
+
+.carregando__barra {
+  display: block;
+  height: 100%;
+  background: rgba(255, 255, 255, .2);
+}
+
+.carregando__barra span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--Logolaranja);
+  transition: width .25s;
+}
+
+.palco.is-pronto .carregando {
+  opacity: 0;
+}
+
+.palco__aviso {
+  position: absolute;
+  left: 50%;
+  top: 16px;
+  transform: translateX(-50%);
+  z-index: 6;
+  max-width: min(560px, calc(100% - 32px));
+  background: white;
+  color: #0E2B58;
+  padding: .8rem 1.1rem;
+  border-radius: 8px;
+  box-shadow: 0 18px 50px -20px rgba(10, 33, 72, .5);
+  font-size: .95rem;
+}
+
+/* "GOTAS" do COMODO */
+.pinos {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.pino {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translate3d(-999px, -999px, 0);
+  transition: opacity .35s;
+  will-change: transform;
+}
+
+.pino__gota {
+  position: relative;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  margin-left: -15px;
+  margin-top: -30px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: var(--Logolaranja);
+  box-shadow: 0 4px 14px rgba(10, 33, 72, .45);
+  transition: transform .25s;
+}
+
+.pino__gota::after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 9px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+}
+
+.pino__gota::before {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border-radius: inherit;
+  border: 2px solid var(--laranja);
+  opacity: 0;
+}
+
+.pino__nome {
+  margin-top: -30px;
+  background: #153970;
+  color: white;
+  font-size: .9rem;
+  font-weight: 750;
+  white-space: nowrap;
+  font-variation-settings: 'wdth' 90;
+  padding: .3rem .65rem;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(10, 33, 72, .35);
+}
+
+.pino:hover .pino__gota,
+.pino:focus-visible .pino__gota {
+  transform: rotate(-45deg) scale(1.12);
+}
+
+.pino.is-ativo .pino__nome {
+  background: var(--Logolaranja);
+}
+
+.pino.is-ativo .pino__gota::before {
+  animation: pulso 1.8s ease-out infinite;
+}
+
+.pino.is-apagado {
+  opacity: .35;
+}
+
+.pino.is-apagado .pino__gota {
+  background: #C8D3DE;
+}
+
+.pino.is-oculto {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+@keyframes pulso {
+  from {
+    opacity: .9;
+    transform: scale(.85);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pino.is-ativo .pino__gota::before {
+    animation: none;
+    opacity: .7;
+  }
+}
+
+
+/* ---------- produtos: filtros e cartão ---------- */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.filtro {
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  border: 2px solid #0E2B58;
+  background: transparent;
+  color: #0E2B58;
+  font-weight: 750;
+  font-size: .95rem;
+}
+
+.filtro[aria-pressed="true"] {
+  background: #0E2B58;
+  color: white;
+}
+
+.filtro:hover:not([aria-pressed="true"]) {
+  background: rgba(14, 43, 88, .08);
+}
+
+.vitrine {
+  list-style: none;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.25rem;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  scroll-margin-top: calc(64px + 16px);
+}
+
+.item[hidden] {
+  display: none;
+}
+
+/* a vitrine tem o formato da casa do logo */
+.item__casa {
+  position: relative;
+  aspect-ratio: 1 / .9;
+  overflow: hidden;
+  background: white;
+  clip-path: polygon(50% 0, 100% 26%, 100% 100%, 0 100%, 0 26%);
+}
+
+.item__casa::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--Logolaranja);
+  clip-path: polygon(50% 0, 100% 26%, 100% calc(26% + 10px), 50% 10px, 0 calc(26% + 10px), 0 26%);
+}
+
+.item__casa::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8px;
+  background: var(--Logolaranja);
+}
+
+.item__embalagem {
+  position: absolute;
+  left: 50%;
+  bottom: 9%;
+  transform: translateX(-50%);
+  height: 66%;
+  width: auto;
+  max-width: 72%;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 14px rgba(10, 33, 72, .22));
+}
+
+.item__aplicacao {
+  position: absolute;
+  right: 5%;
+  bottom: 9%;
+  width: 30%;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: 0 10px 22px -8px rgba(10, 33, 72, .5);
+}
+
+.item__nome {
+  margin-top: 1.25rem;
+  font-size: 1.65rem;
+  text-transform: uppercase;
+  letter-spacing: .005em;
+}
+
+.item__chamada {
+  margin-top: .5rem;
+  font-weight: 600;
+  color: var(--Logolaranja);
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.item__dif {
+  list-style: none;
+  margin: .9rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: .3rem;
+}
+
+.item__dif li {
+  position: relative;
+  padding-left: 1.5rem;
+  line-height: 1.4;
+}
+
+.item__dif li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: .28em;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--Logolaranja) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3.5 7.2l2.2 2.2 4.8-4.8' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+.item__onde {
+  align-self: flex-start;
+  margin-top: 1rem;
+  min-height: 40px;
+  padding: 0 1rem;
+  cursor: pointer;
+  border-radius: 999px;
+  border: 0;
+  background: #003d7d;
+  color: white;
+  font-weight: 700;
+  font-size: .92rem;
+}
+
+.item__onde:hover {
+  background: var(--Logolaranja);
+}
+
+/* botões do cartão: "Mais detalhes" e "Na casa" */
+.item__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+
+.item__acoes .item__onde {
+  margin-top: 0;
+}
+
+.item__mais {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  min-height: 40px;
+  padding: 0 .8rem 0 1rem;
+  cursor: pointer;
+  border-radius: 999px;
+  border: 0;
+  background: var(--Logolaranja);
+  color: white;
+  font-weight: 750;
+  font-size: .92rem;
+}
+
+.item__mais svg {
+  width: 18px;
+  height: 18px;
+}
+
+.item__mais:hover {
+  background: #ff994a;
+}
+
+/* frase do problema: só aparece quando o menu mostra um cômodo */
+.item__problema {
+  display: none;
+}
+
+
+/* ---------- menu lateral de produtos (sobre a casa) ----------
+   Mostra todos os produtos ou, quando um cômodo é escolhido, só os dele. */
+.gaveta {
+  position: absolute;
+  z-index: 9;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(460px, calc(100vw - 64px));
+  transform: translateX(100%);
+  transition: transform .45s cubic-bezier(.3, .7, .2, 1);
+}
+
+.gaveta[data-aberta="true"] {
+  transform: none;
+  box-shadow: -30px 0 60px -30px rgba(10, 33, 72, .6);
+}
+
+
+.gaveta__alca {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .7rem;
+  width: 58px;
+  padding: 1rem 0 .9rem;
+  border: 0;
+  cursor: pointer;
+  border-radius: 14px 0 0 14px;
+  background: #003d7d;
+  color: white;
+  box-shadow: -10px 12px 30px -12px rgba(10, 33, 72, .55);
+  transition: background-color .2s;
+}
+
+.gaveta__alca:hover {
+  background: #163a72;
+}
+
+.gaveta__icone {
+  width: 28px;
+  height: 28px;
+  color: var(--Logolaranja);
+}
+
+.gaveta__rotulo {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: .03em;
+  font-variation-settings: 'wdth' 90;
+}
+
+.gaveta__seta {
+  width: 20px;
+  height: 20px;
+  transition: transform .3s;
+}
+
+.gaveta[data-aberta="true"] .gaveta__seta {
+  transform: rotate(180deg);
+}
+
+/* CORPO DO MENU - PRODUTOS */
+.gaveta__corpo {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: white;
+  padding: 1.75rem 1.5rem 2.5rem;
+  visibility: hidden;
+  transition: visibility 0s .45s;
+}
+
+.gaveta[data-aberta="true"] .gaveta__corpo {
+  visibility: visible;
+  transition: none;
+}
+
+.gaveta__cabeca h2 {
+  font-size: clamp(1.9rem, 3vw, 2.4rem);
+  color: #003d7d;
+  margin-bottom: 1.1rem;
+}
+
+.gaveta .filtro {
+  min-height: 40px;
+  padding: 0 .95rem;
+  font-size: .9rem;
+}
+
+/* vista de um cômodo: botão para voltar a todos, nome do cômodo e a frase do problema em cada produto */
+.gaveta__todos {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  min-height: 40px;
+  padding: 0 1rem 0 .6rem;
+  margin-bottom: 1.25rem;
+  cursor: pointer;
+  border-radius: 999px;
+  border: 2px solid #003d7d;
+  background: transparent;
+  color: var(--marinho);
+  font-weight: 750;
+  font-size: .9rem;
+}
+
+.gaveta__todos svg {
+  width: 18px;
+  height: 18px;
+}
+
+.gaveta__todos:hover {
+  background: rgba(14, 43, 88, .08);
+}
+
+.gaveta__sobre {
+  font-weight: 800;
+  color: var(--Logolaranja);
+  font-size: 1rem;
+  letter-spacing: .01em;
+  margin-bottom: .35rem;
+}
+
+.gaveta[data-vista="comodo"] .gaveta__cabeca h2 {
+  font-size: clamp(2.4rem, 4vw, 3rem);
+  margin-bottom: 0;
+}
+
+.gaveta[data-vista="comodo"] .item__problema {
+  display: block;
+  margin-bottom: .9rem;
+  padding-left: .8rem;
+  border-left: 4px solid var(--Logolaranja);
+  font-weight: 750;
+  font-size: 1.05rem;
+  line-height: 1.3;
+  color: var(--marinho);
+}
+
+.gaveta[data-vista="comodo"] .item__onde {
+  display: none;
+}
+
+.item.is-destaque .item__casa {
+  animation: destaque 1.6s ease-out;
+}
+
+@keyframes destaque {
+
+  0%,
+  40% {
+    box-shadow: 0 0 0 6px var(--laranja);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+
+/* botão de voltar para a abertura */
+.palco__voltar {
+  position: absolute;
+  z-index: 7;
+  left: clamp(16px, 4vw, 48px);
+  top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  min-height: 46px;
+  padding: 0 1.1rem 0 .8rem;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 750;
+  font-size: 1rem;
+  background: #003d7d;
+  color: white;
+  box-shadow:  0 18px 50px -20px rgba(10, 33, 72, .5);
+}
+
+.palco__voltar[hidden] {
+  display: none;
+}
+
+.palco__voltar svg {
+  width: 20px;
+  height: 20px;
+}
+
+.palco__voltar:hover {
+  background: #163a72;
+}
+
+
+
+/* ---------- ficha do produto (abaixo da casa) ---------- */
+.ficha {
+  background: var(--nevoa);
+  padding: clamp(40px, 6vw, 80px) 0 clamp(48px, 7vw, 96px);
+}
+
+.ficha[hidden] {
+  display: none;
+}
+
+.ficha__topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem 1.5rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 4px solid var(--marinho);
+}
+
+.ficha__sobre {
+  font-weight: 800;
+  color: var(--laranja);
+  font-size: 1.15rem;
+  letter-spacing: .01em;
+}
+
+.ficha__voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 46px;
+  padding: 0 1.2rem 0 .9rem;
+  cursor: pointer;
+  border: 0;
+  border-radius: 999px;
+  background: var(--marinho);
+  color: var(--branco);
+  font-weight: 750;
+  font-size: 1rem;
+}
+
+.ficha__voltar svg {
+  width: 20px;
+  height: 20px;
+}
+
+.ficha__voltar:hover {
+  background: #163a72;
+}
+
+.ficha__grade {
+  display: grid;
+  grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: start;
+  margin-top: clamp(28px, 4vw, 52px);
+}
+
+.ficha__vitrine {
+  position: sticky;
+  top: calc(var(--topo-h) + 24px);
+  display: flex;
+  flex-direction: column;
+}
+
+.ficha__vitrine .item__dif {
+  margin-top: 1.5rem;
+}
+
+.ficha__categoria {
+  font-weight: 750;
+  color: var(--texto-suave);
+  font-size: 1rem;
+}
+
+.ficha__texto h2 {
+  margin-top: .4rem;
+  font-size: clamp(2.5rem, 5vw, 4.2rem);
+  text-transform: uppercase;
+  text-wrap: balance;
+  outline: none;
+}
+
+.ficha__resumo {
+  margin-top: 1.1rem;
+  font-size: 1.18rem;
+  line-height: 1.55;
+  max-width: 38em;
+}
+
+.ficha__texto h3 {
+  margin: 2.5rem 0 1rem;
+  font-size: 1.7rem;
+}
+
+/* números de destaque */
+.ficha__numeros {
+  margin: 2rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+}
+
+.ficha__numeros[data-n="3"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ficha__numeros[data-n="1"] {
+  grid-template-columns: minmax(0, 260px);
+}
+
+.ficha__numeros div {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: .5rem;
+  padding: 1.1rem 1.1rem 1.2rem;
+  background: var(--branco);
+  border-top: 6px solid var(--laranja);
+  border-radius: 0 0 12px 12px;
+}
+
+.ficha__numeros dd {
+  margin: 0;
+  font-size: clamp(2.2rem, 3.6vw, 3rem);
+  font-weight: 900;
+  font-variation-settings: 'wdth' 62;
+  line-height: .95;
+  white-space: nowrap;
+}
+
+.ficha__numeros dd span {
+  font-size: .45em;
+  font-variation-settings: 'wdth' 80;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.ficha__numeros dt {
+  font-size: .92rem;
+  line-height: 1.35;
+  color: var(--texto-suave);
+}
+
+/* onde usar */
+.ficha__chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.ficha__chips li {
+  padding: .4rem .9rem;
+  border-radius: 999px;
+  background: var(--branco);
+  box-shadow: inset 0 0 0 1.5px rgba(14, 43, 88, .18);
+  font-weight: 650;
+  font-size: .97rem;
+  line-height: 1.3;
+}
+
+.ficha__usos {
+  margin-top: .9rem;
+  max-width: 40em;
+  color: var(--texto-suave);
+}
+
+/* como aplicar */
+.ficha__passos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: passo;
+  display: grid;
+  gap: .9rem;
+  max-width: 42em;
+}
+
+.ficha__passos li {
+  counter-increment: passo;
+  position: relative;
+  padding-left: 3.1rem;
+  min-height: 2.2rem;
+  line-height: 1.5;
+}
+
+.ficha__passos li::before {
+  content: counter(passo);
+  position: absolute;
+  left: 0;
+  top: -.08em;
+  width: 2.2rem;
+  text-align: center;
+  font-size: 2.1rem;
+  font-weight: 900;
+  font-variation-settings: 'wdth' 62;
+  line-height: 1;
+  color: var(--laranja);
+}
+
+/* atenção */
+.ficha__atencao {
+  margin: 0;
+  padding: 1.1rem 1.3rem 1.15rem 2.5rem;
+  max-width: 42em;
+  display: grid;
+  gap: .35rem;
+  background: var(--branco);
+  border-left: 6px solid var(--marinho);
+  border-radius: 0 12px 12px 0;
+  line-height: 1.45;
+}
+
+.ficha__atencao li::marker {
+  color: var(--laranja);
+}
+
+/* dados técnicos */
+.ficha__dados {
+  margin: 0;
+  max-width: 46em;
+  border-top: 2px solid var(--marinho);
+}
+
+.ficha__dados div {
+  display: grid;
+  grid-template-columns: minmax(8.5em, 13em) minmax(0, 1fr);
+  gap: .25rem 1.5rem;
+  padding: .7rem 0;
+  border-bottom: 1px solid rgba(14, 43, 88, .15);
+}
+
+.ficha__dados dt {
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+.ficha__dados dd {
+  margin: 0;
+  line-height: 1.4;
+  color: var(--texto-suave);
+}
+
+.ficha__fonte {
+  margin-top: 1.25rem;
+  font-size: .9rem;
+  color: var(--texto-suave);
+  max-width: 46em;
+}
+
+/* outros produtos */
+.ficha__outros {
+  margin-top: clamp(40px, 6vw, 72px);
+}
+
+.ficha__outros h3 {
+  font-size: 1.5rem;
+}
+
+.ficha__faixa {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: .6rem;
+  margin-top: 1rem;
+}
+
+.ficha__mini {
+  padding: .8rem .5rem .7rem;
+  cursor: pointer;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  border: 0;
+  border-radius: 12px;
+  background: var(--branco);
+  box-shadow: inset 0 0 0 2px transparent;
+  font-size: .82rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.ficha__mini img {
+  height: 84px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.ficha__mini:hover {
+  box-shadow: inset 0 0 0 2px rgba(14, 43, 88, .25);
+}
+
+.ficha__mini[aria-current="true"] {
+  box-shadow: inset 0 0 0 3px var(--laranja);
 }

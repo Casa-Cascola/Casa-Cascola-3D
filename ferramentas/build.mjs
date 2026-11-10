@@ -1,5 +1,7 @@
 // Gera os arquivos que a página usa:
 //   js/app.js           (fonte/main.js + three.js num arquivo só, roda até aberto do disco)
+//   js/draco/*          (decodificador Draco, para um carro.glb exportado com Draco)
+//   css/fontes.css      (fonte Archivo embutida, funciona sem internet)
 //   modelos/casa.glb.js (cópia da casa em base64, usada só quando o site é aberto do disco)
 import { build } from 'esbuild';
 import fs from 'node:fs';
