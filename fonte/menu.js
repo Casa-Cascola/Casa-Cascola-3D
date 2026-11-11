@@ -24,11 +24,11 @@ function cartao(p) {
       <p class="item__chamada">${esc(p.chamada)}</p>
       <ul class="item__dif">${p.diferenciais.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>
       <div class="item__acoes">
-        <button class="item__mais" type="button" data-detalhes="${p.id}">
-          Mais detalhes
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        ${onde ? `<button class="item__onde" type="button" data-ver-comodo="${onde.id}">Na casa: ${esc(onde.nome)}</button>` : ''}
+        // <button class="item__mais" type="button" data-detalhes="${p.id}">
+        //   Mais detalhes
+        //   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        // </button>
+        // ${onde ? `<button class="item__onde" type="button" data-ver-comodo="${onde.id}">Na casa: ${esc(onde.nome)}</button>` : ''}
       </div>
     </li>`;
 }
