@@ -3,7 +3,7 @@
 
 export const CATEGORIAS = [
   { id: 'contato', nome: 'Colas de contato' },
-  { id: 'pva', nome: 'Colas brancas (PVA)' },
+  { id: 'pva', nome: 'Adesivos PVA' },
   { id: 'montagem', nome: 'Adesivos de montagem' },
   { id: 'selantes', nome: 'Silicones e selantes' },
 ];
@@ -22,7 +22,7 @@ export const PRODUTOS = [
     nome: 'Cola de Contato Extraforte',
     chamada: 'Para o que dobra, curva e não pode soltar.',
     diferenciais: ['Resistência à umidade', 'Sem toluol', 'Sem cheiro após 10 min', 'Perfeita para colagens curvas ou maleáveis'],
-    comodos: ['lavanderia'], problema: 'Sola de sapato e peças maleáveis descolando',
+    comodos: ['quarto','cozinha'], problema: 'Sola de sapato e peças maleáveis descolando',
   },
   {
     id: 'cola-madeira', categoria: 'pva', imagem: 'cola-madeira',
