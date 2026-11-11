@@ -17,8 +17,8 @@ function cartao(p) {
     <li class="item" id="produto-${p.id}" data-produto="${p.id}" data-categoria="${p.categoria}">
       <p class="item__problema">${esc(p.problema)}</p>
       <div class="item__casa">
-        <img class="item__embalagem" src="img/produtos/${p.imagem}.webp" alt="Embalagem ${esc(p.nome)}" loading="lazy">
-        <img class="item__aplicacao" src="img/aplicacao/${p.imagem}.webp" alt="" loading="lazy">
+        <img class="item__embalagem" src="Img/produtos/${p.imagem}.webp" alt="Embalagem ${esc(p.nome)}" loading="lazy">
+        <img class="item__aplicacao" src="Img/aplicacao/${p.imagem}.webp" alt="" loading="lazy">
       </div>
       <h3 class="item__nome">${esc(p.nome)}</h3>
       <p class="item__chamada">${esc(p.chamada)}</p>

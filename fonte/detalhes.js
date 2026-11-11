@@ -26,8 +26,8 @@ function fichaHtml(p) {
     <div class="ficha__grade">
       <div class="ficha__vitrine">
         <div class="item__casa">
-          <img class="item__embalagem" src="img/produtos/${p.imagem}.webp" alt="Embalagem ${esc(p.nome)}">
-          <img class="item__aplicacao" src="img/aplicacao/${p.imagem}.webp" alt="">
+          <img class="item__embalagem" src="Img/produtos/${p.imagem}.webp" alt="Embalagem ${esc(p.nome)}">
+          <img class="item__aplicacao" src="Img/aplicacao/${p.imagem}.webp" alt="">
         </div>
         ${lista(p.diferenciais, 'item__dif')}
         ${onde ? `<button class="item__onde" type="button" data-ver-comodo="${onde.id}">Ver na casa: ${esc(onde.nome)}</button>` : ''}
@@ -71,7 +71,7 @@ export function montarDetalhes() {
     <div class="ficha__faixa">
       ${PRODUTOS.map((p) => `
         <button class="ficha__mini" type="button" data-detalhes="${p.id}">
-          <img src="img/produtos/${p.imagem}.webp" alt="" loading="lazy">
+          <img src="Img/produtos/${p.imagem}.webp" alt="" loading="lazy">
           <span>${esc(p.nome)}</span>
         </button>`).join('')}
     </div>`;
