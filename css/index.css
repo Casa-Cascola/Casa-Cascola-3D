@@ -47,7 +47,7 @@ button {
   border-radius: 4px;
 }
 main>section {
-  scroll-margin-top: 64px;
+  scroll-margin-top: 2px;
 }
 
 header{
@@ -99,9 +99,8 @@ header{
 /* CASA 3D */
 .palco {
   position: relative;
-  margin-top:64px;
-  height: calc(100vh - 64px);
-  height: calc(100svh - 64px);
+  height: calc(100vh - 5em);
+  height: calc(100svh - 5em);
   min-height: 520px;
   overflow: hidden;
   background: linear-gradient(#244f86, #b6d3f1 70%);

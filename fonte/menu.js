@@ -1,6 +1,5 @@
-// Menu lateral de produtos (o único menu da casa).
-// Tem duas vistas, no mesmo lugar:
-//   'todos'  : os 12 produtos, com os filtros de categoria;
+
+//   'todos'  : todos os produtos, com os filtros de categoria;
 //   'comodo' : só os produtos indicados para o cômodo escolhido na casa.
 import { PRODUTOS, CATEGORIAS } from './dados.js';
 import { $, $$, esc, estado, comodoPorId, produtosDoComodo, rolagem } from './util.js';
@@ -11,7 +10,7 @@ const corpo = $('.gaveta__corpo');
 const cabeca = $('[data-menu-cabeca]');
 const lista = $('[data-vitrine]');
 
-// O cartão do produto. O visual dele fica em css/estilo.css (classes .item).
+// O cartão do produto. O visual dele fica em css/index.css (classes .item).
 function cartao(p) {
   const onde = comodoPorId[p.comodos[0]];
   return `
@@ -45,7 +44,7 @@ export function abrirMenu(sim) {
   alca.setAttribute('aria-expanded', String(sim));
 }
 
-// Vista 'todos': título, filtros e os 12 produtos.
+// Vista 'todos': título, filtros e todos os produtos.
 export function mostrarTodos() {
   gaveta.dataset.vista = 'todos';
   cabeca.innerHTML = `
