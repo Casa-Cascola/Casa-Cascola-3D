@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casa Cascola</title>
-    <link rel="shortcut icon" href="Img/image.png" type="image/x-icon">
-    <!-- <link rel="stylesheet" href="css/estilo.css"> -->
-    <link rel="stylesheet" href="css/index.css">
-</head>
-<body>
-    <header>
-        <a class="header_logo" href="#Home"><img src="Img/image.png" alt=" Cascola" width="100px" height="auto"></a>
-        <nav></nav>
-    </header>
 
-<main>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casa Cascola</title>
+  <link rel="shortcut icon" href="Img/image.png" type="image/x-icon">
+  <!-- <link rel="stylesheet" href="css/estilo.css"> -->
+  <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+  <header>
+    <a class="header_logo" href="#Home"><img src="Img/image.png" alt=" Cascola" width="100px" height="auto"></a>
+    <nav></nav>
+  </header>
+
+  <main>
     <!-- 1. A casa -->
     <section class="palco" id="casa" data-palco data-modo="abertura" aria-label="Casa Cascola em 3D">
       <picture>
@@ -35,22 +37,35 @@
 
       <div class="abertura" data-abertura>
         <h1>Orgulho de fazer bem&nbsp;feito.</h1>
-        
+
         <div class="abertura__acoes">
           <button class="botao botao--laranja" type="button" data-acao="ver-casa">Ver a casa 3D</button>
         </div>
       </div>
 
       <button class="palco__voltar" type="button" data-acao="voltar" hidden>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
         Voltar
       </button>
-
+      <div class="carregando" data-carregando aria-hidden="true">
+        <span class="carregando__barra"><span data-carregando-barra></span></span>
+      </div>
       <aside class="gaveta" data-gaveta data-aberta="false" data-vista="todos" aria-label="Produtos Cascola">
         <button class="gaveta__alca" type="button" data-acao="menu" aria-expanded="false" aria-controls="gaveta-corpo">
-          <svg class="gaveta__icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v10h12V10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M10.5 20v-5.5h3V20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>
+          <svg class="gaveta__icone" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 11 12 4l9 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <path d="M6 10v10h12V10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />
+            <path d="M10.5 20v-5.5h3V20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />
+          </svg>
           <span class="gaveta__rotulo">Produtos</span>
-          <svg class="gaveta__seta" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="gaveta__seta" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
         </button>
         <div class="gaveta__corpo" id="gaveta-corpo">
 
@@ -61,15 +76,20 @@
               <button class="filtro" type="button" data-filtro="todos" aria-pressed="true">Todos</button>
               <button class="filtro" type="button" data-filtro="contato" aria-pressed="false">Colas de contato</button>
               <button class="filtro" type="button" data-filtro="pva" aria-pressed="false">Colas (PVA)</button>
-              <button class="filtro" type="button" data-filtro="montagem" aria-pressed="false">Adesivos de montagem</button>
-              <button class="filtro" type="button" data-filtro="selantes" aria-pressed="false">Silicones e selantes</button>
+              <button class="filtro" type="button" data-filtro="montagem" aria-pressed="false">Adesivos de
+                montagem</button>
+              <button class="filtro" type="button" data-filtro="selantes" aria-pressed="false">Silicones e
+                selantes</button>
             </div>
           </div>
 
           <!-- Cabeçalho do menu quando ele mostra um cômodo -->
           <div class="gaveta__cabeca" data-menu-comodo hidden>
             <button class="gaveta__todos" type="button" data-acao="todos">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
               Todos os produtos
             </button>
             <p class="gaveta__sobre">Indicado para</p>
@@ -106,14 +126,17 @@
     </section>
 
 
-     <!-- 1b. Ficha do produto: aparece quando alguém toca em "Mais detalhes" -->
+    <!-- 1b. Ficha do produto: aparece quando alguém toca em "Mais detalhes" -->
     <section class="ficha" id="detalhes" data-ficha hidden aria-label="Ficha do produto">
       <div class="largura">
         <div data-ficha-conteudo>
           <div class="ficha__topo">
             <p class="ficha__sobre">Ficha do produto</p>
             <button class="ficha__voltar" type="button" data-acao="topo">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.4"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
               Voltar para a casa 3D
             </button>
           </div>
@@ -127,7 +150,8 @@
               <ul class="item__dif" data-lista="diferenciais">
                 <li></li>
               </ul>
-              <button class="item__onde" type="button" data-ver-comodo>Ver na casa: <span data-texto="comodo"></span></button>
+              <button class="item__onde" type="button" data-ver-comodo>Ver na casa: <span
+                  data-texto="comodo"></span></button>
             </div>
 
             <div class="ficha__texto">
@@ -167,11 +191,15 @@
               <div data-se="dados">
                 <h3>Dados técnicos</h3>
                 <dl class="ficha__dados" data-lista="dados">
-                  <div><dt data-texto="nome"></dt><dd data-texto="valor"></dd></div>
+                  <div>
+                    <dt data-texto="nome"></dt>
+                    <dd data-texto="valor"></dd>
+                  </div>
                 </dl>
               </div>
 
-              <p class="ficha__fonte" data-se="fonteUrl">Fonte: <a data-link="fonteUrl" data-texto="fonteNome" target="_blank" rel="noopener"></a>, Henkel. Antes de aplicar, leia as instruções da embalagem.</p>
+              <p class="ficha__fonte" data-se="fonteUrl">Fonte: <a data-link="fonteUrl" data-texto="fonteNome"
+                  target="_blank" rel="noopener"></a>, Henkel. Antes de aplicar, leia as instruções da embalagem.</p>
             </div>
           </div>
         </div>
@@ -192,11 +220,12 @@
     </section>
 
 
-  
+
   </main>
 
 
 
-    <script src="js/app.js"></script>
+  <script src="js/app.js"></script>
 </body>
+
 </html>
