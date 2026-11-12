@@ -94,7 +94,8 @@ export const PRODUTOS = [
   },
   {
     id: 'portas-janelas', categoria: 'selantes', imagem: 'portas-janelas',
-    nome: Se
+    nome: 'Selante Portas e Janelas',
+    chamada: ''
   },
 ];
 

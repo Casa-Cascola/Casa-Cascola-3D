@@ -49,7 +49,7 @@ export function preencher(raiz, d) {
   });
 
   cada('[data-texto]', (el) => { el.textContent = vazio(d[el.dataset.texto]) ? '' : texto(d[el.dataset.texto]); });
-  cada('[data-imagem]', (el) => { if (d.imagem) el.src = `img/${el.dataset.imagem}/${d.imagem}.webp`; });
+  cada('[data-imagem]', (el) => { if (d.imagem) el.src = `Img/${el.dataset.imagem}/${d.imagem}.webp`; });
   cada('[data-link]', (el) => { if (d[el.dataset.link]) el.href = d[el.dataset.link]; });
   cada('[data-detalhes]', (el) => { if (d.id) el.dataset.detalhes = d.id; });
   cada('[data-ver-comodo]', (el) => { el.dataset.verComodo = d.comodoId || ''; el.hidden = !d.comodoId; });
