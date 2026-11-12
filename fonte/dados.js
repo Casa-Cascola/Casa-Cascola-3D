@@ -28,7 +28,7 @@ export const PRODUTOS = [
     nome: 'Cola Branca PVA Cola Madeira',
     chamada: 'Móvel firme de novo, sem esperar o dia todo.',
     diferenciais: ['Resistência à umidade', 'Pega rápida', 'Menos tempo de prensagem', 'Ideal para reparos e montagem de móveis'],
-    comodos: ['quarto', 'banheiro'], problema: 'Gavetas, armários e MDF desmontando',
+    comodos: ['quarto', 'banheiro','cozinha'], problema: 'Gavetas, armários e MDF desmontando',
   },
   {
     id: 'pva-extraforte', categoria: 'pva', imagem: 'pva-extraforte',
@@ -49,7 +49,7 @@ export const PRODUTOS = [
     nome: 'Adesivo de Montagem PL600',
     chamada: 'Segura firme do lado de fora também.',
     diferenciais: ['Agarre imediato', 'Resiste à chuva e à umidade', 'Cola em metal, cerâmica e alvenaria'],
-    comodos: ['garagem', 'banheiro'], problema: 'Número da casa, muro de pedras e porta-toalha soltando',
+    comodos: ['banheiro','jardim'], problema: 'Número da casa, muro de pedras e porta-toalha soltando',
   },
   {
     id: 'pl700', categoria: 'montagem', imagem: 'pl700',
@@ -84,7 +84,7 @@ export const PRODUTOS = [
     nome: 'Selante PU40',
     chamada: 'Veda e cola onde a casa se movimenta.',
     diferenciais: ['Veda e cola', 'Resiste ao sol e à água', '5 anos de garantia', 'Acompanha a movimentação sem trincar'],
-    comodos: ['varanda', 'jardim'], problema: 'Juntas do piso externo abrindo',
+    comodos: [ 'jardim'], problema: 'Juntas do piso externo abrindo',
   },
   {
     id: 'pu-veda-calha', categoria: 'selantes', imagem: 'pu-veda-calha',
@@ -98,7 +98,7 @@ export const PRODUTOS = [
     nome: 'Selante Portas e Janelas',
     chamada: 'Vedação de longa duração em portas e janelas.',
     diferenciais: ['Longa duração', 'Pintável', 'Multimaterial', 'Antimofo e fungos'],
-    comodos: ['sala'], problema: 'Fresta entre a porta de entrada e a parede',
+    comodos: ['sala','jardim'], problema: 'Fresta entre a porta de entrada e a parede',
   },
   {
     id: 'silicone-construcao', categoria: 'selantes', imagem: 'silicone-construcao',
