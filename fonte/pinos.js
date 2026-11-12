@@ -2,21 +2,21 @@
 // A posição de cada gota (em metros) fica em fonte/dados.js, no campo `pino`.
 import * as THREE from 'three';
 import { COMODOS } from './dados.js';
-import { $, esc, estado } from './util.js';
+import { $, estado } from './util.js';
+import { clonar, preencher } from './html.js';
 
 const palco = $('[data-palco]');
 const blocoAbertura = $('[data-abertura]');
 export const camadaPinos = $('[data-pinos]');
 
-const pinos = COMODOS.map((c) => {
-  const b = document.createElement('button');
-  b.type = 'button';
-  b.className = 'pino';
+// Uma gota por cômodo, copiada do <template data-modelo="pino"> do index.html.
+const pinos = COMODOS.flatMap((c) => {
+  const b = clonar('pino');
+  if (!b) return [];
   b.dataset.comodo = c.id;
   b.setAttribute('aria-label', c.nome);
-  b.innerHTML = `<span class="pino__gota"></span><span class="pino__nome">${esc(c.nome)}</span>`;
-  camadaPinos.appendChild(b);
-  return { el: b, c, p: new THREE.Vector3(...c.pino), n: c.normal ? new THREE.Vector3(...c.normal) : null };
+  camadaPinos.appendChild(preencher(b, c));
+  return [{ el: b, c, p: new THREE.Vector3(...c.pino), n: c.normal ? new THREE.Vector3(...c.normal) : null }];
 });
 
 // Marca a gota do cômodo escolhido e apaga as outras.

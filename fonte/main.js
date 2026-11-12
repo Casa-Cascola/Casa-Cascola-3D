@@ -5,6 +5,7 @@
 //   dados.js     textos dos produtos e dos cômodos, posições das gotas e da câmera
 //   fichas.js    dados técnicos de cada produto
 //   util.js      ajudantes e o estado da tela
+//   html.js      preenche os espaços marcados no index.html (data-texto, data-lista...)
 //   menu.js      menu lateral de produtos
 //   detalhes.js  ficha do produto, abaixo da casa
 //   pinos.js     gotas laranja dos cômodos
@@ -127,15 +128,18 @@ montarDetalhes();
 
 function aviso(texto) {
   const el = $('[data-aviso]');
+  if (!el) return;
   el.textContent = texto;
   el.hidden = false;
 }
-const progresso = (fracao) => { $('[data-carregando-barra]').style.width = `${Math.round(fracao * 100)}%`; };
+// A barra de carregamento é opcional: se o HTML não tiver, nada acontece.
+const progresso = (fracao) => { const barra = $('[data-carregando-barra]'); if (barra) barra.style.width = `${Math.round(fracao * 100)}%`; };
+const esconderCarregando = () => { const el = $('[data-carregando]'); if (el) el.hidden = true; };
 
 (async function () {
   cena = iniciarCena($('[data-cena]'), { aoProgresso: progresso });
   if (!cena) {
-    $('[data-carregando]').hidden = true;
+    esconderCarregando();
     camadaPinos.hidden = true;
     aviso('Este navegador não abriu o 3D. A imagem mostra a casa, e o menu Produtos funciona normalmente.');
     return;
@@ -146,11 +150,11 @@ const progresso = (fracao) => { $('[data-carregando-barra]').style.width = `${Ma
     palco.classList.add('is-pronto');
     cena.redesenhar();
     cena.iniciarLoop();
-    setTimeout(() => { $('[data-carregando]').hidden = true; }, 800);
+    setTimeout(esconderCarregando, 800);
     window.__casaPronta = true;
   } catch (e) {
     console.error(e);
-    $('[data-carregando]').hidden = true;
+    esconderCarregando();
     camadaPinos.hidden = true;
     aviso(e.message === 'arquivo-local'
       ? 'Falta o arquivo modelos/casa.glb.js para abrir a casa direto do disco. Veja o LEIA-ME.'

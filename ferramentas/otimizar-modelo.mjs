@@ -11,13 +11,14 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const REMOVER = ['Carro_Supra_NFS', 'CarroGenerico_Corpo', 'Carro_Corpo', 'A23D'];
 
 const entrada = process.argv[2];
 const TEXTURA = String(process.argv[3] || 2048);
 if (!entrada) { console.error('Uso: node ferramentas/otimizar-modelo.mjs Casa.glb'); process.exit(1); }
-const raiz = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const saida = path.join(raiz, 'modelos/casa.glb');
 const tmp = path.join(os.tmpdir(), 'casa_sem_carros.glb');
 

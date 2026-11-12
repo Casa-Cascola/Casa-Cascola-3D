@@ -15,15 +15,23 @@
     </header>
 
 <main>
-   <!-- 1. A casa -->
+    <!-- 1. A casa -->
     <section class="palco" id="casa" data-palco data-modo="abertura" aria-label="Casa Cascola em 3D">
       <picture>
-        <source media="(max-aspect-ratio: 1/1)" srcset="Img/casa-poster-celular.webp">
-        <img class="palco__poster" src="Img/casa-poster.webp" alt="" width="1600" height="900">
+        <source media="(max-aspect-ratio: 1/1)" srcset="img/casa-poster-celular.webp">
+        <img class="palco__poster" src="img/casa-poster.webp" alt="" width="1600" height="900">
       </picture>
       <canvas class="palco__cena" data-cena aria-hidden="true"></canvas>
       <div class="palco__veu" aria-hidden="true"></div>
-      <div class="pinos" data-pinos></div>
+      <!-- Gotas dos cômodos: o modelo abaixo é copiado uma vez para cada cômodo -->
+      <div class="pinos" data-pinos>
+        <template data-modelo="pino">
+          <button class="pino" type="button">
+            <span class="pino__gota"></span>
+            <span class="pino__nome" data-texto="nome"></span>
+          </button>
+        </template>
+      </div>
 
       <div class="abertura" data-abertura>
         <h1>Orgulho de fazer bem&nbsp;feito.</h1>
@@ -31,10 +39,6 @@
         <div class="abertura__acoes">
           <button class="botao botao--laranja" type="button" data-acao="ver-casa">Ver a casa 3D</button>
         </div>
-      </div>
-
-      <div class="carregando" role="status" data-carregando>
-        <span class="carregando__barra"><span data-carregando-barra></span></span>
       </div>
 
       <button class="palco__voltar" type="button" data-acao="voltar" hidden>
@@ -49,8 +53,53 @@
           <svg class="gaveta__seta" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="gaveta__corpo" id="gaveta-corpo">
-          <div class="gaveta__cabeca" data-menu-cabeca aria-live="polite"></div>
-          <ul class="vitrine" data-vitrine></ul>
+
+          <!-- Cabeçalho do menu quando ele mostra todos os produtos -->
+          <div class="gaveta__cabeca" data-menu-todos>
+            <h2>Uma Cascola para cada canto da casa.</h2>
+            <div class="filtros" role="group" aria-label="Categorias">
+              <button class="filtro" type="button" data-filtro="todos" aria-pressed="true">Todos</button>
+              <button class="filtro" type="button" data-filtro="contato" aria-pressed="false">Colas de contato</button>
+              <button class="filtro" type="button" data-filtro="pva" aria-pressed="false">Colas brancas (PVA)</button>
+              <button class="filtro" type="button" data-filtro="montagem" aria-pressed="false">Adesivos de montagem</button>
+              <button class="filtro" type="button" data-filtro="selantes" aria-pressed="false">Silicones e selantes</button>
+            </div>
+          </div>
+
+          <!-- Cabeçalho do menu quando ele mostra um cômodo -->
+          <div class="gaveta__cabeca" data-menu-comodo hidden>
+            <button class="gaveta__todos" type="button" data-acao="todos">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Todos os produtos
+            </button>
+            <p class="gaveta__sobre">Indicado para</p>
+            <h2 data-texto="comodo"></h2>
+          </div>
+
+          <!-- Cartão do produto: o modelo abaixo é copiado uma vez para cada produto -->
+          <ul class="vitrine" data-vitrine>
+            <template data-modelo="cartao">
+              <li class="item">
+                <p class="item__problema" data-texto="problema"></p>
+                <div class="item__casa">
+                  <img class="item__embalagem" data-imagem="produtos" alt="" loading="lazy">
+                  <img class="item__aplicacao" data-imagem="aplicacao" alt="" loading="lazy">
+                </div>
+                <h3 class="item__nome" data-texto="nome"></h3>
+                <p class="item__chamada" data-texto="chamada"></p>
+                <ul class="item__dif" data-lista="diferenciais">
+                  <li></li>
+                </ul>
+                <!-- <div class="item__acoes">
+                  <button class="item__mais" type="button" data-detalhes>
+                    Mais detalhes
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <button class="item__onde" type="button" data-ver-comodo>Na casa: <span data-texto="comodo"></span></button>
+                </div> -->
+              </li>
+            </template>
+          </ul>
         </div>
       </aside>
       <p class="palco__aviso" data-aviso hidden></p>
@@ -60,14 +109,92 @@
      <!-- 1b. Ficha do produto: aparece quando alguém toca em "Mais detalhes" -->
     <section class="ficha" id="detalhes" data-ficha hidden aria-label="Ficha do produto">
       <div class="largura">
-        <div data-ficha-conteudo></div>
-        <div class="ficha__outros" data-ficha-outros></div>
+        <div data-ficha-conteudo>
+          <div class="ficha__topo">
+            <p class="ficha__sobre">Ficha do produto</p>
+            <button class="ficha__voltar" type="button" data-acao="topo">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Voltar para a casa 3D
+            </button>
+          </div>
+
+          <div class="ficha__grade">
+            <div class="ficha__vitrine">
+              <div class="item__casa">
+                <img class="item__embalagem" data-imagem="produtos" alt="">
+                <img class="item__aplicacao" data-imagem="aplicacao" alt="">
+              </div>
+              <ul class="item__dif" data-lista="diferenciais">
+                <li></li>
+              </ul>
+              <button class="item__onde" type="button" data-ver-comodo>Ver na casa: <span data-texto="comodo"></span></button>
+            </div>
+
+            <div class="ficha__texto">
+              <p class="ficha__categoria" data-texto="categoria"></p>
+              <h2 tabindex="-1" data-texto="nome"></h2>
+              <p class="ficha__resumo" data-texto="resumo"></p>
+
+              <dl class="ficha__numeros" data-lista="numeros">
+                <div>
+                  <dt data-texto="rotulo"></dt>
+                  <dd><b data-texto="valor"></b> <span data-texto="unidade"></span></dd>
+                </div>
+              </dl>
+
+              <div data-se="materiais">
+                <h3>Onde usar</h3>
+                <ul class="ficha__chips" data-lista="materiais">
+                  <li></li>
+                </ul>
+                <p class="ficha__usos" data-texto="usos"></p>
+              </div>
+
+              <div data-se="passos">
+                <h3>Como aplicar</h3>
+                <ol class="ficha__passos" data-lista="passos">
+                  <li></li>
+                </ol>
+              </div>
+
+              <div data-se="atencao">
+                <h3>Atenção</h3>
+                <ul class="ficha__atencao" data-lista="atencao">
+                  <li></li>
+                </ul>
+              </div>
+
+              <div data-se="dados">
+                <h3>Dados técnicos</h3>
+                <dl class="ficha__dados" data-lista="dados">
+                  <div><dt data-texto="nome"></dt><dd data-texto="valor"></dd></div>
+                </dl>
+              </div>
+
+              <p class="ficha__fonte" data-se="fonteUrl">Fonte: <a data-link="fonteUrl" data-texto="fonteNome" target="_blank" rel="noopener"></a>, Henkel. Antes de aplicar, leia as instruções da embalagem.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Outros produtos: o modelo abaixo é copiado uma vez para cada produto -->
+        <div class="ficha__outros">
+          <h3>Outros produtos</h3>
+          <div class="ficha__faixa" data-ficha-outros>
+            <template data-modelo="mini">
+              <button class="ficha__mini" type="button" data-detalhes>
+                <img data-imagem="produtos" alt="" loading="lazy">
+                <span data-texto="nome"></span>
+              </button>
+            </template>
+          </div>
+        </div>
       </div>
     </section>
 
 
   
   </main>
+
 
 
     <script src="js/app.js"></script>
