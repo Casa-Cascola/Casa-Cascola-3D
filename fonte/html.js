@@ -4,7 +4,7 @@
 //   data-texto="campo"     recebe o texto do campo (ex.: data-texto="nome")
 //   data-lista="campo"     o primeiro filho é o modelo, repetido para cada item da lista
 //   data-se="campo"        só aparece se o produto tiver esse campo
-//   data-imagem="pasta"    vira src="img/pasta/<imagem do produto>.webp"
+//   data-imagem="pasta"    vira src="Img/pasta/<imagem do produto>.webp"
 //   data-link="campo"      recebe o endereço (href) do campo
 //   data-detalhes          botão que abre a ficha do produto
 //   data-ver-comodo        botão que leva ao cômodo do produto

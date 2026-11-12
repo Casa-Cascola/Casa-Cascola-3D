@@ -1,9 +1,7 @@
 // Conteúdo do site. Para mudar um texto, mude aqui e rode `npm run build`.
-// Produtos e diferenciais: placa "Henkel Casa Produtos" (v2). História: henkel.com.br.
-
 export const CATEGORIAS = [
   { id: 'contato', nome: 'Colas de contato' },
-  { id: 'pva', nome: 'Colas brancas (PVA)' },
+  { id: 'pva', nome: 'Colas (PVA)' },
   { id: 'montagem', nome: 'Adesivos de montagem' },
   { id: 'selantes', nome: 'Silicones e selantes' },
 ];
@@ -22,21 +20,21 @@ export const PRODUTOS = [
     nome: 'Cola de Contato Extraforte',
     chamada: 'Para o que dobra, curva e não pode soltar.',
     diferenciais: ['Resistência à umidade', 'Sem toluol', 'Sem cheiro após 10 min', 'Perfeita para colagens curvas ou maleáveis'],
-    comodos: ['lavanderia'], problema: 'Sola de sapato e peças maleáveis descolando',
+    comodos: ['banheiro', 'quarto'], problema: 'Sola de sapato e peças maleáveis descolando',
   },
   {
     id: 'cola-madeira', categoria: 'pva', imagem: 'cola-madeira',
     nome: 'Cola Branca PVA Cola Madeira',
     chamada: 'Móvel firme de novo, sem esperar o dia todo.',
     diferenciais: ['Resistência à umidade', 'Pega rápida', 'Menos tempo de prensagem', 'Ideal para reparos e montagem de móveis'],
-    comodos: ['quarto'], problema: 'Móvel de madeira desmontando',
+    comodos: ['banheiro','quarto'], problema: 'Móvel de madeira desmontando',
   },
   {
     id: 'pva-extraforte', categoria: 'pva', imagem: 'pva-extraforte',
     nome: 'Cola Branca PVA Extraforte',
     chamada: 'Força de colagem que acompanha a madeira.',
     diferenciais: ['Alta durabilidade', 'Alta força de colagem', 'Transparente, não empelota', 'Não solta com a movimentação da madeira'],
-    comodos: ['escritorio'], problema: 'Escrivaninha e estante de madeira',
+    comodos: ['sala'], problema: 'Escrivaninha e estante de madeira',
   },
   {
     id: 'nao-mais-pregos', categoria: 'montagem', imagem: 'nao-mais-pregos',
@@ -50,7 +48,7 @@ export const PRODUTOS = [
     nome: 'Adesivo de Montagem PL600',
     chamada: 'Segura firme do lado de fora também.',
     diferenciais: ['Agarre imediato', 'Resiste à chuva e à umidade', 'Cola em metal, cerâmica e alvenaria'],
-    comodos: ['garagem'], problema: 'Número da casa e placas na fachada',
+    comodos: ['banheiro', 'jardim'], problema: 'Colagem de azulejo, colagem de "muro" de pedra',
   },
   {
     id: 'pl700', categoria: 'montagem', imagem: 'pl700',
@@ -64,7 +62,7 @@ export const PRODUTOS = [
     nome: 'Silicone Uso Geral',
     chamada: 'Vedação transparente para a casa toda.',
     diferenciais: ['Não encolhe', 'Não trinca nem amarela', 'Resiste à água e ao sol', '10 anos de garantia', '100% silicone, transparente'],
-    comodos: ['lavanderia'], problema: 'Vedação do tanque e da pia',
+    comodos: ['varanda'], problema: 'Vedação da janela no lado externo',
   },
   {
     id: 'silicone-banheiro-cozinha', categoria: 'selantes', imagem: 'silicone-banheiro-cozinha',
@@ -78,14 +76,14 @@ export const PRODUTOS = [
     nome: 'Selante Acrílico Acabamentos',
     chamada: 'A trinca some e não volta.',
     diferenciais: ['Pintável', 'Antimofo', '10 anos de vedação garantida', 'Flexível, não deixa a trinca voltar'],
-    comodos: ['quarto'], problema: 'Trinca na parede e no rodapé',
+    comodos: ['quarto','sala'], problema: 'Trinca na parede e no rodapé',
   },
   {
     id: 'pu40', categoria: 'selantes', imagem: 'pu40',
     nome: 'Selante PU40',
     chamada: 'Veda e cola onde a casa se movimenta.',
     diferenciais: ['Veda e cola', 'Resiste ao sol e à água', '5 anos de garantia', 'Acompanha a movimentação sem trincar'],
-    comodos: ['varanda', 'jardim'], problema: 'Juntas do piso externo abrindo',
+    comodos: ['jardim'], problema: 'Colagem entre as juntas da calçada da garagem',
   },
   {
     id: 'pu-veda-calha', categoria: 'selantes', imagem: 'pu-veda-calha',
@@ -93,6 +91,10 @@ export const PRODUTOS = [
     chamada: 'Calha sem goteira, faça sol ou chuva.',
     diferenciais: ['Veda e cola', 'Resiste ao sol e à chuva', 'Seguro para metais e PVC', 'Não encolhe, trinca ou cria bolhas'],
     comodos: ['telhado'], problema: 'Calha e rufo vazando',
+  },
+  {
+    id: 'portas-janelas', categoria: 'selantes', imagem: 'portas-janelas',
+    nome: Se
   },
 ];
 
