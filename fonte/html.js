@@ -1,15 +1,4 @@
 // Ponte entre os dados e o HTML.
-// Todo o HTML fica no index.html. O JavaScript só preenche os espaços marcados lá:
-//
-//   data-texto="campo"     recebe o texto do campo (ex.: data-texto="nome")
-//   data-lista="campo"     o primeiro filho é o modelo, repetido para cada item da lista
-//   data-se="campo"        só aparece se o produto tiver esse campo
-//   data-imagem="pasta"    vira src="Img/pasta/<imagem do produto>.webp"
-//   data-link="campo"      recebe o endereço (href) do campo
-//   data-detalhes          botão que abre a ficha do produto
-//   data-ver-comodo        botão que leva ao cômodo do produto
-//
-// Para tirar uma parte da tela, apague o elemento no index.html: o que não existe não é preenchido.
 import { $ } from './util.js';
 
 // Copia o conteúdo de um <template data-modelo="nome"> do index.html.

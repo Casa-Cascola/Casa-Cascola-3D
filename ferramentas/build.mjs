@@ -1,6 +1,5 @@
 // Gera os arquivos que a página usa:
 //   js/app.js           (fonte/main.js + three.js num arquivo só, roda até aberto do disco)
-//   js/draco/*          (decodificador Draco, para um carro.glb exportado com Draco)
 //   css/fontes.css      (fonte Archivo embutida, funciona sem internet)
 //   modelos/casa.glb.js (cópia da casa em base64, usada só quando o site é aberto do disco)
 import { build } from 'esbuild';
@@ -17,9 +16,7 @@ await build({
   target: ['es2020', 'safari15'], outfile: p('js/app.js'), legalComments: 'none', logLevel: 'warning',
 });
 
-const draco = path.join(p('node_modules/three'), 'examples/jsm/libs/draco/gltf');
-fs.mkdirSync(p('js/draco'), { recursive: true });
-for (const f of ['draco_decoder.js', 'draco_decoder.wasm', 'draco_wasm_wrapper.js']) fs.copyFileSync(path.join(draco, f), p('js/draco', f));
+
 
 const fonte = path.join(p('node_modules/@fontsource-variable/archivo'), 'files/archivo-latin-wdth-normal.woff2');
 const b64 = fs.readFileSync(fonte).toString('base64');

@@ -1,9 +1,7 @@
 // Prepara o Casa.glb exportado do Blender para a web:
 //   node ferramentas/otimizar-modelo.mjs caminho/para/Casa.glb [tamanho-maximo-das-texturas]
-//   (padrão 2048 px; use 1024 para um arquivo menor)
-// 1) tira o que não vai para o site (carros fora do app e vazios soltos);
+//   (padrão 2048 px; se quiser pode usar 1024 para um arquivo menor)
 // 2) comprime texturas (WebP) e geometria (meshopt).
-// Resultado: modelos/casa.glb. Depois rode `npm run build`.
 import { NodeIO } from '@gltf-transform/core';
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import { prune } from '@gltf-transform/functions';

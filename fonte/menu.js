@@ -1,8 +1,5 @@
 // Menu lateral de produtos (o único menu da casa).
 // O HTML do menu e do cartão de produto fica no index.html; aqui só entra o comportamento.
-// Tem duas vistas, no mesmo lugar:
-//   'todos'  : os 12 produtos, com os filtros de categoria;
-//   'comodo' : só os produtos indicados para o cômodo escolhido na casa.
 import { PRODUTOS } from './dados.js';
 import { $, $$, estado, comodoPorId, produtosDoComodo, rolagem } from './util.js';
 import { clonar, preencher } from './html.js';

@@ -1,5 +1,4 @@
 // A cena 3D: luz, céu, câmera, voos de câmera e o laço que desenha a casa.
-// Não sabe nada de produtos nem de menu: só lê `estado` para saber como enquadrar.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';

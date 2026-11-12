@@ -1,7 +1,4 @@
 // Dados técnicos de cada produto, mostrados na área "Ficha do produto", abaixo da casa.
-// Fonte: fichas técnicas (FDT) publicadas pela Henkel; o endereço de cada uma está em `fonte`.
-// Para mudar um texto, mude aqui e rode `npm run build`.
-//
 //   resumo    o que é o produto, em uma ou duas frases
 //   numeros   os 3 ou 4 números de destaque: [valor, unidade, o que é]
 //   materiais onde adere (viram as etiquetas de "Onde usar")

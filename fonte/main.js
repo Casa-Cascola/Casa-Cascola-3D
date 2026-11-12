@@ -1,6 +1,5 @@
-// Cascola — site da marca com a casa 3D
+
 // Ponto de partida: liga os cliques da página às outras partes do código.
-// O arquivo usado pela página é js/app.js, gerado com `npm run build` a partir desta pasta:
 //
 //   dados.js     textos dos produtos e dos cômodos, posições das gotas e da câmera
 //   fichas.js    dados técnicos de cada produto
