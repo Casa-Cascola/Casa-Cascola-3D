@@ -1,7 +1,8 @@
 // Conteúdo do site. Para mudar um texto, mude aqui e rode `npm run build`.
+
 export const CATEGORIAS = [
   { id: 'contato', nome: 'Colas de contato' },
-  { id: 'pva', nome: 'Colas (PVA)' },
+  { id: 'pva', nome: 'Colas brancas (PVA)' },
   { id: 'montagem', nome: 'Adesivos de montagem' },
   { id: 'selantes', nome: 'Silicones e selantes' },
 ];
@@ -13,28 +14,28 @@ export const PRODUTOS = [
     nome: 'Cola de Contato Tradicional',
     chamada: 'A clássica da Cascola, desde 1955.',
     diferenciais: ['Rende até 2x mais', 'Sem toluol', 'Sem cheiro após 10 min', 'Fácil aplicação', 'Sem grumos, fácil de espalhar'],
-    comodos: ['cozinha'], problema: 'Laminado dos armários soltando',
+    comodos: ['cozinha'], problema: 'Laminado dos armários e móveis soltando',
   },
   {
     id: 'contato-extraforte', categoria: 'contato', imagem: 'contato-extraforte',
     nome: 'Cola de Contato Extraforte',
     chamada: 'Para o que dobra, curva e não pode soltar.',
     diferenciais: ['Resistência à umidade', 'Sem toluol', 'Sem cheiro após 10 min', 'Perfeita para colagens curvas ou maleáveis'],
-    comodos: ['banheiro', 'quarto'], problema: 'Sola de sapato e peças maleáveis descolando',
+    comodos: ['banheiro', 'quarto'], problema: 'Fita de borda e sola de sapato descolando',
   },
   {
     id: 'cola-madeira', categoria: 'pva', imagem: 'cola-madeira',
     nome: 'Cola Branca PVA Cola Madeira',
     chamada: 'Móvel firme de novo, sem esperar o dia todo.',
     diferenciais: ['Resistência à umidade', 'Pega rápida', 'Menos tempo de prensagem', 'Ideal para reparos e montagem de móveis'],
-    comodos: ['banheiro','quarto'], problema: 'Móvel de madeira desmontando',
+    comodos: ['quarto', 'banheiro'], problema: 'Gavetas, armários e MDF desmontando',
   },
   {
     id: 'pva-extraforte', categoria: 'pva', imagem: 'pva-extraforte',
     nome: 'Cola Branca PVA Extraforte',
     chamada: 'Força de colagem que acompanha a madeira.',
     diferenciais: ['Alta durabilidade', 'Alta força de colagem', 'Transparente, não empelota', 'Não solta com a movimentação da madeira'],
-    comodos: ['sala'], problema: 'Escrivaninha e estante de madeira',
+    comodos: ['escritorio', 'cozinha'], problema: 'Mesa, cadeira e estante de madeira soltando',
   },
   {
     id: 'nao-mais-pregos', categoria: 'montagem', imagem: 'nao-mais-pregos',
@@ -48,42 +49,42 @@ export const PRODUTOS = [
     nome: 'Adesivo de Montagem PL600',
     chamada: 'Segura firme do lado de fora também.',
     diferenciais: ['Agarre imediato', 'Resiste à chuva e à umidade', 'Cola em metal, cerâmica e alvenaria'],
-    comodos: ['banheiro', 'jardim'], problema: 'Colagem de azulejo, colagem de "muro" de pedra',
+    comodos: ['garagem', 'banheiro'], problema: 'Número da casa, muro de pedras e porta-toalha soltando',
   },
   {
     id: 'pl700', categoria: 'montagem', imagem: 'pl700',
     nome: 'Adesivo de Montagem PL700',
     chamada: 'Cuidado com o que é delicado.',
     diferenciais: ['Agarre imediato', 'Perfeito para materiais sensíveis, como espelho e acrílico', 'Veda e cola, transparente'],
-    comodos: ['banheiro'], problema: 'Espelho e peças de acrílico',
+    comodos: ['banheiro'], problema: 'Espelho, bancada de mármore e peças de acrílico',
   },
   {
     id: 'silicone-uso-geral', categoria: 'selantes', imagem: 'silicone-uso-geral',
     nome: 'Silicone Uso Geral',
     chamada: 'Vedação transparente para a casa toda.',
     diferenciais: ['Não encolhe', 'Não trinca nem amarela', 'Resiste à água e ao sol', '10 anos de garantia', '100% silicone, transparente'],
-    comodos: ['varanda'], problema: 'Vedação da janela no lado externo',
+    comodos: ['lavanderia', 'jardim'], problema: 'Vedação do tanque, da pia e das janelas',
   },
   {
     id: 'silicone-banheiro-cozinha', categoria: 'selantes', imagem: 'silicone-banheiro-cozinha',
     nome: 'Silicone Banheiro e Cozinha',
     chamada: 'Junta limpa, sem mofo, por anos.',
     diferenciais: ['Não encolhe, trinca ou amarela', 'Resiste ao mofo e à limpeza diária', 'Resistente à água', '10 anos de garantia', '100% silicone'],
-    comodos: ['banheiro'], problema: 'Box e cuba com mofo e infiltração',
+    comodos: ['banheiro', 'cozinha'], problema: 'Vaso, box e cuba com mofo e infiltração',
   },
   {
     id: 'acabamentos', categoria: 'selantes', imagem: 'acabamentos',
     nome: 'Selante Acrílico Acabamentos',
     chamada: 'A trinca some e não volta.',
     diferenciais: ['Pintável', 'Antimofo', '10 anos de vedação garantida', 'Flexível, não deixa a trinca voltar'],
-    comodos: ['quarto','sala'], problema: 'Trinca na parede e no rodapé',
+    comodos: ['sala', 'quarto'], problema: 'Trinca na parede, no muro e no rodapé',
   },
   {
     id: 'pu40', categoria: 'selantes', imagem: 'pu40',
     nome: 'Selante PU40',
     chamada: 'Veda e cola onde a casa se movimenta.',
     diferenciais: ['Veda e cola', 'Resiste ao sol e à água', '5 anos de garantia', 'Acompanha a movimentação sem trincar'],
-    comodos: ['jardim'], problema: 'Colagem entre as juntas da calçada da garagem',
+    comodos: ['varanda', 'jardim'], problema: 'Juntas do piso externo abrindo',
   },
   {
     id: 'pu-veda-calha', categoria: 'selantes', imagem: 'pu-veda-calha',
@@ -95,7 +96,44 @@ export const PRODUTOS = [
   {
     id: 'portas-janelas', categoria: 'selantes', imagem: 'portas-janelas',
     nome: 'Selante Portas e Janelas',
-    chamada: ''
+    chamada: 'Vedação de longa duração em portas e janelas.',
+    diferenciais: ['Longa duração', 'Pintável', 'Multimaterial', 'Antimofo e fungos'],
+    comodos: ['sala'], problema: 'Fresta entre a porta de entrada e a parede',
+  },
+  {
+    id: 'silicone-construcao', categoria: 'selantes', imagem: 'silicone-construcao',
+    nome: 'Silicone Construção',
+    chamada: 'Para vidros e esquadrias, dentro e fora de casa.',
+    diferenciais: ['Interior e exterior', 'Multimaterial', 'Transparente'],
+    comodos: ['varanda'], problema: 'Vidros e esquadrias mal vedados',
+  },
+  {
+    id: 'massa-calafetar', categoria: 'selantes', imagem: 'massa-calafetar',
+    nome: 'Massa para Calafetar',
+    chamada: 'Fecha a fresta e não seca nunca.',
+    diferenciais: ['Plasticidade permanente, não seca', 'Alta durabilidade e boa aderência', 'Bloqueia água, ar e ruído', 'Uso interno e externo'],
+    comodos: ['garagem'], problema: 'Frestas no teto e no alçapão da garagem',
+  },
+  {
+    id: 'cascorez-universal', categoria: 'pva', imagem: 'cascorez-universal',
+    nome: 'Cola Branca PVA Cascorez Universal',
+    chamada: 'Uma cola branca para colar quase tudo.',
+    diferenciais: ['Elevado poder de adesão', 'Película flexível', 'Seca transparente', 'Madeira, papel, laminados e materiais porosos'],
+    comodos: ['quarto'], problema: 'Móveis e peças de madeira soltando',
+  },
+  {
+    id: 'cascorez-artesanato', categoria: 'pva', imagem: 'cascorez-artesanato',
+    nome: 'Cola Branca PVA Cascorez Artesanato',
+    chamada: 'Para criar, montar e dar acabamento.',
+    diferenciais: ['Seca transparente, com brilho intenso', 'Película flexível', 'Boa consistência e textura', 'Papel, tecido, madeira, MDF, E.V.A. e mais'],
+    comodos: ['sala'], problema: 'Quadro e peças de artesanato desmontando',
+  },
+  {
+    id: 'reducola', categoria: 'contato', imagem: 'reducola',
+    nome: 'Reducola',
+    chamada: 'O parceiro da cola de contato.',
+    diferenciais: ['Sem toluol', 'Pronto para uso', 'Evaporação rápida', 'Dilui, prepara primers e limpa ferramentas'],
+    comodos: ['garagem'], problema: 'Cola de contato grossa e ferramentas sujas de cola',
   },
 ];
 

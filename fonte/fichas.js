@@ -458,4 +458,90 @@ export const FICHAS = {
     ],
     fonte: { nome: 'Cascola Veda Calha', url: FDT + 'CASCOLA-Veda-Calha-pt_BR.pdf' },
   },
+
+  'cascorez-universal': {
+    resumo: 'Adesivo PVA em dispersão aquosa, com elevado poder de adesão. Seca transparente e deixa uma película flexível. Para colagens em geral e montagem de painéis de madeira.',
+    numeros: [
+      ['D1', '', 'Classe de colagem, norma EN 204'],
+      ['36–39', '%', 'Teor de sólidos'],
+      ['24', 'meses', 'Validade'],
+    ],
+    materiais: ['Madeira', 'Laminados plásticos', 'Papel e papelão', 'Materiais porosos'],
+    usos: 'Montagem de painéis de madeira, laminação e colagem de finger joint.',
+    atencao: [NAO_ADERE, 'Não é inflamável.'],
+    dados: [
+      ['Base química', 'Poliacetato de vinila (PVAc), em dispersão aquosa'],
+      ['Classe de colagem', 'D1, conforme EN 204'],
+      ['Teor de sólidos', '36 a 39 %'],
+      ['pH', '4,0 a 5,0'],
+      ['Validade', '24 meses'],
+    ],
+    fonte: { nome: 'Cascola Cascorez Universal', url: FDT + 'CASCOLA-Cascorez-Universal-pt_BR.pdf' },
+  },
+
+  'cascorez-artesanato': {
+    resumo: 'Adesivo PVA em dispersão aquosa para artesanato. Seca transparente, com brilho intenso e película flexível, e tem boa consistência e textura.',
+    numeros: [
+      ['38–40', '%', 'Teor de sólidos'],
+      ['4–5', '', 'pH'],
+      ['24', 'meses', 'Validade'],
+    ],
+    materiais: ['Papel e papelão', 'Tecido de algodão', 'Madeira e MDF', 'Cortiça', 'Couro', 'E.V.A. e isopor'],
+    usos: 'Decoupage, scrapbook, patchwork, mosaico, cartonagem, biscuit e outras técnicas de artesanato.',
+    atencao: [NAO_ADERE, 'Não é inflamável.'],
+    dados: [
+      ['Base química', 'Poliacetato de vinila (PVAc), em dispersão aquosa'],
+      ['Teor de sólidos', '38 a 40 %'],
+      ['pH', '4,0 a 5,0'],
+      ['Validade', '24 meses'],
+    ],
+    fonte: { nome: 'Cascola Cascorez Artesanato', url: FDT + 'CASCOLA-Cascorez-Artesanato-pt_BR.pdf' },
+  },
+
+  'massa-calafetar': {
+    resumo: 'Massa pronta para uso, à base de resinas sintéticas e cargas minerais. Tem plasticidade permanente: não seca nem endurece. Veda frestas e orifícios por dentro e por fora.',
+    numeros: [
+      ['120', '°C', 'Temperatura máxima de aplicação'],
+      ['350', 'g', 'Embalagem'],
+      ['24', 'meses', 'Validade'],
+    ],
+    materiais: ['Madeira', 'Granito', 'Alumínio', 'Vidro', 'Porcelana', 'Cimento', 'Telhas', 'Fibrocimento'],
+    usos: 'Bloqueia água, umidade, ar, fumaça e ruído, inclusive em peças que vibram, como ar-condicionado e geladeira.',
+    atencao: ['Não serve como adesivo para colar materiais.', NAO_ADERE, 'Não contém amianto.'],
+    dados: [
+      ['Base química', 'Resinas sintéticas e cargas minerais'],
+      ['Aspecto', 'Massa compacta e homogênea, cinza claro'],
+      ['Embalagem', '350 g'],
+      ['Validade', '24 meses'],
+    ],
+    fonte: { nome: 'Cascola Massa para Calafetar', url: FDT + 'CASCOLA-Massa-para-Calafetar-pt_BR.pdf' },
+  },
+
+  reducola: {
+    resumo: 'Diluente à base de solventes orgânicos, sem toluol. Dilui, prepara primers e limpa superfícies e ferramentas. Compatível com a Cola de Contato Tradicional e a Extra, sem toluol.',
+    numeros: [
+      ['0,9', 'L', 'Embalagem'],
+      ['24', 'meses', 'Garantia'],
+    ],
+    atencao: ['A inalação frequente em concentrações elevadas é prejudicial à saúde. Use em local ventilado.'],
+    dados: [
+      ['Composição', 'Diluente à base de solventes orgânicos, sem toluol'],
+      ['Evaporação', 'Rápida'],
+      ['Odor', 'Médio'],
+      ['Validade', '24 meses'],
+    ],
+    fonte: { nome: 'Cascola Reducola', url: 'https://www.telhanorte.com.br/reducola-sem-toluol-900ml-cascola-1195026/p' },
+  },
+
+  'portas-janelas': {
+    resumo: 'Selante da linha Cascola para portas e janelas, de longa duração. É pintável, serve para vários materiais e tem proteção antimofo e fungos.',
+    atencao: ['Dados técnicos completos: consulte a embalagem (280 g) e o QR code com dicas de uso.'],
+    dados: [['Embalagem', 'Cartucho de 280 g, branco']],
+  },
+
+  'silicone-construcao': {
+    resumo: 'Silicone transparente da linha Cascola para construção, de uso interno e externo e para vários materiais. Indicado para vidros e esquadrias.',
+    atencao: ['Dados técnicos completos: consulte a embalagem (280 g) e o QR code com dicas de uso.'],
+    dados: [['Embalagem', 'Cartucho de 280 g, transparente']],
+  },
 };
