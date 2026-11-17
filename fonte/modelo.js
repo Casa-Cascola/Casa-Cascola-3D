@@ -139,18 +139,18 @@ function corrigirModelo(casa, scene) {
       scene.add(copia);
     }
   }
-  // 2) Troncos das árvores (eram curvas no Blender e não foram exportados).
-  const folhasPalmeira = casa.getObjectByName('leaves');
-  if (folhasPalmeira) {
-    const nasce = pontoDaCopa(folhasPalmeira);           // onde as folhas se encontram
-    const canteiro = casa.getObjectByName('Palmeira_Canteiro_Terra');
-    const base = canteiro ? new THREE.Box3().setFromObject(canteiro).getCenter(new THREE.Vector3()) : new THREE.Vector3(-9, 0, 7.5);
-    base.y = -0.05;
-    const topo = nasce.clone(); topo.y -= 0.12;              // termina dentro da copa, sem furar as folhas
-    const mat = new THREE.MeshStandardMaterial({ map: texturaTronco('#857258', '#4d3f2f'), roughness: 0.95 });
-    mat.map.repeat.set(2, 7);
-    scene.add(troncoEntre(base, topo, 0.24, 0.17, new THREE.Vector3(0.32, 0, -0.08), mat));
-  }
+  // // 2) Troncos das árvores (eram curvas no Blender e não foram exportados).
+  // const folhasPalmeira = casa.getObjectByName('leaves');
+  // if (folhasPalmeira) {
+  //   const nasce = pontoDaCopa(folhasPalmeira);           // onde as folhas se encontram
+  //   const canteiro = casa.getObjectByName('Palmeira_Canteiro_Terra');
+  //   const base = canteiro ? new THREE.Box3().setFromObject(canteiro).getCenter(new THREE.Vector3()) : new THREE.Vector3(-9, 0, 7.5);
+  //   base.y = -0.05;
+  //   const topo = nasce.clone(); topo.y -= 0.12;              // termina dentro da copa, sem furar as folhas
+  //   const mat = new THREE.MeshStandardMaterial({ map: texturaTronco('#857258', '#4d3f2f'), roughness: 0.95 });
+  //   mat.map.repeat.set(2, 7);
+  //   scene.add(troncoEntre(base, topo, 0.24, 0.17, new THREE.Vector3(0.32, 0, -0.08), mat));
+  // }
   const copa = casa.getObjectByName('Arvore_Copa');
   if (copa) {
     const cx = new THREE.Box3().setFromObject(copa);
