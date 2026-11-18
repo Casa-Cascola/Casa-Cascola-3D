@@ -21,4 +21,5 @@ export const estado = {
   modo: 'abertura',   // 'abertura' (título na frente) ou 'explorar' (casa livre para girar)
   comodo: null,       // id do cômodo escolhido, ou null
   menuAberto: false,  // o menu lateral de produtos está aberto?
+  dentro: null,       // id do cômodo em que a câmera entrou (o banheiro), ou null
 };

@@ -10,6 +10,8 @@
 //   pinos.js     gotas laranja dos cômodos
 //   cena.js      cena 3D: luz, câmera e desenho
 //   modelo.js    carregamento do Casa.glb e ajustes de exportação
+//   interior.js  entrar e sair do banheiro (cômodo por dentro, barreira da câmera)
+//   demo/        demonstrações de aplicação (vedação do vaso e do box)
 
 import { VISAO_GERAL } from './dados.js';
 import { $, $$, estado, comodoPorId, reduzMovimento, rolagem } from './util.js';
@@ -17,6 +19,9 @@ import { montarMenu, abrirMenu, mostrarTodos, mostrarComodo, filtrar } from './m
 import { montarDetalhes, mostrarDetalhes } from './detalhes.js';
 import { camadaPinos, atualizarPinos } from './pinos.js';
 import { iniciarCena } from './cena.js';
+import { iniciarInterior, temInterior, entrar, sair } from './interior.js';
+import { iniciarDemos, abrirDemo, fecharDemo, demoAberta, tocarOuPausar, irParaEtapa } from './demo/palco.js';
+import { DEMOS } from './demo/demos.js';
 
 const palco = $('[data-palco]');
 const botaoVoltar = $('[data-acao="voltar"]');
@@ -40,18 +45,27 @@ function entrarNaCasa() {
   cena?.aoMudarModo();
 }
 
-// Gota de um cômodo: a câmera vai até ele e o menu mostra os produtos indicados
+const estreito = () => matchMedia('(max-width: 720px)').matches;
+
+// Gota de um cômodo: a câmera vai até ele e o menu mostra os produtos indicados.
+// O banheiro tem o cômodo por dentro: a câmera entra nele.
 function selecionarComodo(id) {
   entrarNaCasa();
   estado.comodo = id;
   mostrarComodo(id);
   atualizarPinos();
-  cena?.voar(comodoPorId[id]);
+  if (cena && temInterior(id)) {
+    // dentro do cômodo o menu começa fechado: quem manda são as gotas do vaso e do box.
+    // Os produtos do cômodo continuam na alça "Produtos".
+    menu(false);
+    entrar(id);
+    return;
+  }
+  if (cena) sair(comodoPorId[id]);   // sai do banheiro, se estiver dentro (ou entrando), e vai até o cômodo
   // em tela estreita o menu cobre a casa: primeiro a câmera chega, depois ele abre
-  const estreito = matchMedia('(max-width: 720px)').matches;
-  if (estreito && cena && !estado.menuAberto && !reduzMovimento) {
+  if (estreito() && cena && !estado.menuAberto && !reduzMovimento) {
     clearTimeout(esperaMenu);
-    esperaMenu = setTimeout(() => menu(true), 1300);
+    esperaMenu = setTimeout(() => menu(true), estado.dentro ? 2600 : 1300);
   } else {
     menu(true);
   }
@@ -63,11 +77,12 @@ function sairDoComodo() {
   estado.comodo = null;
   mostrarTodos();
   atualizarPinos();
-  cena?.voar(VISAO_GERAL);
+  if (cena) sair(VISAO_GERAL);
 }
 
 // "Voltar": fecha tudo e traz o título de volta
 function voltarParaAbertura() {
+  if (demoAberta()) fecharDemo();
   menu(false);
   estado.modo = 'abertura';
   estado.comodo = null;
@@ -76,20 +91,44 @@ function voltarParaAbertura() {
   mostrarTodos();
   atualizarPinos();
   cena?.aoMudarModo();
-  cena?.voar(VISAO_GERAL);
+  if (cena) sair(VISAO_GERAL);
 }
 
 const subir = () => window.scrollTo({ top: 0, behavior: rolagem() });
+
+// "Ver aplicação" (no cartão do produto ou na gota do vaso e do box): abre a demonstração.
+// Se a câmera ainda está fora, ela entra no cômodo antes.
+function verAplicacao(id) {
+  const def = DEMOS[id];
+  if (!cena || !def) return;
+  entrarNaCasa();
+  menu(false);
+  subir();
+  if (estado.comodo !== def.comodo) { estado.comodo = def.comodo; mostrarComodo(def.comodo); atualizarPinos(); }
+  abrirDemo(id);
+}
+// Sai da demonstração e volta para a vista do cômodo
+function sairDaDemo() {
+  if (!demoAberta()) return;
+  fecharDemo();
+  botaoVoltar.hidden = false;
+}
 
 // ---------------------------------------------------------------- cliques e teclado
 document.addEventListener('click', (e) => {
   const t = e.target.closest('button, a');
   if (!t) return;
-  const { acao, filtro, detalhes, verComodo, comodo } = t.dataset;
+  const { acao, filtro, detalhes, verComodo, comodo, demo, ponto, etapa } = t.dataset;
+  if (demo) return verAplicacao(demo);
+  if (ponto) return verAplicacao(ponto);
+  if (acao === 'fechar-demo') return sairDaDemo();
+  if (acao === 'demo-tocar') return tocarOuPausar();
+  if (etapa) return irParaEtapa(etapa);
   if (acao === 'menu') return menu(!estado.menuAberto);
   if (acao === 'produtos') { e.preventDefault(); subir(); return menu(true); }
   if (acao === 'todos') return sairDoComodo();
-  if (acao === 'voltar') return voltarParaAbertura();
+  // dentro do banheiro, "Voltar" sai para a casa; da casa, volta para o título
+  if (acao === 'voltar') return estado.dentro ? sairDoComodo() : voltarParaAbertura();
   if (acao === 'ver-casa') { entrarNaCasa(); cena?.voar(VISAO_GERAL); return; }
   if (acao === 'topo') return subir();
   if (filtro) return filtrar(filtro);
@@ -100,6 +139,7 @@ document.addEventListener('click', (e) => {
 
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
+  if (demoAberta()) return sairDaDemo();
   if (estado.menuAberto) menu(false);
   else if (estado.comodo) sairDoComodo();
   else if (estado.modo === 'explorar') voltarParaAbertura();
@@ -135,6 +175,7 @@ function aviso(texto) {
 const progresso = (fracao) => { const barra = $('[data-carregando-barra]'); if (barra) barra.style.width = `${Math.round(fracao * 100)}%`; };
 const esconderCarregando = () => { const el = $('[data-carregando]'); if (el) el.hidden = true; };
 
+const endereco = new URLSearchParams(location.search);
 (async function () {
   cena = iniciarCena($('[data-cena]'), { aoProgresso: progresso });
   if (!cena) {
@@ -144,13 +185,23 @@ const esconderCarregando = () => { const el = $('[data-carregando]'); if (el) el
     return;
   }
   try {
-    await cena.carregar();
+    // endereço com ?semcasa abre sem o modelo da casa (só para testar o banheiro e as demonstrações mais rápido)
+    if (!endereco.has('semcasa')) await cena.carregar();
     progresso(1);
     palco.classList.add('is-pronto');
     cena.redesenhar();
     cena.iniciarLoop();
     setTimeout(esconderCarregando, 800);
     window.__casaPronta = true;
+    iniciarInterior(cena);
+    iniciarDemos(cena);
+    // endereço direto para uma demonstração: index.html?demo=banheiro-vaso (com &t=12 abre pausada em 12 s)
+    const demo = endereco.get('demo');
+    if (DEMOS[demo]) {
+      entrarNaCasa();
+      estado.comodo = DEMOS[demo].comodo; mostrarComodo(estado.comodo); atualizarPinos();
+      abrirDemo(demo, { t: +endereco.get('t') || 0, pausado: endereco.has('t'), direto: true });
+    } else if (temInterior(endereco.get('comodo'))) selecionarComodo(endereco.get('comodo'));
   } catch (e) {
     console.error(e);
     esconderCarregando();
