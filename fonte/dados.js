@@ -90,7 +90,7 @@ export const PRODUTOS = [
     id: 'pu-veda-calha', categoria: 'selantes', imagem: 'pu-veda-calha',
     nome: 'Selante PU Veda Calha',
     chamada: 'Calha sem goteira, faça sol ou chuva.',
-    diferenciais: ['Veda e cola', 'Resistente a sol e à chuva', 'Seguro para metais e PVC' ,'Não encolhe, trinca ou cria bolhas'],
+    diferenciais: ['Veda e cola', 'Resiste ao sol e à chuva', 'Seguro para metais e PVC', 'Não encolhe, trinca ou cria bolhas'],
     comodos: ['telhado'], problema: 'Calha e rufo vazando',
   },
   {
@@ -104,14 +104,14 @@ export const PRODUTOS = [
     id: 'silicone-construcao', categoria: 'selantes', imagem: 'silicone-construcao',
     nome: 'Silicone Construção',
     chamada: 'Para vidros e esquadrias, dentro e fora de casa.',
-    diferenciais: ['Interior e exterior, resistente a intempéries', 'Multimaterial', 'Transparente'],
+    diferenciais: ['Interior e exterior', 'Multimaterial', 'Transparente'],
     comodos: ['varanda'], problema: 'Vidros e esquadrias mal vedados',
   },
   {
     id: 'massa-calafetar', categoria: 'selantes', imagem: 'massa-calafetar',
     nome: 'Massa para Calafetar',
     chamada: 'Fecha a fresta e não seca nunca.',
-    diferenciais: ['Plasticidade permanente', 'Não seca e não endurece', 'Bloqueia água, ar e ruído', 'Vedaçaõ reabrivel'],
+    diferenciais: ['Plasticidade permanente, não seca', 'Alta durabilidade e boa aderência', 'Bloqueia água, ar e ruído', 'Uso interno e externo'],
     comodos: ['garagem'], problema: 'Frestas no teto e no alçapão da garagem',
   },
   {
@@ -132,7 +132,7 @@ export const PRODUTOS = [
     id: 'reducola', categoria: 'contato', imagem: 'reducola',
     nome: 'Reducola',
     chamada: 'O parceiro da cola de contato.',
-    diferenciais: ['Sem toluol', 'Pronto para uso', 'Evaporação rápida', 'Limpa ferramentas'],
+    diferenciais: ['Sem toluol', 'Pronto para uso', 'Evaporação rápida', 'Dilui, prepara primers e limpa ferramentas'],
     comodos: ['garagem'], problema: 'Cola de contato grossa e ferramentas sujas de cola',
   },
 ];
