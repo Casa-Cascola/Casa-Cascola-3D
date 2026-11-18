@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 const REMOVER = ['Carro_Supra_NFS', 'CarroGenerico_Corpo', 'Carro_Corpo', 'A23D'];
 
 const entrada = process.argv[2];
-const TEXTURA = String(process.argv[3] || 2048);
+const TEXTURA = String(process.argv[3] || 1024);
 if (!entrada) { console.error('Uso: node ferramentas/otimizar-modelo.mjs Casa.glb'); process.exit(1); }
 const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const saida = path.join(raiz, 'modelos/casa.glb');
