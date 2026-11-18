@@ -7,6 +7,7 @@
   <title>Casa Cascola</title>
   <link rel="shortcut icon" href="Img/image.png" type="image/x-icon">
   <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/demo.css">
 </head>
 
 <body>
@@ -24,12 +25,26 @@
       </picture>
       <canvas class="palco__cena" data-cena aria-hidden="true"></canvas>
       <div class="palco__veu" aria-hidden="true"></div>
+      <!-- Escurece a tela por um instante quando a câmera entra ou sai de um cômodo -->
+      <div class="palco__cortina" data-cortina aria-hidden="true"></div>
       <!-- Gotas dos cômodos: o modelo abaixo é copiado uma vez para cada cômodo -->
       <div class="pinos" data-pinos>
         <template data-modelo="pino">
           <button class="pino" type="button">
             <span class="pino__gota"></span>
             <span class="pino__nome" data-texto="nome"></span>
+          </button>
+        </template>
+      </div>
+
+      <!-- Pontos de aplicação dentro do cômodo (vaso, box): o modelo abaixo é copiado uma vez para cada ponto -->
+      <div class="pontos" data-pontos>
+        <template data-modelo="ponto">
+          <button class="ponto" type="button">
+            <span class="ponto__marca">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6.5v11l9-5.5z" fill="currentColor" /></svg>
+            </span>
+            <span class="ponto__nome"><b data-texto="nome"></b><span>Ver aplicação</span></span>
           </button>
         </template>
       </div>
@@ -109,6 +124,8 @@
                 <ul class="item__dif" data-lista="diferenciais">
                   <li></li>
                 </ul>
+                <!-- Só aparece nos produtos que têm demonstração 3D: um botão por demonstração -->
+                <div class="item__aplicacoes" data-aplicacoes hidden></div>
                 <!-- <div class="item__acoes">
                   <button class="item__mais" type="button" data-detalhes>
                     Mais detalhes
@@ -119,9 +136,58 @@
               </li>
             </template>
           </ul>
+          <!-- Botão "Ver aplicação" do cartão: o modelo abaixo é copiado uma vez para cada demonstração -->
+          <template data-modelo="ver-aplicacao">
+            <button class="item__aplicar" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg>
+              <span>Ver aplicação: <b data-texto="titulo"></b></span>
+            </button>
+          </template>
         </div>
       </aside>
       <p class="palco__aviso" data-aviso hidden></p>
+
+      <!-- Demonstração de aplicação: aparece quando alguém toca em "Ver aplicação" ou num ponto do cômodo -->
+      <div class="demo" data-demo-painel hidden>
+        <button class="demo__fechar" type="button" data-acao="fechar-demo">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          Voltar
+        </button>
+        <div class="demo__painel">
+          <!-- <p class="demo__produto" data-texto="produto"></p>
+          <h2 class="demo__titulo" data-texto="titulo"></h2>
+          <ol class="demo__etapas">
+            <li><button type="button" data-etapa="porque">Por que usar</button></li>
+            <li><button type="button" data-etapa="aplicacao">Aplicação</button></li>
+            <li><button type="button" data-etapa="resultado">Resultado</button></li>
+          </ol>
+          <p class="demo__legenda" data-demo-legenda aria-live="polite"></p> -->
+          <!-- Diferenciais do produto (de dados.js): acendem quando a demonstração fala de cada um -->
+          <!-- <ul class="demo__diferenciais" data-lista="diferenciais" data-se="diferenciais">
+            <li></li>
+          </ul> -->
+          <!-- Como o produto cura: os tempos acendem conforme a animação avança -->
+          <!-- <div class="demo__cura" data-se="cura">
+            <p class="demo__como" data-texto="comoCura"></p>
+            <ul data-lista="cura">
+              <li><b data-texto="tempo"></b><span data-texto="texto"></span></li>
+            </ul>
+          </div>
+          -->
+          <div class="demo__controles">
+            <button class="demo__tocar" type="button" data-acao="demo-tocar" aria-label="Pausar">
+              <svg class="demo__i-pausa" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor" /></svg>
+              <svg class="demo__i-toca" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg>
+              <svg class="demo__i-repete" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12a7 7 0 1 0 2.2-5.1M5 4.5V9h4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </button>
+            <input class="demo__tempo" type="range" min="0" max="1000" value="0" data-demo-tempo aria-label="Linha do tempo">
+          </div>
+          <!-- <p class="demo__fonte">Fonte: <a data-link="fonteUrl" data-texto="fonteNome" target="_blank" rel="noopener"></a></p> -->
+        </div> 
+      </div>
     </section>
 
 
