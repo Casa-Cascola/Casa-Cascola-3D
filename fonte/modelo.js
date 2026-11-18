@@ -37,9 +37,29 @@ export async function carregarCasa({ scene, renderer, aoProgresso, redesenhar })
       for (const k of ['map', 'normalMap', 'roughnessMap', 'metalnessMap', 'aoMap']) if (m[k]) m[k].anisotropy = aniso;
     }
   });
-  scene.add(casa);
-  corrigirModelo(casa, scene);
-  tentarCarro(scene, redesenhar);
+  // tudo o que é da casa fica num grupo só: ao entrar num cômodo, o que não aparece some de uma vez
+  const tudo = new THREE.Group();
+  tudo.name = 'CasaInteira';
+  scene.add(tudo);
+  tudo.add(casa);
+  corrigirModelo(casa, tudo);
+  tentarCarro(tudo, redesenhar);
+}
+
+// Baixa e prepara um .glb qualquer (os cômodos por dentro). Devolve o grupo 3D.
+export async function carregarGlb(url, renderer) {
+  const gltf = await loader.parseAsync(await baixarModelo(url, () => {}), '');
+  const aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  gltf.scene.traverse((o) => {
+    if (!o.isMesh) return;
+    o.castShadow = o.receiveShadow = true;
+    for (const m of [].concat(o.material)) {
+      if (m.transmission > 0) { m.transmission = 0; m.transparent = true; m.opacity = Math.min(m.opacity, 0.3); m.depthWrite = false; }
+      if (m.transparent) o.castShadow = false;
+      for (const k of ['map', 'normalMap', 'roughnessMap']) if (m[k]) m[k].anisotropy = aniso;
+    }
+  });
+  return gltf.scene;
 }
 
 async function baixarModelo(url, aoProgresso) {
@@ -53,10 +73,12 @@ async function baixarModelo(url, aoProgresso) {
       s.onerror = () => erro(new Error('arquivo-local'));
       document.head.appendChild(s);
     });
-    const bin = atob(window.CASA_GLB_BASE64);
+    // a casa usa CASA_GLB_BASE64; os cômodos entram em CASCOLA_GLB, pelo caminho
+    const outros = window.CASCOLA_GLB || {};
+    const bin = atob(url in outros ? outros[url] : window.CASA_GLB_BASE64);
     const bytes = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-    delete window.CASA_GLB_BASE64;
+    if (url in outros) delete outros[url]; else delete window.CASA_GLB_BASE64;
     aoProgresso(0.9);
     return bytes.buffer;
   }
@@ -139,30 +161,8 @@ function corrigirModelo(casa, scene) {
       scene.add(copia);
     }
   }
-  // // 2) Troncos das árvores (eram curvas no Blender e não foram exportados).
-  // const folhasPalmeira = casa.getObjectByName('leaves');
-  // if (folhasPalmeira) {
-  //   const nasce = pontoDaCopa(folhasPalmeira);           // onde as folhas se encontram
-  //   const canteiro = casa.getObjectByName('Palmeira_Canteiro_Terra');
-  //   const base = canteiro ? new THREE.Box3().setFromObject(canteiro).getCenter(new THREE.Vector3()) : new THREE.Vector3(-9, 0, 7.5);
-  //   base.y = -0.05;
-  //   const topo = nasce.clone(); topo.y -= 0.12;              // termina dentro da copa, sem furar as folhas
-  //   const mat = new THREE.MeshStandardMaterial({ map: texturaTronco('#857258', '#4d3f2f'), roughness: 0.95 });
-  //   mat.map.repeat.set(2, 7);
-  //   scene.add(troncoEntre(base, topo, 0.24, 0.17, new THREE.Vector3(0.32, 0, -0.08), mat));
-  // }
-  const copa = casa.getObjectByName('Arvore_Copa');
-  if (copa) {
-    const cx = new THREE.Box3().setFromObject(copa);
-    const centro = cx.getCenter(new THREE.Vector3());
-    const tronco = casa.getObjectByName('Arvore_Tronco');
-    const base = tronco ? tronco.getWorldPosition(new THREE.Vector3()) : new THREE.Vector3(2.2, 0, 10);
-    base.y = -0.05;
-    const mat = new THREE.MeshStandardMaterial({ map: texturaTronco('#6a5543', '#3c2e22'), roughness: 0.95 });
-    mat.map.repeat.set(2, 5);
-    const topo = new THREE.Vector3(centro.x, cx.min.y + (cx.max.y - cx.min.y) * 0.5, centro.z);
-    scene.add(troncoEntre(base, topo, 0.18, 0.08, new THREE.Vector3(-0.12, 0, 0.08), mat));
-  }
+ 
+ 
   // 3) Chão e rua continuam até o horizonte.
   //    Usa o mesmo material e a mesma escala de textura do original, para não aparecer emenda.
   estenderSuperficie(scene, casa.getObjectByName('Gramado'), () => new THREE.CircleGeometry(420, 64), -0.025);
