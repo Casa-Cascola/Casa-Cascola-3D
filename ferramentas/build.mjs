@@ -2,6 +2,7 @@
 //   js/app.js           (fonte/main.js + three.js num arquivo só, roda até aberto do disco)
 //   css/fontes.css      (fonte Archivo embutida, funciona sem internet)
 //   modelos/casa.glb.js (cópia da casa em base64, usada só quando o site é aberto do disco)
+//   modelos/comodos/*.glb.js (o mesmo para os cômodos por dentro)
 import { build } from 'esbuild';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -37,5 +38,13 @@ const glb = p('modelos/casa.glb');
 if (fs.existsSync(glb)) {
   fs.writeFileSync(p('modelos/casa.glb.js'), `window.CASA_GLB_BASE64="${fs.readFileSync(glb).toString('base64')}";\n`);
 }
+// cópias dos cômodos (o banheiro por dentro), também para o site aberto do disco
+const pastaComodos = p('modelos/comodos');
+let comodos = 0;
+if (fs.existsSync(pastaComodos)) for (const f of fs.readdirSync(pastaComodos).filter((n) => n.endsWith('.glb'))) {
+  const url = `modelos/comodos/${f}`;
+  fs.writeFileSync(p(url + '.js'), `(window.CASCOLA_GLB=window.CASCOLA_GLB||{})[${JSON.stringify(url)}]="${fs.readFileSync(p(url)).toString('base64')}";\n`);
+  comodos += 1;
+}
 const kb = (f) => (fs.statSync(p(f)).size / 1024).toFixed(0) + ' KB';
-console.log('js/app.js', kb('js/app.js'), '| css/fontes.css', kb('css/fontes.css'), fs.existsSync(glb) ? '| modelos/casa.glb.js ' + kb('modelos/casa.glb.js') : '');
+console.log('js/app.js', kb('js/app.js'), '| css/fontes.css', kb('css/fontes.css'), fs.existsSync(glb) ? '| modelos/casa.glb.js ' + kb('modelos/casa.glb.js') : '', comodos ? `| ${comodos} cômodo(s)` : '');
