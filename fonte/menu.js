@@ -3,6 +3,7 @@
 import { PRODUTOS } from './dados.js';
 import { $, $$, estado, comodoPorId, produtosDoComodo, rolagem } from './util.js';
 import { clonar, preencher } from './html.js';
+import { demosDe } from './demo/palco.js';
 
 const gaveta = $('[data-gaveta]');
 const alca = $('[data-acao="menu"]');
@@ -37,6 +38,24 @@ function vista(nome) {
   if (cabecaTodos) cabecaTodos.hidden = nome !== 'todos';
   if (cabecaComodo) cabecaComodo.hidden = nome !== 'comodo';
   corpo.scrollTop = 0;
+  botoesDeAplicacao(nome === 'comodo' ? estado.comodo : null);
+}
+
+// Os botões "Ver aplicação" de cada cartão: um por demonstração do produto
+// (só as do cômodo aberto, se houver um). Produto sem demonstração fica sem botão.
+function botoesDeAplicacao(comodo) {
+  for (const li of itens()) {
+    const caixa = $('[data-aplicacoes]', li);
+    if (!caixa) continue;
+    const demos = demosDe(li.dataset.produto, comodo);
+    caixa.replaceChildren(...demos.flatMap((d) => {
+      const b = clonar('ver-aplicacao');
+      if (!b) return [];
+      b.dataset.demo = d.id;
+      return [preencher(b, { titulo: d.titulo })];
+    }));
+    caixa.hidden = !demos.length;
+  }
 }
 
 // Vista 'todos': título, filtros e os 12 produtos.
