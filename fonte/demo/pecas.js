@@ -63,7 +63,61 @@ export function embalagem(id, altura, { achatar = false } = {}) {
 // Pistola comum de silicone: berço em meia-cana de aço zincado, placa da frente com o encaixe
 // do bico, cabo de empunhadura emborrachado, gatilho de aço e haste com argola atrás.
 //   userData.apertar(k): k de 0 a 1, quanto do produto já saiu (a haste entra; o gatilho pulsa)
-export function pistola(id, { corBico = '#f1f0ea' } = {}) {
+// ---------------------------------------------------------------- pistola do Blender
+// A pistola aplicadora modelada no Blender (ferramentas_cascola.blend -> modelos/ferramentas/pistola.glb,
+// pelo ferramentas/exportar_pistola.py), com o cartucho Banheiro e Cozinha. Mesma pose da pistola
+// feita aqui embaixo: ponta do bico na origem, cartucho para +Y, cabo para +Z.
+// Sem o arquivo, ou para outro produto, fica a pistola feita aqui.
+const ARQUIVO_PISTOLA = 'modelos/ferramentas/pistola.glb';
+const PRODUTO_DA_PISTOLA = 'silicone-banheiro-cozinha';
+let pistolaBlender = null, carregandoPistola = null;
+export function carregarFerramentas(carregar) {
+  carregandoPistola ||= carregar(ARQUIVO_PISTOLA).then((m) => (pistolaBlender = m), (e) => {
+    console.warn('A pistola do Blender não carregou; as demonstrações usam a pistola simples.', e);
+    return null;
+  });
+  return carregandoPistola;
+}
+
+function pistolaDoBlender() {
+  const g = pistolaBlender.clone(true);          // malhas e materiais compartilhados entre as cópias
+  const peca = (nome) => g.getObjectByName(nome);
+  const haste = peca('Pistola_Haste'), embolo = peca('Cartucho_Embolo'), gatilho = peca('Pistola_Gatilho');
+  const corpo = peca('Cartucho_Corpo');
+  const yHaste = haste.position.y, yEmbolo = embolo.position.y;
+  const apertar = gatilho.userData.cascola_apertar_rad ?? -0.314;
+  // a haste empurra o êmbolo para o bico enquanto o cordão sai; o gatilho bombeia
+  g.userData.apertar = (k) => {
+    const curso = 0.06 * k;
+    haste.position.y = yHaste - curso;
+    embolo.position.y = yEmbolo - curso;
+    gatilho.rotation.x = apertar * Math.abs(Math.sin(k * 40));
+  };
+  // O rótulo inteiro à vista: o berço é um meio tubo aberto do lado oposto ao cabo (-Z), e o
+  // rótulo do arquivo olha para +X, na beirada da abertura. O cartucho gira no próprio eixo para o
+  // rótulo ficar no meio da abertura e, dentro dela, virado para a câmera (até 43° para cada lado).
+  // O cartucho é um cilindro: girar no eixo não muda o contorno, só o lado do rótulo que aparece.
+  const ABERTURA = Math.PI / 2, FOLGA = 0.75, local = new THREE.Vector3();
+  corpo.rotation.y = ABERTURA;
+  g.userData.virarRotulo = (camera) => {
+    local.setFromMatrixPosition(camera.matrixWorld);
+    corpo.parent.worldToLocal(local);
+    const para = Math.atan2(-local.z, local.x);                      // ângulo que leva +X até a câmera
+    const d = THREE.MathUtils.euclideanModulo(para - ABERTURA + Math.PI, Math.PI * 2) - Math.PI;
+    corpo.rotation.y = ABERTURA + THREE.MathUtils.clamp(d, -FOLGA, FOLGA);
+  };
+  g.userData.doBlender = true;
+  g.traverse((o) => { o.userData.compartilhado = true; });
+  return g;
+}
+
+export function pistola(id, opcoes = {}) {
+  if (pistolaBlender && id === PRODUTO_DA_PISTOLA) return pistolaDoBlender();
+  return pistolaSimples(id, opcoes);
+}
+
+// Pistola feita em código (a de antes do modelo do Blender).
+export function pistolaSimples(id, { corBico = '#f1f0ea' } = {}) {
   const g = new THREE.Group();
   const zinco = mat('#c4c7cb', 0.34, 0.85), borracha = mat('#1c1e22', 0.72, 0.05);
   // bico do cartucho (plástico branco leitoso) e a rosca dele

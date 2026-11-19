@@ -1,7 +1,9 @@
 // Prepara o Casa.glb exportado do Blender para a web:
 //   node ferramentas/otimizar-modelo.mjs caminho/para/Casa.glb [tamanho-maximo-das-texturas]
 //   (padrão 2048 px; se quiser pode usar 1024 para um arquivo menor)
-// 2) comprime texturas (WebP) e geometria (meshopt).
+// 1) tira os carros e o vazio A23D;
+// 2) comprime texturas (WebP) e geometria (meshopt);
+// 3) diminui os mapas de relevo e de rugosidade (ferramentas/aliviar-texturas.mjs).
 import { NodeIO } from '@gltf-transform/core';
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import { prune } from '@gltf-transform/functions';
@@ -32,5 +34,7 @@ const tmp2 = path.join(os.tmpdir(), 'casa_otimizada.glb');
 // geometria e tamanho das texturas; a compressão WebP vem depois, com qualidade alta (92)
 execFileSync(process.execPath, [cli, 'optimize', tmp, tmp2, '--compress', 'meshopt', '--texture-compress', 'false', '--texture-size', TEXTURA, '--join-named', 'false'], { stdio: 'inherit' });
 execFileSync(process.execPath, [cli, 'webp', tmp2, saida, '--quality', '92', '--effort', '80'], { stdio: 'inherit' });
+// relevo e rugosidade com metade do tamanho: metade da memória de vídeo, sem diferença vista de longe
+execFileSync(process.execPath, [path.join(raiz, 'ferramentas/aliviar-texturas.mjs'), saida], { stdio: 'inherit' });
 fs.rmSync(tmp); fs.rmSync(tmp2);
 console.log('Pronto:', saida, (fs.statSync(saida).size / 1e6).toFixed(1), 'MB');

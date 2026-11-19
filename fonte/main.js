@@ -23,6 +23,17 @@ import { iniciarInterior, temInterior, entrar, sair } from './interior.js';
 import { iniciarDemos, abrirDemo, fecharDemo, demoAberta, tocarOuPausar, irParaEtapa } from './demo/palco.js';
 import { DEMOS } from './demo/demos.js';
 
+// ?tela=celular|tablet|notebook|tv no endereço: usa o CSS daquela tela, seja qual for o tamanho
+// (na TV da feira, que às vezes informa uma largura menor do que tem)
+{
+  const tela = new URLSearchParams(location.search).get('tela');
+  const links = [...document.querySelectorAll('link[data-tela]')];
+  if (tela && links.some((l) => l.dataset.tela === tela)) {
+    for (const l of links) l.media = l.dataset.tela === tela ? 'all' : 'not all';
+    document.documentElement.dataset.tela = tela;
+  }
+}
+
 const palco = $('[data-palco]');
 const botaoVoltar = $('[data-acao="voltar"]');
 let cena = null;        // comandos da cena 3D (null se o navegador não abrir o 3D)

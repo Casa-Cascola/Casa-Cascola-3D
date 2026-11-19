@@ -29,7 +29,7 @@ for (const arquivo of fs.readdirSync(pasta).filter((f) => f.endsWith('.glb')).so
   const doc = await io.read(path.join(pasta, arquivo));
   await doc.transform(
     dedup(),
-    prune({ keepLeaves: true, keepAttributes: false }),
+    prune({ keepLeaves: true, keepAttributes: true }),   // mantém a segunda UV (TEXCOORD_1): o lightmap usa, mas ela não é textura do glTF
     weld(),
     // Na placa de vídeo cada textura ocupa largura x altura x 4 bytes (mais 1/3 das reduções), seja
     // qual for o tamanho do arquivo: uma de 1024 px ocupa 5,6 MB. Por isso:

@@ -6,10 +6,11 @@
 import * as THREE from 'three';
 import { $, $$, estado, produtoPorId } from '../util.js';
 import { preencher } from '../html.js';
-import { entrar, objetoDoComodo, vistaDe, luzDeTrabalho } from '../interior.js';
+import { entrar, objetoDoComodo, vistaDe, luzDeTrabalho, sombraNasAssadas } from '../interior.js';
 import { Roteiro, mistura } from './motor.js';
 import { MATERIA, criarMateria } from './materia.js';
-import { carregarRotulos } from './pecas.js';
+import { carregarRotulos, carregarFerramentas } from './pecas.js';
+import { carregarGlb } from '../modelo.js';
 import { DEMOS } from './demos.js';
 import { COMODOS3D } from './comodos.js';
 
@@ -68,7 +69,7 @@ export async function abrirDemo(id, { t = 0, pausado = false, direto = false } =
   cena.voar({ ...def.tomadas.geral, exato: true }, 1.4);
 
   try {
-    const [comodo] = await Promise.all([objetoDoComodo(def.comodo), carregarRotulos()]);
+    const [comodo] = await Promise.all([objetoDoComodo(def.comodo), carregarRotulos(), carregarFerramentas((url) => carregarGlb(url, tres.renderer))]);
     if (atual !== eu) return;           // fecharam ou trocaram enquanto carregava
     montar(eu, comodo.grupo);
     montarDiferenciais(eu, produto.diferenciais || []);
@@ -124,6 +125,9 @@ function montar(eu, grupo) {
   foco.shadow.autoUpdate = false;
   foco.shadow.needsUpdate = true;
   eu.desfazer.push(() => { foco.intensity = 0; foco.shadow.autoUpdate = false; });
+  // as paredes e o piso assados recebem a sombra das ferramentas só enquanto a demonstração está aberta
+  sombraNasAssadas(true);
+  eu.desfazer.push(() => sombraNasAssadas(false));
 
   const achar = (nome) => grupo.getObjectByName(nome) || scene.getObjectByName(nome);
   const guardar = (o) => {
@@ -153,6 +157,9 @@ function montar(eu, grupo) {
   };
   scene.updateMatrixWorld(true);
   def.montar(ctx);
+  // peças com rótulo que acompanha a câmera (o cartucho da pistola do Blender)
+  eu.rotulos = [];
+  raiz.traverse((o) => { if (o.userData.virarRotulo) eu.rotulos.push(o); });
   eu.r = ctx.r.fecha();
 }
 
@@ -163,7 +170,7 @@ export function fecharDemo(trocando = false) {
   for (const fn of eu.desfazer.reverse()) fn();
   if (eu.raiz) {
     eu.raiz.traverse((o) => {
-      if (!o.isMesh) return;
+      if (!o.isMesh || o.userData.compartilhado) return;   // a pistola do Blender reaproveita as malhas
       o.geometry?.dispose();
       for (const m of [].concat(o.material)) m?.dispose?.();
     });
@@ -200,6 +207,7 @@ function devolverCamera() {
 // ---------------------------------------------------------------- tocar
 function quadro(agora) {
   if (!atual?.pronto) return;
+  for (const o of atual.rotulos || []) o.userData.virarRotulo(tres.camera);   // rótulo para a câmera
   const dt = ultimoQuadro ? Math.min(0.1, (agora - ultimoQuadro) / 1000) : 0;
   ultimoQuadro = agora;
   if (!atual.tocando) return;
@@ -253,6 +261,7 @@ export function ir(t, pulo = false) {
     elDiferenciais.scrollTo({ left: primeiroNovo.offsetLeft - elDiferenciais.offsetLeft - 8, behavior: pulo ? 'auto' : 'smooth' });
   }
   if (elTempo && document.activeElement !== elTempo) elTempo.value = String(Math.round((eu.t / r.dur) * 1000));
+  elTempo?.style.setProperty('--feito', (eu.t / r.dur * 100).toFixed(2) + '%');   // parte já vista da linha do tempo
   const fim = eu.t >= r.dur - 0.01;
   if (elTocar) { elTocar.dataset.estado = fim ? 'fim' : eu.tocando ? 'tocando' : 'pausado'; elTocar.setAttribute('aria-label', fim ? 'Repetir' : eu.tocando ? 'Pausar' : 'Continuar'); }
 }

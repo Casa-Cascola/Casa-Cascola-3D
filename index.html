@@ -6,13 +6,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Casa Cascola</title>
   <link rel="shortcut icon" href="Img/image.png" type="image/x-icon">
+  <!-- Estilo comum a todas as telas (cores, fonte e peças do guia da marca) -->
+  <link rel="stylesheet" href="css/fontes.css">
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/demo.css">
+  <!-- Um arquivo por tipo de tela: o navegador carrega o que combina com o tamanho da tela.
+       Para forçar um deles (na TV da feira, por exemplo): index.html?tela=tv -->
+  <link rel="stylesheet" href="css/celular.css" data-tela="celular" media="(max-width: 599px), (orientation: landscape) and (max-height: 499px)">
+  <link rel="stylesheet" href="css/tablet.css" data-tela="tablet" media="(min-width: 600px) and (max-width: 1199px) and (min-height: 500px)">
+  <link rel="stylesheet" href="css/notebook.css" data-tela="notebook" media="(min-width: 1200px) and (max-width: 1919px) and (min-height: 500px)">
+  <link rel="stylesheet" href="css/tv.css" data-tela="tv" media="(min-width: 1920px) and (min-height: 500px)">
 </head>
 
 <body>
   <header>
-    <a class="header_logo" href="#Home"><img src="Img/image.png" alt=" Cascola" width="100px" height="auto"></a>
+    <!-- logo oficial, recortado do guia da marca (sempre em fundo azul, com a iluminação) -->
+    <a class="header_logo" href="#Home"><img src="Img/logo-cascola.webp" alt="Cascola" width="293" height="220"></a>
     <nav></nav>
   </header>
 
@@ -50,7 +59,7 @@
       </div>
 
       <div class="abertura" data-abertura>
-        <h1>Orgulho de fazer bem&nbsp;feito.</h1>
+        <h1>Orgulho de <span>fazer bem&nbsp;feito.</span></h1>
 
         <div class="abertura__acoes">
           <button class="botao botao--laranja" type="button" data-acao="ver-casa">Ver a casa 3D</button>

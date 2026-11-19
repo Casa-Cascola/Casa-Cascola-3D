@@ -7,6 +7,8 @@ import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.j
 import { $ } from './util.js';
 
 const MODELO_CASA = 'modelos/casa.glb';
+const MODELO_CARRO = 'modelos/carro.glb'; // exporte o carro do Blender com este nome
+
 const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
 loader.setDRACOLoader(new DRACOLoader().setDecoderPath('js/draco/'));
 

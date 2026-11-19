@@ -144,13 +144,21 @@ export function iniciarCena(canvas, { aoProgresso }) {
 
   // ---- deslocamento da imagem: a casa sai de trás do título e do menu aberto
   const desloc = { x: 0, y: 0 };
+  const gaveta = document.querySelector('[data-gaveta]');
   function deslocamentoDesejado() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     const largo = w / h > 1.15 && w > 900;
     if (estado.modo === 'abertura') return largo ? { x: -0.16, y: 0.02 } : { x: 0, y: -0.07 };
     // na demonstração, a imagem sai de trás do painel (à esquerda na tela larga, embaixo no celular)
     if (estado.modo === 'demo') return largo ? { x: -Math.min(0.24, 250 / w), y: 0.02 } : { x: 0, y: 0.16 };
-    if (largo) return estado.menuAberto ? { x: 0.15, y: 0 } : { x: 0, y: 0.02 };
+    // menu aberto: a casa sai de trás dele, pelo tamanho que ele tem nesta tela (cada arquivo de
+    // css/ põe o menu num lugar: do lado, ou embaixo no celular em pé)
+    if (estado.menuAberto && gaveta) {
+      const r = gaveta.getBoundingClientRect();
+      if (r.width < w * 0.8) return { x: Math.min(0.3, r.width / w / 2), y: 0 };       // de lado
+      if (r.height < h * 0.95) return { x: 0, y: Math.min(0.32, r.height / h / 2) };    // embaixo
+    }
+    if (largo) return { x: 0, y: 0.02 };
     // dentro de um cômodo a câmera já está perto: a imagem fica no meio
     return { x: 0, y: estado.dentro ? 0 : 0.06 };
   }

@@ -1,6 +1,4 @@
 // Silicone Banheiro e Cozinha: vedação entre o perfil de alumínio do box e a parede.
-// É a junta da foto de aplicação da Cascola (Img/aplicacao): perfil do vidro fixo encostado na parede.
-// Começa com a junta limpa, sem silicone: a etapa "Por que usar" mostra onde o cordão vai e explica
 // por que vedar e os diferenciais do produto. A aplicação segue a ficha técnica: limpar com álcool
 // doméstico, fita crepe opcional (tirar antes da película), cordão contínuo com o bico em 45°, alisar
 // com água e detergente neutro. (A versão com o silicone velho e mofado está em demos/com-problema/.)
@@ -79,22 +77,31 @@ export default {
     // pano: encostado no canto, pela bissetriz
     const caminhoPano = new Caminho([[XJ - 0.029, 5.05, ZJ + 0.029], [XJ - 0.029, 3.21, ZJ + 0.029]], { normal: [0, 0, 1] });
     seguirCaminho(r, 'pano', trapo, caminhoPano, { fixo: { eixo: BIS, lado: [0, 1, 0] }, repouso: { recua: 0.25 }, saida: { recua: 0.25 } });
-    // pistola: o ângulo com a vertical muda na descida (deitada no alto, em pé embaixo); o cabo fica para o lado do banheiro
-    const anguloPistola = (sf) => {
-      const y = mistura(Y1F, Y0F, sf);
-      if (y > 4.95) return mistura(1.25, 0.8, limita((Y1F - y) / 0.134));
-      if (y > 4.15) return 0.8;
-      return mistura(0.8, 0.52, limita((4.15 - y) / 0.3));
+    // pistola: inclinada 39° da vertical, na bissetriz do canto. O canto é apertado (parede atrás, vidro
+    // de um lado, gabinete do outro), então ela gira um pouco no próprio eixo na descida (de 125° no alto
+    // a 160° perto do piso), com o cabo para o lado da parede e a abertura do berço, onde aparece o
+    // rótulo, virada para a câmera. (Ângulos achados por busca, contra a parede, o vidro, o gabinete,
+    // a bancada, o piso e o forro; depois conferidos na varredura de colisão.)
+    // perto do trilho de cima ela começa quase deitada (83°) e chega a 39° em 13 cm de descida
+    const U1 = new THREE.Vector3(Math.SQRT1_2, 0, Math.SQRT1_2);
+    const posePistola = (sf) => {
+      const y = mistura(Y1F, Y0F, sf), alto = limita((y - 4.95) / 0.134);
+      const a = 0.68 + (1.45 - 0.68) * alto * alto;
+const g = THREE.MathUtils.degToRad(
+  125 + 180 + 20 * alto + 35 * limita((4.3 - y) / 1.1)
+);
+      const eixo = new THREE.Vector3(BIS[0] * Math.sin(a), Math.cos(a), BIS[2] * Math.sin(a));
+      const u2 = eixo.clone().cross(U1).normalize();
+      return { eixo: eixo.toArray(), lado: U1.clone().multiplyScalar(Math.cos(g)).addScaledVector(u2, Math.sin(g)).toArray() };
     };
-    seguirCaminho(r, 'pistola', arma, caminhoFerramenta, {
-      afasta: 0.004, repouso: { recua: 0.24 }, saida: { recua: 0.3 },
-      fixo: (sf) => { const a = anguloPistola(sf); return { eixo: [BIS[0] * Math.sin(a), Math.cos(a), BIS[2] * Math.sin(a)], lado: [0.3, 0.1, 1] }; },
-    });
+    // sai subindo e vindo para o banheiro (recuar pelo eixo, embaixo, entraria no gabinete)
+    seguirCaminho(r, 'pistola', arma, caminhoFerramenta, { afasta: 0.006, repouso: { recua: 0.24 }, saida: { desloca: [0.03, 0.32, 0.3] }, fixo: posePistola });
     for (const n of ['pano', 'pistola', 'alisa']) r.inicio(n + '.vis', 0);
     for (const [k, v] of Object.entries({ cura: 0, fitaA: 0, fitaB: 0, tiraA: 0, tiraB: 0, rolo: 0, faixa: 0, 'faixa.frente': 0 })) r.inicio(k, v);
 
     const chegar = (nome) => r.mostra(nome).vai(nome + '.livre', 0, 1.1);
-    const terminar = (nome) => r.vai(nome + '.recuo', 0.08, 0.35).vai(nome + '.livre', 1, 0.9).mostra(nome, false).vai(nome + '.recuo', 0, 0.01);
+    // a pistola só desencosta 2 cm (sai pelo 'desloca'); as outras recuam 8 cm pelo próprio eixo
+    const terminar = (nome) => r.vai(nome + '.recuo', nome === 'pistola' ? 0.02 : 0.08, 0.35).vai(nome + '.livre', 1, 0.9).mostra(nome, false).vai(nome + '.recuo', 0, 0.01);
     // a câmera desce junto com a ferramenta (de 'alto' até 'baixo')
     const descer = (nome, dur) => { chegar(nome); r.tomada('alto', 1.0).espera(0.2).tomada('baixo', dur, true).vai(nome + '.s', 1, dur, reto); terminar(nome); };
 

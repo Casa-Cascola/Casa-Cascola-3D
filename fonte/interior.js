@@ -8,6 +8,7 @@ import { $, estado, reduzMovimento } from './util.js';
 import { clonar, preencher } from './html.js';
 import { carregarGlb } from './modelo.js';
 import { COMODOS3D } from './demo/comodos.js';
+import { LUZES_ASSADAS } from './demo/luzes-assadas.js';
 
 const palco = $('[data-palco]');
 const cortina = $('[data-cortina]');
@@ -66,6 +67,7 @@ export function carregarComodo(id) {
       grupo.visible = false;
       ajustarVidros(grupo);
       aliviar(grupo);
+      await assarLuz(grupo, def.arquivo);
       tres.scene.add(grupo);
       // placa escura atrás da porta fechada
       if (def.fundoPorta) {
@@ -123,6 +125,116 @@ function aliviar(grupo) {
       if (m?.clearcoat > 0 && SEM_VERNIZ.test(m.name)) { m.clearcoat = 0; m.needsUpdate = true; }
     }
   });
+}
+
+// ---------------------------------------------------------------- luz assada (lightmap)
+// A luz do cômodo calculada no Blender (Cycles), com os rebatimentos entre as paredes e as sombras
+// macias, gravada numa imagem (ferramentas/assar_banheiro.py). As peças assadas (paredes, piso,
+// louça, móveis) leem essa imagem e não calculam mais a luz do teto, do sol nem do céu: só o
+// reflexo do ambiente (brilho da louça e do azulejo) e, nas demonstrações, a luz de trabalho, que
+// faz a sombra das ferramentas. Vidros, metais, espelho, folhas, cordões e as ferramentas continuam
+// com a luz calculada a cada quadro (a mesma luz do teto, para combinar com o que foi assado).
+// BRILHO_ASSADO acerta a exposição do bake com a do site (1 = a luz do Blender sem mudança).
+const BRILHO_ASSADO = 1;
+// Peças que ficam com a luz calculada mesmo tendo sido assadas: nos tecidos o felpudo é de mapa de
+// normais e a cor fica mais fiel com a luz do site.
+const NAO_ASSAR = /Toalha|Tapete/;
+// ?semassar no endereço: o cômodo fica com a luz calculada a cada quadro (para comparar)
+let luzAssadaLigada = !new URLSearchParams(location.search).has('semassar');
+
+function carregarImagem(url) {
+  const carregador = new THREE.TextureLoader();
+  if (location.protocol !== 'file:') return carregador.loadAsync(url);
+  // aberto direto do disco: a imagem vem em base64 num .js (gerado pelo npm run build)
+  return new Promise((ok, erro) => {
+    const s = document.createElement('script');
+    s.src = url + '.js';
+    s.onload = () => { const dados = window.CASCOLA_IMG?.[url]; if (!dados) erro(new Error('sem ' + url)); else carregador.load(dados, ok, undefined, erro); };
+    s.onerror = () => erro(new Error('sem ' + url + '.js'));
+    document.head.appendChild(s);
+  });
+}
+
+// Posição da luz no vetor de luzes de foco do shader: o three.js põe primeiro as que fazem sombra,
+// na ordem em que aparecem na cena.
+function indiceDaLuz(luz) {
+  const focos = [];
+  tres.scene.traverse((o) => { if (o.isSpotLight) focos.push(o); });
+  const ordem = [...focos.filter((l) => l.castShadow), ...focos.filter((l) => !l.castShadow)];
+  return ordem.indexOf(luz);
+}
+
+// O shader das peças assadas: o mesmo do three.js, sem o sol, o céu (hemisfério), a luz ambiente
+// e a luz difusa do reflexo (tudo isso já está no lightmap), e com a luz do teto zerada.
+function shaderAssado(material, indiceTeto) {
+  material.onBeforeCompile = (sh) => {
+    let ini = THREE.ShaderChunk.lights_fragment_begin
+      .replace('#if ( NUM_POINT_LIGHTS > 0 ) && defined( RE_Direct )', '#if 0')
+      .replace('#if ( NUM_DIR_LIGHTS > 0 ) && defined( RE_Direct )', '#if 0')
+      .replace('#if ( NUM_RECT_AREA_LIGHTS > 0 ) && defined( RE_Direct_RectArea )', '#if 0')
+      .replace('#if ( NUM_HEMI_LIGHTS > 0 )', '#if 0')
+      .replace('vec3 irradiance = getAmbientLightIrradiance( ambientLightColor );', 'vec3 irradiance = vec3( 0.0 );')
+      .replace('getSpotLightInfo( spotLight, geometryPosition, directLight );',
+        'getSpotLightInfo( spotLight, geometryPosition, directLight );\n\t\tif ( UNROLLED_LOOP_INDEX == TETO_ASSADO ) directLight.color = vec3( 0.0 );');
+    // O lightmap tem um pixel a cada 1 a 2 cm: o relevo fino do mapa de normais (rejunte, ripas do
+    // gabinete, poros do mármore) não cabe nele. O relevo volta comparando a luz do teto na normal
+    // com relevo e na normal lisa da peça.
+    const mapas = THREE.ShaderChunk.lights_fragment_maps
+      .replace('iblIrradiance += getIBLIrradiance( geometryNormal );', '')
+      .replace('irradiance += lightMapIrradiance;', `
+		#if defined( USE_NORMALMAP ) && NUM_SPOT_LIGHTS > 0 && TETO_ASSADO >= 0
+			vec3 dirTeto = normalize( spotLights[ TETO_ASSADO ].position - geometryPosition );
+			float comRelevo = max( dot( geometryNormal, dirTeto ), 0.0 ) + 0.25;
+			float semRelevo = max( dot( nonPerturbedNormal, dirTeto ), 0.0 ) + 0.25;
+			lightMapIrradiance *= clamp( comRelevo / semRelevo, 0.5, 1.8 );
+		#endif
+		irradiance += lightMapIrradiance;`);
+    sh.fragmentShader = `#define TETO_ASSADO ${indiceTeto}\n` + sh.fragmentShader
+      .replace('#include <lights_fragment_begin>', ini)
+      .replace('#include <lights_fragment_maps>', mapas);
+  };
+  material.customProgramCacheKey = () => 'assado' + indiceTeto;
+}
+
+async function assarLuz(grupo, nome) {
+  const info = LUZES_ASSADAS[nome];
+  if (!info || !luzAssadaLigada) return false;
+  let mapa;
+  try { mapa = await carregarImagem(info.arquivo); } catch (e) { console.warn('A luz assada não carregou; o cômodo fica com a luz calculada.', e); return false; }
+  mapa.flipY = false;
+  mapa.colorSpace = THREE.SRGBColorSpace;
+  mapa.channel = 1;                                  // a segunda UV (a do lightmap)
+  mapa.anisotropy = 4;
+  const teto = indiceDaLuz(luzes.teto);
+  const assados = new Map();
+  grupo.traverse((o) => {
+    if (!o.isMesh) return;
+    const lista = [].concat(o.material);
+    if (!lista.some((m) => m.userData.cascola_assado)) return;
+    if (!o.geometry.attributes.uv1 || NAO_ASSAR.test(o.name)) {   // fica com a luz calculada
+      const sem = (m) => { if (!m.userData.cascola_assado) return m; const c = m.clone(); c.userData = { ...m.userData, cascola_assado: 0 }; return c; };
+      o.material = Array.isArray(o.material) ? o.material.map(sem) : sem(o.material);
+      return;
+    }
+    for (const m of lista) if (m.userData.cascola_assado) assados.set(m.uuid, m);
+    o.userData.assado = true;
+    o.receiveShadow = false;                       // a sombra da luz de trabalho entra só nas demonstrações
+  });
+  for (const m of assados.values()) {
+    m.lightMap = mapa;
+    m.lightMapIntensity = Math.PI * info.escala * BRILHO_ASSADO;
+    shaderAssado(m, teto);
+    m.needsUpdate = true;
+  }
+  grupo.userData.luzAssada = assados.size;
+  gruposAssados.add(grupo);
+  return true;
+}
+
+// nas demonstrações as peças assadas recebem a sombra das ferramentas (luz de trabalho)
+const gruposAssados = new Set();
+export function sombraNasAssadas(sim) {
+  for (const grupo of gruposAssados) grupo.traverse((o) => { if (o.userData.assado) o.receiveShadow = sim; });
 }
 
 // Os móveis e peças que a câmera não pode atravessar. Paredes, piso e forro ficam de fora:
