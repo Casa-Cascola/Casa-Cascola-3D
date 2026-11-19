@@ -1,21 +1,64 @@
-:root{
-    --LogoAzul:#003d7d;
-    --Logolaranja:#e6691d;
-    --fonte: 'Archivo Variable', 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    --condensada: 'wdth' 68;
+/* =====================================================================================
+   Casa Cascola — estilo comum a todas as telas
+   O que muda de uma tela para outra fica num arquivo só dela (o index.html escolhe pelo
+   tamanho da tela; com ?tela=celular|tablet|notebook|tv no endereço, força um deles):
+     css/celular.css   celular em pé (menu embaixo) e deitado (menu do lado)
+     css/tablet.css    tablet em pé e deitado
+     css/notebook.css  notebook e computador
+     css/tv.css        TV com toque (tudo maior)
+   As animações de aplicação ficam em css/demo.css.
+   ===================================================================================== */
+
+:root {
+  /* cores do guia (as da tela, tiradas do próprio PDF) */
+  --azul: #002e5f;
+  --azul-escuro: #00224a;
+  --azul-medio: #0b4a8f;
+  --laranja: #ed6b06;
+  --laranja-claro: #ff8a2e;
+  --branco: #fff;
+  --nevoa: #eef2f6;
+  --cinza: #d5dae1;
+  --texto: #12243d;
+  --texto-suave: #4a5a70;
+
+
+  /* Tipografia: a do guia é a Brandon Grotesque, que é paga (o guia pede que cada um compre a
+     licença). Se ela estiver instalada no aparelho, ou se os arquivos dela forem colocados em
+     css/fontes.css, ela é usada. Senão, entra a Outfit (gratuita, embutida no site), a mais
+     parecida: geométrica, com o O redondo e as pontas suaves. */
+  --fonte: 'Brandon Grotesque', 'Outfit Variable', 'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* medidas que cada tela ajusta */
+  --topo: 4.5rem;            /* altura do cabeçalho */
+  --margem: clamp(1rem, 4vw, 3rem);
+  --raio: .75rem;            /* cantos arredondados, como as pontas da Brandon */
+  --gaveta: 30rem;           /* largura do menu Produtos */
+  --colunas: 2;              /* cartões por linha no menu */
+  --sombra: 0 1.1rem 3rem -1.2rem rgba(0, 20, 50, .55);
+
+  /* o chevron do guia (›), usado nos títulos e nos botões */
+  --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 20'%3E%3Cpath d='M2.6 2.2 9.6 10l-7 7.8' fill='none' stroke='black' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
-
-*{
-    padding: 0px;
-    margin: 0px;
-    box-sizing: border-box;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-body{
-    font-family: var(--fonte);
-    width: 100vw;
-    height: 100vh;
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--fonte);
+  font-weight: 450;
+  color: var(--texto);
+  background: var(--azul);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1,
@@ -23,9 +66,8 @@ h2,
 h3 {
   margin: 0;
   line-height: 1;
-  font-variation-settings: var(--condensada);
-  font-weight: 850;
-  letter-spacing: -.005em;
+  font-weight: 800;
+  letter-spacing: .005em;
 }
 
 p {
@@ -39,71 +81,128 @@ a {
 button {
   font: inherit;
   color: inherit;
+  -webkit-tap-highlight-color: transparent;
 }
 
 :focus-visible {
-  outline: 3px solid var(--Logolaranja);
+  outline: 3px solid var(--laranja);
   outline-offset: 3px;
   border-radius: 4px;
 }
+
 main>section {
   scroll-margin-top: 2px;
 }
 
-header{
-    padding: 10px 50px;
-    background-color:var(--LogoAzul);
-    height: 5em;
-    display: flex;
-    justify-content: space-between;
+/* título no padrão do guia: chevron laranja + caixa alta */
+.titulo-marca,
+.gaveta__cabeca h2 {
+  display: flex;
+  align-items: baseline;
+  gap: .45em;
+  text-transform: uppercase;
+  color: var(--laranja);
 }
 
-/* Ficha do produto: aparece quando alguém toca em "Mais detalhes" */
+.titulo-marca::before,
+.gaveta__cabeca h2::before {
+  content: '';
+  flex: none;
+  width: .36em;
+  height: .62em;
+  background: currentColor;
+  -webkit-mask: var(--chevron) center / contain no-repeat;
+  mask: var(--chevron) center / contain no-repeat;
+}
+
+/* ---------------------------------------------------------------- cabeçalho
+   A marca é soberana: o logo fica no topo e no centro, sempre em fundo azul, com a área de
+   proteção (1/10 da largura do logo) em volta. A faixa termina numa ponta para baixo,
+   como as faixas azuis do guia. */
+header {
+  position: relative;
+  z-index: 20;
+  height: var(--topo);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--margem);
+  background: var(--azul);
+}
+
+
+.header_logo {
+  display: block;
+  line-height: 0;
+  padding: calc(var(--topo) * .08) 0;
+}
+
+.header_logo img {
+  display: block;
+  width: auto !important;
+  height: calc(var(--topo) * .74);
+}
+
+header nav:empty {
+  display: none;
+}
 
 .largura {
-  width: min(1200px, 100%);
+  width: min(75rem, 100%);
   margin-inline: auto;
-  padding-inline:  clamp(16px, 4vw, 48px);
+  padding-inline: var(--margem);
 }
 
-/* BOTÂO PARA VER CASA 3D */
-
+/* ---------------------------------------------------------------- botões */
 .botao {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 52px;
-  padding: 0 1.6rem;
-  border-radius: 8px;
+  gap: .6rem;
+  min-height: 3.4rem;
+  padding: 0 1.4rem 0 1.7rem;
+  border-radius: var(--raio);
   border: 0;
   cursor: pointer;
   font-weight: 800;
-  font-size: 1.05rem;
-  letter-spacing: .01em;
+  font-size: 1.1rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
   text-decoration: none;
-  font-variation-settings: 'wdth' 90;
-  transition: background-color .2s, color .2s;
+  transition: background-color .2s, transform .2s;
+}
+
+.botao::after {
+  content: '';
+  width: .55rem;
+  height: .95rem;
+  background: currentColor;
+  -webkit-mask: var(--chevron) center / contain no-repeat;
+  mask: var(--chevron) center / contain no-repeat;
 }
 
 .botao--laranja {
-  background: var(--Logolaranja);
-  color:white;
+  background: var(--laranja);
+  color: var(--branco);
+  box-shadow: 0 .8rem 2rem -.8rem rgba(237, 107, 6, .8);
 }
-
 
 .botao--laranja:hover {
-  background: #ff994a;
+  background: var(--laranja-claro);
 }
 
+.botao:active {
+  transform: scale(.98);
+}
 
-/* CASA 3D */
+/* ---------------------------------------------------------------- a casa 3D */
 .palco {
   position: relative;
-  height: calc(100vh - 5em);
-  height: calc(100svh - 5em);
-  min-height: 520px;
+  height: calc(100vh - var(--topo));
+  height: calc(100svh - var(--topo));
+  min-height: 20rem;
   overflow: hidden;
-  background: linear-gradient(#244f86, #b6d3f1 70%);
+  background: radial-gradient(ellipse 90% 70% at 60% 30%, #2a6aad 0, var(--azul) 70%);
   isolation: isolate;
 }
 
@@ -135,35 +234,45 @@ header{
   opacity: 0;
 }
 
+/* véu azul atrás da frase de abertura */
 .palco__veu {
   position: absolute;
   inset: 0;
   pointer-events: none;
   transition: opacity .6s;
   background:
-    linear-gradient(180deg, rgba(10, 33, 72, .45) 0, rgba(10, 33, 72, 0) 16%),
-    radial-gradient(ellipse 62% 88% at 0% 100%, rgba(10, 33, 72, .92) 0, rgba(10, 33, 72, .62) 45%, rgba(10, 33, 72, 0) 100%);
+    linear-gradient(180deg, rgba(0, 46, 95, .5) 0, rgba(0, 46, 95, 0) 18%),
+    radial-gradient(ellipse 64% 90% at 0% 100%, rgba(0, 34, 74, .94) 0, rgba(0, 34, 74, .62) 46%, rgba(0, 34, 74, 0) 100%);
 }
 
 .palco[data-modo="explorar"] .palco__veu {
-  opacity: .35;
+  opacity: .3;
 }
 
+/* abertura: a assinatura do guia, "ORGULHO DE FAZER BEM FEITO", em caixa alta, com
+   "fazer bem feito" em laranja */
 .abertura {
   position: absolute;
-  left: clamp(16px, 4vw, 48px);
-  bottom: clamp(32px, 8vh, 88px);
+  left: var(--margem);
+  bottom: clamp(2rem, 8vh, 5.5rem);
   z-index: 5;
-  width: min(640px, calc(100% - 2 * clamp(16px, 4vw, 48px)));
-  color: white;
+  width: min(62rem, calc(100% - 2 * var(--margem)));
+  color: var(--branco);
   transition: opacity .5s, transform .5s;
 }
 
 .abertura h1 {
-  font-size: clamp(3.2rem, 7.6vw, 6.6rem);
-  line-height: .92;
-  letter-spacing: -.01em;
+  font-size: clamp(3rem, 7vw, 6.4rem);
+  font-weight: 900;
+  line-height: .9;
+  letter-spacing: 0;
+  text-transform: uppercase;
   text-wrap: balance;
+}
+
+.abertura h1 span {
+  display: block;
+  color: var(--laranja);
 }
 
 .abertura p {
@@ -177,23 +286,23 @@ header{
   display: flex;
   flex-wrap: wrap;
   gap: .75rem;
-  margin-top: 1.75rem;
+  margin-top: 1.9rem;
 }
 
 .palco[data-modo="explorar"] .abertura {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(1rem);
   pointer-events: none;
 }
 
-
+/* barra de carregamento da casa */
 .carregando {
   position: absolute;
-  left: clamp(16px, 4vw, 48px);
-  right: clamp(16px, 4vw, 48px);
+  left: var(--margem);
+  right: var(--margem);
   bottom: 0;
   z-index: 6;
-  height: 4px;
+  height: .3rem;
   transition: opacity .5s;
 }
 
@@ -207,7 +316,7 @@ header{
   display: block;
   height: 100%;
   width: 0;
-  background: var(--Logolaranja);
+  background: var(--laranja);
   transition: width .25s;
 }
 
@@ -218,19 +327,19 @@ header{
 .palco__aviso {
   position: absolute;
   left: 50%;
-  top: 16px;
+  top: 1.5rem;
   transform: translateX(-50%);
   z-index: 6;
-  max-width: min(560px, calc(100% - 32px));
-  background: white;
-  color: #0E2B58;
+  max-width: min(35rem, calc(100% - 2rem));
+  background: var(--branco);
+  color: var(--azul);
   padding: .8rem 1.1rem;
-  border-radius: 8px;
-  box-shadow: 0 18px 50px -20px rgba(10, 33, 72, .5);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
   font-size: .95rem;
 }
 
-/* "GOTAS" do COMODO */
+/* ---------------------------------------------------------------- gotas dos cômodos */
 .pinos {
   position: absolute;
   inset: 0;
@@ -258,48 +367,49 @@ header{
 .pino__gota {
   position: relative;
   flex: none;
-  width: 30px;
-  height: 30px;
-  margin-left: -15px;
-  margin-top: -30px;
+  width: 1.9rem;
+  height: 1.9rem;
+  margin-left: -.95rem;
+  margin-top: -1.9rem;
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
-  background: var(--Logolaranja);
-  box-shadow: 0 4px 14px rgba(10, 33, 72, .45);
+  background: var(--laranja);
+  box-shadow: 0 .25rem .9rem rgba(0, 34, 74, .45);
   transition: transform .25s;
 }
 
 .pino__gota::after {
   content: '';
   position: absolute;
-  left: 9px;
-  top: 9px;
-  width: 12px;
-  height: 12px;
+  left: 30%;
+  top: 30%;
+  width: 40%;
+  height: 40%;
   border-radius: 50%;
-  background: white;
+  background: var(--branco);
 }
 
 .pino__gota::before {
   content: '';
   position: absolute;
-  inset: -7px;
+  inset: -.45rem;
   border-radius: inherit;
   border: 2px solid var(--laranja);
   opacity: 0;
 }
 
 .pino__nome {
-  margin-top: -30px;
-  background: #153970;
-  color: white;
-  font-size: .9rem;
-  font-weight: 750;
+  margin-top: -1.9rem;
+  background: var(--azul);
+  color: var(--branco);
+  font-size: .82rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
   white-space: nowrap;
-  font-variation-settings: 'wdth' 90;
-  padding: .3rem .65rem;
-  border-radius: 6px;
-  box-shadow: 0 6px 18px rgba(10, 33, 72, .35);
+  padding: .36rem .7rem .32rem;
+  border-radius: .4rem;
+  box-shadow: 0 .4rem 1.1rem rgba(0, 34, 74, .35);
 }
 
 .pino:hover .pino__gota,
@@ -308,7 +418,7 @@ header{
 }
 
 .pino.is-ativo .pino__nome {
-  background: var(--Logolaranja);
+  background: var(--laranja);
 }
 
 .pino.is-ativo .pino__gota::before {
@@ -320,14 +430,13 @@ header{
 }
 
 .pino.is-apagado .pino__gota {
-  background: #C8D3DE;
+  background: var(--cinza);
 }
 
 .pino.is-oculto {
   opacity: 0;
   pointer-events: none;
 }
-
 
 @keyframes pulso {
   from {
@@ -348,60 +457,251 @@ header{
   }
 }
 
+/* ---------------------------------------------------------------- botão Voltar */
+.palco__voltar {
+  position: absolute;
+  z-index: 7;
+  left: var(--margem);
+  top: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  min-height: 2.9rem;
+  padding: 0 1.15rem 0 .8rem;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: .95rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  background: var(--azul);
+  color: var(--branco);
+  box-shadow: var(--sombra);
+}
 
-/* ---------- produtos: filtros e cartão ---------- */
+.palco__voltar[hidden] {
+  display: none;
+}
+
+.palco__voltar svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--laranja);
+}
+
+.palco__voltar:hover {
+  background: var(--azul-medio);
+}
+
+/* ---------------------------------------------------------------- menu Produtos
+   Fica do lado direito, sobre a casa. No celular em pé ele sobe de baixo (css/celular.css). */
+.gaveta {
+  position: absolute;
+  z-index: 9;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(var(--gaveta), calc(100vw - 4.5rem));
+  transform: translateX(100%);
+  transition: transform .45s cubic-bezier(.3, .7, .2, 1);
+}
+
+.gaveta[data-aberta="true"] {
+  transform: none;
+  box-shadow: -2rem 0 4rem -2rem rgba(0, 20, 50, .65);
+}
+
+/* a alça: uma aba azul com a casinha laranja */
+.gaveta__alca {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .7rem;
+  width: 3.6rem;
+  padding: 1rem 0 .9rem;
+  border: 0;
+  cursor: pointer;
+  border-radius: var(--raio) 0 0 var(--raio);
+  background: var(--azul);
+  color: var(--branco);
+  box-shadow: -.6rem .8rem 2rem -.8rem rgba(0, 20, 50, .55);
+  transition: background-color .2s;
+}
+
+.gaveta__alca:hover {
+  background: var(--azul-medio);
+}
+
+.gaveta__icone {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--laranja);
+}
+
+.gaveta__rotulo {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.gaveta__seta {
+  width: 1.25rem;
+  height: 1.25rem;
+  transition: transform .3s;
+}
+
+.gaveta[data-aberta="true"] .gaveta__seta {
+  transform: rotate(180deg);
+}
+
+.gaveta__corpo {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--nevoa);
+  visibility: hidden;
+  transition: visibility 0s .45s;
+}
+
+.gaveta[data-aberta="true"] .gaveta__corpo {
+  visibility: visible;
+  transition: none;
+}
+
+/* cabeça do menu: faixa azul com a ponta para baixo, título no padrão do guia */
+.gaveta__cabeca {
+  position: relative;
+  padding: 1.6rem 1.5rem 1.5rem;
+  background: var(--azul);
+  color: var(--branco);
+}
+
+.gaveta__cabeca[hidden] {
+  display: none;
+}
+
+.gaveta__cabeca::after {
+  content: '';
+  position: absolute;
+  left: 1.5rem;
+  top: calc(100% - 1px);
+  width: 2.4rem;
+  height: .85rem;
+  background: var(--azul);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.gaveta__cabeca h2 {
+  font-size: clamp(1.55rem, 2.4vw, 2rem);
+  font-weight: 800;
+  line-height: 1.02;
+  margin-bottom: 1.1rem;
+}
+
 .filtros {
   display: flex;
   flex-wrap: wrap;
-  gap: .5rem;
+  gap: .45rem;
 }
 
 .filtro {
-  min-height: 44px;
-  padding: 0 1.1rem;
+  min-height: 2.6rem;
+  padding: 0 1rem;
   border-radius: 999px;
   cursor: pointer;
-  border: 2px solid #0E2B58;
+  border: 2px solid rgba(255, 255, 255, .55);
   background: transparent;
-  color: #0E2B58;
-  font-weight: 750;
-  font-size: .95rem;
+  color: var(--branco);
+  font-weight: 700;
+  font-size: .88rem;
+  letter-spacing: .02em;
 }
 
 .filtro[aria-pressed="true"] {
-  background: #0E2B58;
-  color: white;
+  background: var(--laranja);
+  border-color: var(--laranja);
+  color: var(--branco);
 }
 
 .filtro:hover:not([aria-pressed="true"]) {
-  background: rgba(14, 43, 88, .08);
+  background: rgba(255, 255, 255, .12);
 }
 
+/* vista de um cômodo: voltar a todos, "indicado para" e o nome do cômodo */
+.gaveta__todos {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  min-height: 2.5rem;
+  padding: 0 1rem 0 .6rem;
+  margin-bottom: 1.1rem;
+  cursor: pointer;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, .55);
+  background: transparent;
+  color: var(--branco);
+  font-weight: 700;
+  font-size: .88rem;
+}
+
+.gaveta__todos svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--laranja);
+}
+
+.gaveta__todos:hover {
+  background: rgba(255, 255, 255, .12);
+}
+
+.gaveta__sobre {
+  font-weight: 800;
+  font-size: .85rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: .35rem;
+}
+
+.gaveta[data-vista="comodo"] .gaveta__cabeca h2 {
+  font-size: clamp(2.1rem, 3.6vw, 2.8rem);
+  margin-bottom: 0;
+}
+
+/* ---------------------------------------------------------------- cartão do produto
+   A vitrine tem o formato da casa do logo (o telhado com o ângulo do guia), com o telhado e
+   a base em laranja. */
 .vitrine {
   list-style: none;
-  margin: 1.75rem 0 0;
-  padding: 0;
+  margin: 0;
+  padding: 2.2rem 1.5rem 2.5rem;
   display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 2.25rem;
+  grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
+  gap: 2rem 1.4rem;
 }
 
 .item {
   display: flex;
   flex-direction: column;
-  scroll-margin-top: calc(64px + 16px);
+  scroll-margin-top: 1rem;
 }
 
 .item[hidden] {
   display: none;
 }
 
-/* a vitrine tem o formato da casa do logo */
 .item__casa {
   position: relative;
   aspect-ratio: 1 / .9;
   overflow: hidden;
-  background: white;
+  background: var(--branco);
   clip-path: polygon(50% 0, 100% 26%, 100% 100%, 0 100%, 0 26%);
 }
 
@@ -409,8 +709,8 @@ header{
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--Logolaranja);
-  clip-path: polygon(50% 0, 100% 26%, 100% calc(26% + 10px), 50% 10px, 0 calc(26% + 10px), 0 26%);
+  background: var(--laranja);
+  clip-path: polygon(50% 0, 100% 26%, 100% calc(26% + .6rem), 50% .6rem, 0 calc(26% + .6rem), 0 26%);
 }
 
 .item__casa::after {
@@ -419,8 +719,8 @@ header{
   left: 0;
   right: 0;
   bottom: 0;
-  height: 8px;
-  background: var(--Logolaranja);
+  height: .5rem;
+  background: var(--laranja);
 }
 
 .item__embalagem {
@@ -432,7 +732,7 @@ header{
   width: auto;
   max-width: 72%;
   object-fit: contain;
-  filter: drop-shadow(0 14px 14px rgba(10, 33, 72, .22));
+  filter: drop-shadow(0 .9rem .9rem rgba(0, 34, 74, .22));
 }
 
 .item__aplicacao {
@@ -441,28 +741,30 @@ header{
   bottom: 9%;
   width: 30%;
   border-radius: 50%;
-  border: 4px solid white;
-  box-shadow: 0 10px 22px -8px rgba(10, 33, 72, .5);
+  border: .25rem solid var(--branco);
+  box-shadow: 0 .6rem 1.4rem -.5rem rgba(0, 34, 74, .5);
 }
 
 .item__nome {
-  margin-top: 1.25rem;
-  font-size: 1.65rem;
+  margin-top: 1.1rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.02;
   text-transform: uppercase;
-  letter-spacing: .005em;
+  color: var(--azul);
 }
 
 .item__chamada {
   margin-top: .5rem;
   font-weight: 600;
-  color: var(--Logolaranja);
+  color: var(--laranja);
   font-size: 1.05rem;
   line-height: 1.35;
 }
 
 .item__dif {
   list-style: none;
-  margin: .9rem 0 0;
+  margin: .75rem 0 0;
   padding: 0;
   display: grid;
   gap: .3rem;
@@ -470,40 +772,42 @@ header{
 
 .item__dif li {
   position: relative;
-  padding-left: 1.5rem;
-  line-height: 1.4;
+  padding-left: 1.45rem;
+  font-size: .95rem;
+  font-weight: 500;
+  line-height: 1.32;
 }
 
+/* o "certo" laranja das peças do guia (✓ 100% SILICONE) */
 .item__dif li::before {
   content: '';
   position: absolute;
   left: 0;
-  top: .28em;
-  width: 14px;
-  height: 14px;
+  top: .2em;
+  width: .95rem;
+  height: .95rem;
   border-radius: 50%;
-  background: var(--Logolaranja) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3.5 7.2l2.2 2.2 4.8-4.8' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+  background: var(--laranja) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M3.5 7.2l2.2 2.2 4.8-4.8' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
 }
 
 .item__onde {
   align-self: flex-start;
   margin-top: 1rem;
-  min-height: 40px;
+  min-height: 2.5rem;
   padding: 0 1rem;
   cursor: pointer;
   border-radius: 999px;
   border: 0;
-  background: #003d7d;
-  color: white;
+  background: var(--azul);
+  color: var(--branco);
   font-weight: 700;
-  font-size: .92rem;
+  font-size: .9rem;
 }
 
 .item__onde:hover {
-  background: var(--Logolaranja);
+  background: var(--laranja);
 }
 
-/* botões do cartão: "Mais detalhes" e "Na casa" */
 .item__acoes {
   display: flex;
   flex-wrap: wrap;
@@ -519,24 +823,24 @@ header{
   display: inline-flex;
   align-items: center;
   gap: .35rem;
-  min-height: 40px;
+  min-height: 2.5rem;
   padding: 0 .8rem 0 1rem;
   cursor: pointer;
   border-radius: 999px;
   border: 0;
-  background: var(--Logolaranja);
-  color: white;
+  background: var(--laranja);
+  color: var(--branco);
   font-weight: 750;
-  font-size: .92rem;
+  font-size: .9rem;
 }
 
 .item__mais svg {
-  width: 18px;
-  height: 18px;
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 .item__mais:hover {
-  background: #ff994a;
+  background: var(--laranja-claro);
 }
 
 /* frase do problema: só aparece quando o menu mostra um cômodo */
@@ -544,151 +848,15 @@ header{
   display: none;
 }
 
-
-/* ---------- menu lateral de produtos (sobre a casa) ----------
-   Mostra todos os produtos ou, quando um cômodo é escolhido, só os dele. */
-.gaveta {
-  position: absolute;
-  z-index: 9;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: min(490px, calc(100vw - 5em));
-  transform: translateX(100%);
-  transition: transform .45s cubic-bezier(.3, .7, .2, 1);
-}
-
-.gaveta[data-aberta="true"] {
-  transform: none;
-  box-shadow: -30px 0 60px -30px rgba(10, 33, 72, .6);
-}
-
-
-.gaveta__alca {
-  position: absolute;
-  right: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: .7rem;
-  width: 58px;
-  padding: 1rem 0 .9rem;
-  border: 0;
-  cursor: pointer;
-  border-radius: 14px 0 0 14px;
-  background: #003d7d;
-  color: white;
-  box-shadow: -10px 12px 30px -12px rgba(10, 33, 72, .55);
-  transition: background-color .2s;
-}
-
-.gaveta__alca:hover {
-  background: #163a72;
-}
-
-.gaveta__icone {
-  width: 28px;
-  height: 28px;
-  color: var(--Logolaranja);
-}
-
-.gaveta__rotulo {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  font-weight: 800;
-  font-size: 1.05rem;
-  letter-spacing: .03em;
-  font-variation-settings: 'wdth' 90;
-}
-
-.gaveta__seta {
-  width: 20px;
-  height: 20px;
-  transition: transform .3s;
-}
-
-.gaveta[data-aberta="true"] .gaveta__seta {
-  transform: rotate(180deg);
-}
-
-/* CORPO DO MENU - PRODUTOS */
-.gaveta__corpo {
-  height: 100%;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  background: white;
-  padding: 1.75rem 1.5rem 2.5rem;
-  visibility: hidden;
-  transition: visibility 0s .45s;
-}
-
-.gaveta[data-aberta="true"] .gaveta__corpo {
-  visibility: visible;
-  transition: none;
-}
-
-.gaveta__cabeca h2 {
-  font-size: clamp(1.9rem, 3vw, 2.4rem);
-  color: #003d7d;
-  margin-bottom: 1.1rem;
-}
-
-.gaveta .filtro {
-  min-height: 40px;
-  padding: 0 .95rem;
-  font-size: .9rem;
-}
-
-/* vista de um cômodo: botão para voltar a todos, nome do cômodo e a frase do problema em cada produto */
-.gaveta__todos {
-  display: inline-flex;
-  align-items: center;
-  gap: .25rem;
-  min-height: 40px;
-  padding: 0 1rem 0 .6rem;
-  margin-bottom: 1.25rem;
-  cursor: pointer;
-  border-radius: 999px;
-  border: 2px solid #003d7d;
-  background: transparent;
-  color: var(--marinho);
-  font-weight: 750;
-  font-size: .9rem;
-}
-
-.gaveta__todos svg {
-  width: 18px;
-  height: 18px;
-}
-
-.gaveta__todos:hover {
-  background: rgba(14, 43, 88, .08);
-}
-
-.gaveta__sobre {
-  font-weight: 800;
-  color: var(--Logolaranja);
-  font-size: 1rem;
-  letter-spacing: .01em;
-  margin-bottom: .35rem;
-}
-
-.gaveta[data-vista="comodo"] .gaveta__cabeca h2 {
-  font-size: clamp(2.4rem, 4vw, 3rem);
-  margin-bottom: 0;
-}
-
 .gaveta[data-vista="comodo"] .item__problema {
   display: block;
   margin-bottom: .9rem;
   padding-left: .8rem;
-  border-left: 4px solid var(--Logolaranja);
-  font-weight: 750;
-  font-size: 1.05rem;
+  border-left: .25rem solid var(--laranja);
+  font-weight: 700;
+  font-size: 1.02rem;
   line-height: 1.3;
-  color: var(--marinho);
+  color: var(--azul);
 }
 
 .gaveta[data-vista="comodo"] .item__onde {
@@ -703,7 +871,7 @@ header{
 
   0%,
   40% {
-    box-shadow: 0 0 0 6px var(--laranja);
+    box-shadow: 0 0 0 .4rem var(--laranja);
   }
 
   100% {
@@ -711,47 +879,10 @@ header{
   }
 }
 
-
-/* botão de voltar para a abertura */
-.palco__voltar {
-  position: absolute;
-  z-index: 7;
-  left: clamp(16px, 4vw, 48px);
-  top: 16px;
-  display: inline-flex;
-  align-items: center;
-  gap: .35rem;
-  min-height: 46px;
-  padding: 0 1.1rem 0 .8rem;
-  border: 0;
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: 750;
-  font-size: 1rem;
-  background: #003d7d;
-  color: white;
-  box-shadow:  0 18px 50px -20px rgba(10, 33, 72, .5);
-}
-
-.palco__voltar[hidden] {
-  display: none;
-}
-
-.palco__voltar svg {
-  width: 20px;
-  height: 20px;
-}
-
-.palco__voltar:hover {
-  background: #163a72;
-}
-
-
-
-/* ---------- ficha do produto (abaixo da casa) ---------- */
+/* ---------------------------------------------------------------- ficha do produto */
 .ficha {
   background: var(--nevoa);
-  padding: clamp(40px, 6vw, 80px) 0 clamp(48px, 7vw, 96px);
+  padding: clamp(2.5rem, 6vw, 5rem) 0 clamp(3rem, 7vw, 6rem);
 }
 
 .ficha[hidden] {
@@ -765,51 +896,52 @@ header{
   justify-content: space-between;
   gap: .75rem 1.5rem;
   padding-bottom: 1.1rem;
-  border-bottom: 4px solid var(--marinho);
+  border-bottom: .25rem solid var(--azul);
 }
 
 .ficha__sobre {
   font-weight: 800;
   color: var(--laranja);
-  font-size: 1.15rem;
-  letter-spacing: .01em;
+  font-size: 1.05rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
 }
 
 .ficha__voltar {
   display: inline-flex;
   align-items: center;
   gap: .4rem;
-  min-height: 46px;
+  min-height: 2.9rem;
   padding: 0 1.2rem 0 .9rem;
   cursor: pointer;
   border: 0;
   border-radius: 999px;
-  background: var(--marinho);
+  background: var(--azul);
   color: var(--branco);
   font-weight: 750;
   font-size: 1rem;
 }
 
 .ficha__voltar svg {
-  width: 20px;
-  height: 20px;
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .ficha__voltar:hover {
-  background: #163a72;
+  background: var(--azul-medio);
 }
 
 .ficha__grade {
   display: grid;
   grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
-  gap: clamp(32px, 5vw, 80px);
+  gap: clamp(2rem, 5vw, 5rem);
   align-items: start;
-  margin-top: clamp(28px, 4vw, 52px);
+  margin-top: clamp(1.75rem, 4vw, 3.25rem);
 }
 
 .ficha__vitrine {
   position: sticky;
-  top: calc(var(--topo-h) + 24px);
+  top: 1.5rem;
   display: flex;
   flex-direction: column;
 }
@@ -822,11 +954,15 @@ header{
   font-weight: 750;
   color: var(--texto-suave);
   font-size: 1rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
 }
 
 .ficha__texto h2 {
   margin-top: .4rem;
-  font-size: clamp(2.5rem, 5vw, 4.2rem);
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 900;
+  color: var(--azul);
   text-transform: uppercase;
   text-wrap: balance;
   outline: none;
@@ -834,17 +970,18 @@ header{
 
 .ficha__resumo {
   margin-top: 1.1rem;
-  font-size: 1.18rem;
+  font-size: 1.15rem;
   line-height: 1.55;
   max-width: 38em;
 }
 
 .ficha__texto h3 {
   margin: 2.5rem 0 1rem;
-  font-size: 1.7rem;
+  font-size: 1.45rem;
+  color: var(--laranja);
+  text-transform: uppercase;
 }
 
-/* números de destaque */
 .ficha__numeros {
   margin: 2rem 0 0;
   display: grid;
@@ -857,7 +994,7 @@ header{
 }
 
 .ficha__numeros[data-n="1"] {
-  grid-template-columns: minmax(0, 260px);
+  grid-template-columns: minmax(0, 16rem);
 }
 
 .ficha__numeros div {
@@ -867,22 +1004,21 @@ header{
   gap: .5rem;
   padding: 1.1rem 1.1rem 1.2rem;
   background: var(--branco);
-  border-top: 6px solid var(--laranja);
-  border-radius: 0 0 12px 12px;
+  border-top: .4rem solid var(--laranja);
+  border-radius: 0 0 var(--raio) var(--raio);
 }
 
 .ficha__numeros dd {
   margin: 0;
-  font-size: clamp(2.2rem, 3.6vw, 3rem);
+  font-size: clamp(2rem, 3.4vw, 2.8rem);
   font-weight: 900;
-  font-variation-settings: 'wdth' 62;
   line-height: .95;
+  color: var(--azul);
   white-space: nowrap;
 }
 
 .ficha__numeros dd span {
   font-size: .45em;
-  font-variation-settings: 'wdth' 80;
   font-weight: 800;
   white-space: nowrap;
 }
@@ -893,7 +1029,6 @@ header{
   color: var(--texto-suave);
 }
 
-/* onde usar */
 .ficha__chips {
   list-style: none;
   margin: 0;
@@ -907,7 +1042,7 @@ header{
   padding: .4rem .9rem;
   border-radius: 999px;
   background: var(--branco);
-  box-shadow: inset 0 0 0 1.5px rgba(14, 43, 88, .18);
+  box-shadow: inset 0 0 0 1.5px rgba(0, 46, 95, .18);
   font-weight: 650;
   font-size: .97rem;
   line-height: 1.3;
@@ -919,7 +1054,6 @@ header{
   color: var(--texto-suave);
 }
 
-/* como aplicar */
 .ficha__passos {
   list-style: none;
   margin: 0;
@@ -945,14 +1079,12 @@ header{
   top: -.08em;
   width: 2.2rem;
   text-align: center;
-  font-size: 2.1rem;
+  font-size: 2rem;
   font-weight: 900;
-  font-variation-settings: 'wdth' 62;
   line-height: 1;
   color: var(--laranja);
 }
 
-/* atenção */
 .ficha__atencao {
   margin: 0;
   padding: 1.1rem 1.3rem 1.15rem 2.5rem;
@@ -960,8 +1092,8 @@ header{
   display: grid;
   gap: .35rem;
   background: var(--branco);
-  border-left: 6px solid var(--marinho);
-  border-radius: 0 12px 12px 0;
+  border-left: .4rem solid var(--azul);
+  border-radius: 0 var(--raio) var(--raio) 0;
   line-height: 1.45;
 }
 
@@ -969,11 +1101,10 @@ header{
   color: var(--laranja);
 }
 
-/* dados técnicos */
 .ficha__dados {
   margin: 0;
   max-width: 46em;
-  border-top: 2px solid var(--marinho);
+  border-top: 2px solid var(--azul);
 }
 
 .ficha__dados div {
@@ -981,7 +1112,7 @@ header{
   grid-template-columns: minmax(8.5em, 13em) minmax(0, 1fr);
   gap: .25rem 1.5rem;
   padding: .7rem 0;
-  border-bottom: 1px solid rgba(14, 43, 88, .15);
+  border-bottom: 1px solid rgba(0, 46, 95, .15);
 }
 
 .ficha__dados dt {
@@ -1002,18 +1133,19 @@ header{
   max-width: 46em;
 }
 
-/* outros produtos */
 .ficha__outros {
-  margin-top: clamp(40px, 6vw, 72px);
+  margin-top: clamp(2.5rem, 6vw, 4.5rem);
 }
 
 .ficha__outros h3 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
+  color: var(--azul);
+  text-transform: uppercase;
 }
 
 .ficha__faixa {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(7.4rem, 1fr));
   gap: .6rem;
   margin-top: 1rem;
 }
@@ -1021,13 +1153,12 @@ header{
 .ficha__mini {
   padding: .8rem .5rem .7rem;
   cursor: pointer;
-  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: .5rem;
   border: 0;
-  border-radius: 12px;
+  border-radius: var(--raio);
   background: var(--branco);
   box-shadow: inset 0 0 0 2px transparent;
   font-size: .82rem;
@@ -1037,14 +1168,14 @@ header{
 }
 
 .ficha__mini img {
-  height: 84px;
+  height: 5.25rem;
   width: auto;
   max-width: 100%;
   object-fit: contain;
 }
 
 .ficha__mini:hover {
-  box-shadow: inset 0 0 0 2px rgba(14, 43, 88, .25);
+  box-shadow: inset 0 0 0 2px rgba(0, 46, 95, .25);
 }
 
 .ficha__mini[aria-current="true"] {

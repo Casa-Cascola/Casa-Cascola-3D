@@ -1,0 +1,21 @@
+/* =====================================================================================
+   NOTEBOOK E COMPUTADOR — carregado pelo index.html quando a tela tem de 1200 a 1919 px de
+   largura (e pelo menos 500 px de altura). Força: index.html?tela=notebook
+   ===================================================================================== */
+
+:root {
+  --topo: 4.75rem;
+  --gaveta: 31rem;
+  --colunas: 2;
+}
+
+/* com mouse, os cartões respondem ao passar por cima */
+@media (hover: hover) {
+  .item__casa {
+    transition: transform .25s;
+  }
+
+  .item:hover .item__casa {
+    transform: translateY(-.25rem);
+  }
+}

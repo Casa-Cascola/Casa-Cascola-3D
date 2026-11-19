@@ -1,0 +1,43 @@
+/* =====================================================================================
+   TABLET — carregado pelo index.html quando a tela tem de 600 a 1199 px de largura e pelo
+   menos 500 px de altura (tablets em pé e deitados). Força: index.html?tela=tablet
+   ===================================================================================== */
+
+:root {
+  --topo: 4.25rem;
+  --gaveta: 27.5rem;
+  --colunas: 2;
+}
+
+.abertura h1 {
+  font-size: clamp(3.4rem, 8.6vw, 5.6rem);
+}
+
+/* em pé o menu ocupa quase a metade da tela: um cartão por linha, deitado */
+@media (orientation: portrait) {
+  :root {
+    --gaveta: 26rem;
+    --colunas: 1;
+  }
+
+  .item {
+    display: grid;
+    grid-template-columns: 42% minmax(0, 1fr);
+    grid-template-areas:
+      "casa nome"
+      "casa dif"
+      "casa acoes";
+    grid-template-rows: auto auto 1fr;
+    column-gap: 1.1rem;
+    align-items: start;
+  }
+
+  .item__casa { grid-area: casa; }
+  .item__nome { grid-area: nome; margin-top: .3rem; }
+  .item__dif { grid-area: dif; }
+  .item__aplicacoes { grid-area: acoes; }
+
+  .abertura {
+    bottom: 3.5rem;
+  }
+}

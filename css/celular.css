@@ -1,0 +1,286 @@
+/* =====================================================================================
+   CELULAR — carregado pelo index.html quando a tela tem até 599 px de largura (em pé)
+   ou até 499 px de altura (deitado). Força: index.html?tela=celular
+   - Em pé: o menu Produtos sobe de baixo, com a alça no meio da borda de baixo.
+   - Deitado: o menu fica do lado direito, como no tablet, mais estreito.
+   ===================================================================================== */
+
+:root {
+  --topo: 3.6rem;
+  --margem: 1rem;
+  --colunas: 1;
+}
+
+html {
+  font-size: 93.75%;          /* 15 px: cabe mais na tela pequena */
+}
+
+.abertura {
+  bottom: 2rem;
+}
+
+.abertura h1 {
+  font-size: clamp(2.5rem, 12vw, 3.6rem);
+}
+
+.abertura__acoes {
+  margin-top: 1.4rem;
+}
+
+.palco__voltar,
+.demo__fechar {
+  top: .9rem;
+  min-height: 2.6rem;
+  font-size: .85rem;
+}
+
+.pino__nome {
+  font-size: .74rem;
+  padding: .3rem .55rem .26rem;
+}
+
+/* cartão deitado: a casinha à esquerda e o texto à direita (o formato de casa continua) */
+.vitrine {
+  padding: 1.6rem 1rem 2rem;
+  gap: 1.5rem;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 38% minmax(0, 1fr);
+  grid-template-areas:
+    "casa nome"
+    "casa dif"
+    "casa acoes";
+  grid-template-rows: auto auto 1fr;
+  column-gap: 1rem;
+  align-items: start;
+}
+
+.item__casa { grid-area: casa; }
+.item__nome { grid-area: nome; margin-top: .2rem; font-size: 1.15rem; }
+.item__dif { grid-area: dif; margin-top: .45rem; }
+.item__dif li { font-size: .88rem; }
+.item__aplicacoes { grid-area: acoes; margin-top: .7rem; }
+.item__aplicar { font-size: .82rem; min-height: 2.5rem; }
+
+.gaveta__cabeca {
+  padding: 1.25rem 1rem 1.2rem;
+}
+
+.gaveta__cabeca::after {
+  left: 1rem;
+}
+
+.gaveta__cabeca h2 {
+  font-size: 1.45rem;
+  margin-bottom: .9rem;
+}
+
+.filtro,
+.gaveta__todos {
+  min-height: 2.35rem;
+  font-size: .82rem;
+  padding: 0 .85rem;
+}
+
+/* os filtros numa linha só, que rola de lado: sobra mais altura para os produtos */
+.filtros {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  margin: 0 -1rem;
+  padding: 0 1rem .1rem;
+  scrollbar-width: none;
+}
+
+.filtros::-webkit-scrollbar {
+  display: none;
+}
+
+.filtro {
+  flex: none;
+}
+
+.gaveta[data-vista="comodo"] .gaveta__cabeca h2 {
+  font-size: 2rem;
+}
+
+/* painel da demonstração: faixa embaixo, de ponta a ponta */
+.demo__painel {
+  left: .5rem;
+  right: .5rem;
+  bottom: .5rem;
+  width: auto;
+  padding: .7rem .9rem .7rem .7rem;
+}
+
+.demo__titulo { font-size: 1.2rem; }
+.demo__legenda { min-height: 3.4em; font-size: .95rem; }
+.demo__como, .demo__fonte { display: none; }
+.demo__cura li span { font-size: .7rem; }
+/* os diferenciais ficam numa linha só, que rola de lado (o painel não cresce) */
+.demo__diferenciais { flex-wrap: nowrap; gap: .25rem; margin-top: .4rem; overflow-x: auto; scrollbar-width: none; }
+.demo__diferenciais::-webkit-scrollbar { display: none; }
+.demo__diferenciais li { flex: none; white-space: nowrap; font-size: .68rem; padding: .25rem .55rem .25rem .48rem; }
+
+/* ---------------------------------------------------------------- em pé: menu embaixo */
+@media (orientation: portrait) {
+  /* a frase e o botão sobem: embaixo fica a alça do menu */
+  .abertura {
+    bottom: 5rem;
+  }
+
+  .gaveta {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: 74%;
+    transform: translateY(100%);
+  }
+
+  /* a sombra em cima do menu é um degradê, não box-shadow: com o box-shadow, alguns navegadores
+     paravam de mostrar a casa atrás do menu quando a imagem subia */
+  .gaveta[data-aberta="true"] {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .gaveta::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 2.5rem;
+    pointer-events: none;
+    background: linear-gradient(0deg, rgba(0, 20, 50, .35), rgba(0, 20, 50, 0));
+    opacity: 0;
+    transition: opacity .45s;
+  }
+
+  .gaveta[data-aberta="true"]::before {
+    opacity: 1;
+  }
+
+  /* a alça vira uma aba deitada, no meio da borda de cima do menu */
+  .gaveta__alca {
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: 100%;
+    transform: translateX(-50%);
+    flex-direction: row;
+    gap: .55rem;
+    width: auto;
+    padding: .6rem 1.1rem .55rem .95rem;
+    border-radius: var(--raio) var(--raio) 0 0;
+    box-shadow: 0 -.6rem 1.6rem -.8rem rgba(0, 20, 50, .6);
+  }
+
+  .gaveta__icone {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+
+  .gaveta__rotulo {
+    writing-mode: horizontal-tb;
+    transform: none;
+    font-size: .95rem;
+  }
+
+  /* seta para cima (abre) e para baixo (fecha) */
+  .gaveta__seta {
+    transform: rotate(90deg);
+  }
+
+  .gaveta[data-aberta="true"] .gaveta__seta {
+    transform: rotate(-90deg);
+  }
+
+  .gaveta__corpo {
+    border-radius: 1.1rem 1.1rem 0 0;
+  }
+
+  .gaveta__cabeca {
+    border-radius: 1.1rem 1.1rem 0 0;
+  }
+
+  /* com o menu fechado, a alça fica longe da barra de gestos do celular */
+  .gaveta:not([data-aberta="true"]) {
+    bottom: env(safe-area-inset-bottom, 0);
+  }
+}
+
+/* ---------------------------------------------------------------- deitado: menu do lado */
+@media (orientation: landscape) {
+  :root {
+    --topo: 2.9rem;
+    --gaveta: 22rem;
+  }
+
+  .gaveta {
+    width: min(var(--gaveta), 58vw);
+  }
+
+  .gaveta__alca {
+    width: 3rem;
+    padding: .75rem 0 .7rem;
+    gap: .5rem;
+  }
+
+  .gaveta__rotulo {
+    font-size: .85rem;
+  }
+
+  .abertura {
+    bottom: 1.2rem;
+  }
+
+  .abertura h1 {
+    font-size: clamp(2rem, 9vh, 2.8rem);
+  }
+
+  /* cabeça do menu mais baixa: a tela deitada tem pouca altura */
+  .gaveta__cabeca {
+    padding: .9rem 1rem .9rem;
+  }
+
+  .gaveta__cabeca h2 {
+    font-size: 1.15rem;
+    margin-bottom: .6rem;
+  }
+
+  .gaveta[data-vista="comodo"] .gaveta__cabeca h2 {
+    font-size: 1.5rem;
+  }
+
+  .filtro,
+  .gaveta__todos {
+    min-height: 2.1rem;
+    font-size: .76rem;
+  }
+
+  .gaveta__todos {
+    margin-bottom: .6rem;
+  }
+
+  .vitrine {
+    padding-top: 1.3rem;
+  }
+
+  .abertura__acoes {
+    margin-top: 1rem;
+  }
+
+  .botao {
+    min-height: 2.9rem;
+  }
+
+  /* deitado o painel da demonstração fica no canto, não na largura toda */
+  .demo__painel {
+    right: auto;
+    width: min(24rem, 55%);
+  }
+}

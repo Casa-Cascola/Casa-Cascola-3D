@@ -1,5 +1,6 @@
-/* Demonstrações de aplicação (painel sobre a casa 3D).
-   Usa as cores do index.css: --LogoAzul e --Logolaranja. */
+/* Demonstrações de aplicação (painel sobre a casa 3D) e gotas de dentro do cômodo.
+   Comum a todas as telas; o que muda por tela fica em css/celular.css, tablet.css etc.
+   Usa as cores do index.css (--azul, --laranja). */
 
 /* botões "Ver aplicação" no cartão do produto (um por demonstração) */
 .item__aplicacoes {
@@ -9,26 +10,42 @@
   gap: .45rem;
   margin-top: 1rem;
 }
-.item__aplicacoes[hidden] { display: none; }
+
+.item__aplicacoes[hidden] {
+  display: none;
+}
+
 .item__aplicar {
   display: inline-flex;
   align-items: center;
-  gap: .35rem;
-  min-height: 42px;
-  padding: .45rem 1.1rem .45rem .7rem;
+  gap: .45rem;
+  min-height: 2.7rem;
+  padding: .45rem 1.1rem .45rem .75rem;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--raio);
   cursor: pointer;
-  background: var(--Logolaranja);
-  color: white;
-  font-weight: 650;
-  font-size: .92rem;
+  background: var(--laranja);
+  color: var(--branco);
+  font-weight: 600;
+  font-size: .9rem;
   line-height: 1.2;
   text-align: left;
+  box-shadow: 0 .6rem 1.4rem -.8rem rgba(237, 107, 6, .9);
 }
-.item__aplicar b { font-weight: 800; }
-.item__aplicar svg { flex: none; width: 20px; height: 20px; }
-.item__aplicar:hover { background: #ff8a3a; }
+
+.item__aplicar b {
+  font-weight: 800;
+}
+
+.item__aplicar svg {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.item__aplicar:hover {
+  background: var(--laranja-claro);
+}
 
 /* cortina: escurece a tela por um instante quando a câmera entra ou sai do cômodo */
 .palco__cortina {
@@ -36,20 +53,28 @@
   inset: 0;
   z-index: 7;
   pointer-events: none;
-  background: #0b2a55;
+  background: var(--azul);
   opacity: 0;
   transition: opacity .32s ease;
 }
-.palco__cortina.is-fechada { opacity: 1; pointer-events: auto; }
+
+.palco__cortina.is-fechada {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 /* dentro do cômodo as gotas da casa somem; ficam as dos pontos de aplicação */
-.palco[data-dentro] .pinos { display: none; }
+.palco[data-dentro] .pinos {
+  display: none;
+}
+
 .pontos {
   position: absolute;
   inset: 0;
   z-index: 3;
   pointer-events: none;
 }
+
 .ponto {
   position: absolute;
   left: 0;
@@ -66,51 +91,86 @@
   transition: opacity .3s;
   will-change: transform;
 }
-.ponto.is-oculto { opacity: 0; pointer-events: none; }
+
+.ponto.is-oculto {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .ponto__marca {
   position: relative;
   flex: none;
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
-  margin: -20px 0 0 -20px;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: -1.25rem 0 0 -1.25rem;
   border-radius: 50%;
-  background: var(--Logolaranja);
-  color: white;
-  border: 3px solid white;
-  box-shadow: 0 6px 18px rgba(10, 33, 72, .45);
+  background: var(--laranja);
+  color: var(--branco);
+  border: .2rem solid var(--branco);
+  box-shadow: 0 .4rem 1.1rem rgba(0, 34, 74, .45);
   transition: transform .25s;
 }
-.ponto__marca svg { width: 22px; height: 22px; margin-left: 2px; }
+
+.ponto__marca svg {
+  width: 1.35rem;
+  height: 1.35rem;
+  margin-left: .12rem;
+}
+
 /* anel que pulsa: chama a atenção de quem passa na feira */
 .ponto__marca::before {
   content: '';
   position: absolute;
-  inset: -9px;
+  inset: -.55rem;
   border-radius: 50%;
-  border: 2px solid white;
+  border: 2px solid var(--branco);
   animation: pulso 1.8s ease-out infinite;
 }
+
 .ponto__nome {
   display: grid;
-  margin-top: -20px;
-  padding: .32rem .7rem .36rem;
-  border-radius: 8px;
-  background: #153970;
-  color: white;
-  font-size: .78rem;
+  margin-top: -1.25rem;
+  padding: .36rem .75rem .38rem;
+  border-radius: .45rem;
+  background: var(--azul);
+  color: var(--branco);
+  font-size: .74rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
   line-height: 1.2;
   white-space: nowrap;
-  box-shadow: 0 6px 18px rgba(10, 33, 72, .35);
+  box-shadow: 0 .4rem 1.1rem rgba(0, 34, 74, .35);
 }
-.ponto__nome b { font-size: .95rem; font-weight: 800; font-variation-settings: 'wdth' 90; }
+
+.ponto__nome b {
+  font-size: .95rem;
+  font-weight: 800;
+  letter-spacing: .03em;
+  color: var(--laranja);
+}
+
 /* perto da borda direita da tela, o nome passa para a esquerda da gota */
-.ponto.is-esquerda .ponto__nome { position: absolute; top: -19px; right: calc(100% + 26px); margin: 0; text-align: right; }
+.ponto.is-esquerda .ponto__nome {
+  position: absolute;
+  top: -1.2rem;
+  right: calc(100% + 1.6rem);
+  margin: 0;
+  text-align: right;
+}
+
 .ponto:hover .ponto__marca,
-.ponto:focus-visible .ponto__marca { transform: scale(1.1); }
+.ponto:focus-visible .ponto__marca {
+  transform: scale(1.1);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .ponto__marca::before { animation: none; opacity: .6; }
+  .ponto__marca::before {
+    animation: none;
+    opacity: .6;
+  }
 }
 
 /* durante a demonstração só ficam a casa e o painel */
@@ -119,61 +179,88 @@
 .palco[data-modo="demo"] .gaveta,
 .palco[data-modo="demo"] .abertura,
 .palco[data-modo="demo"] .palco__voltar,
-.palco[data-modo="demo"] .palco__veu { display: none; }
+.palco[data-modo="demo"] .palco__veu {
+  display: none;
+}
 
 .demo {
   position: absolute;
   inset: 0;
   z-index: 8;
   pointer-events: none;   /* o toque fora do painel gira a câmera */
-  --azul-escuro: #0b2a55;
 }
-.demo[hidden] { display: none; }
-.demo > * { pointer-events: auto; }
+
+.demo[hidden] {
+  display: none;
+}
+
+.demo>* {
+  pointer-events: auto;
+}
 
 .demo__fechar {
   position: absolute;
-  left: clamp(16px, 4vw, 48px);
-  top: 16px;
+  left: var(--margem);
+  top: 1.25rem;
   display: inline-flex;
   align-items: center;
   gap: .35rem;
-  min-height: 46px;
-  padding: 0 1.1rem 0 .8rem;
+  min-height: 2.9rem;
+  padding: 0 1.15rem 0 .8rem;
   border: 0;
   border-radius: 999px;
   cursor: pointer;
-  font-weight: 750;
-  background: var(--azul-escuro);
-  color: white;
-  box-shadow: 0 6px 18px rgba(0, 20, 50, .3);
+  font-weight: 800;
+  font-size: .95rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  background: var(--azul);
+  color: var(--branco);
+  box-shadow: var(--sombra);
 }
-.demo__fechar svg { width: 20px; height: 20px; }
-.demo__fechar:hover { background: #163a72; }
 
+.demo__fechar svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--laranja);
+}
+
+.demo__fechar:hover {
+  background: var(--azul-medio);
+}
+
+/* o painel: no HTML de agora ele tem só tocar/pausar e a linha do tempo; os outros blocos
+   (título, etapas, legenda, diferenciais, cura) estão comentados no index.html e voltam
+   prontos, com este estilo, se forem descomentados */
 .demo__painel {
   position: absolute;
-  left: clamp(16px, 4vw, 48px);
-  bottom: clamp(16px, 4vh, 40px);
-  width: min(430px, calc(100% - 32px));
-  padding: 1.1rem 1.2rem 1rem;
-  border-radius: 18px;
-  background: rgba(11, 42, 85, .93);
-  color: white;
-  box-shadow: 0 18px 50px rgba(0, 16, 44, .45);
+  left: var(--margem);
+  bottom: clamp(1rem, 4vh, 2.5rem);
+  width: min(27rem, calc(100% - 2rem));
+  padding: .85rem 1.1rem .85rem .85rem;
+  border-radius: var(--raio);
+  background: rgba(0, 46, 95, .94);
+  color: var(--branco);
+  box-shadow: var(--sombra);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
-  max-height: calc(100% - 86px);
+  max-height: calc(100% - 5.5rem);
   overflow-y: auto;
 }
+
 .demo__produto {
-  font-size: .8rem;
-  font-weight: 750;
-  letter-spacing: .08em;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  color: #ffb27a;
+  color: var(--laranja);
 }
-.demo__titulo { margin-top: .2rem; font-size: 1.55rem; }
+
+.demo__titulo {
+  margin-top: .2rem;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
 
 .demo__etapas {
   display: grid;
@@ -183,19 +270,29 @@
   padding: 0;
   list-style: none;
 }
+
 .demo__etapas button {
   width: 100%;
-  min-height: 40px;
+  min-height: 2.5rem;
   border: 0;
   border-radius: 999px;
   cursor: pointer;
   font-weight: 750;
-  font-size: .9rem;
+  font-size: .85rem;
+  letter-spacing: .03em;
+  text-transform: uppercase;
   background: rgba(255, 255, 255, .12);
-  color: rgba(255, 255, 255, .8);
+  color: rgba(255, 255, 255, .82);
 }
-.demo__etapas button:hover { background: rgba(255, 255, 255, .22); }
-.demo__etapas button[aria-current="true"] { background: var(--Logolaranja); color: white; }
+
+.demo__etapas button:hover {
+  background: rgba(255, 255, 255, .22);
+}
+
+.demo__etapas button[aria-current="true"] {
+  background: var(--laranja);
+  color: var(--branco);
+}
 
 .demo__legenda {
   min-height: 4.2em;
@@ -204,7 +301,6 @@
   line-height: 1.38;
 }
 
-/* diferenciais: apagados até a demonstração falar deles; o que acabou de ser dito pisca em laranja */
 .demo__diferenciais {
   display: flex;
   flex-wrap: wrap;
@@ -213,20 +309,27 @@
   padding: 0;
   list-style: none;
 }
-.demo__diferenciais[hidden] { display: none; }
+
+.demo__diferenciais[hidden] {
+  display: none;
+}
+
 .demo__diferenciais li {
   display: flex;
   align-items: center;
   gap: .45em;
   padding: .32rem .7rem .32rem .6rem;
   border-radius: 999px;
-  font-size: .8rem;
-  font-weight: 700;
+  font-size: .78rem;
+  font-weight: 750;
+  letter-spacing: .03em;
+  text-transform: uppercase;
   line-height: 1.15;
   background: rgba(255, 255, 255, .07);
   color: rgba(255, 255, 255, .5);
   transition: background .45s, color .45s;
 }
+
 .demo__diferenciais li::before {
   content: '';
   flex: none;
@@ -238,13 +341,33 @@
   transform: rotate(45deg);
   opacity: .45;
 }
-.demo__diferenciais li.is-aceso { background: white; color: var(--azul-escuro); }
-.demo__diferenciais li.is-aceso::before { opacity: 1; border-color: var(--Logolaranja); }
-.demo__diferenciais li.is-novo { background: var(--Logolaranja); animation: diferencial .55s ease-out; }
-.demo__diferenciais li.is-novo::before { border-color: white; }
-@keyframes diferencial { 0% { transform: scale(.9); } 60% { transform: scale(1.06); } 100% { transform: scale(1); } }
 
-/* como cura: fica apagado até a animação chegar na cura */
+.demo__diferenciais li.is-aceso {
+  background: var(--branco);
+  color: var(--azul);
+}
+
+.demo__diferenciais li.is-aceso::before {
+  opacity: 1;
+  border-color: var(--laranja);
+}
+
+.demo__diferenciais li.is-novo {
+  background: var(--laranja);
+  color: var(--branco);
+  animation: diferencial .55s ease-out;
+}
+
+.demo__diferenciais li.is-novo::before {
+  border-color: var(--branco);
+}
+
+@keyframes diferencial {
+  0% { transform: scale(.9); }
+  60% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
 .demo__cura {
   margin-top: .6rem;
   padding-top: .7rem;
@@ -252,9 +375,21 @@
   opacity: .45;
   transition: opacity .5s;
 }
-.demo__cura[hidden] { display: none; }
-.demo.is-curando .demo__cura { opacity: 1; }
-.demo__como { font-size: .88rem; line-height: 1.35; color: rgba(255, 255, 255, .85); }
+
+.demo__cura[hidden] {
+  display: none;
+}
+
+.demo.is-curando .demo__cura {
+  opacity: 1;
+}
+
+.demo__como {
+  font-size: .88rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, .85);
+}
+
 .demo__cura ul {
   display: grid;
   grid-auto-flow: column;
@@ -264,52 +399,137 @@
   padding: 0;
   list-style: none;
 }
+
 .demo__cura li {
   padding: .45rem .55rem;
-  border-radius: 10px;
+  border-radius: .6rem;
   background: rgba(255, 255, 255, .08);
   transition: background .5s, color .5s;
 }
-.demo__cura li b { display: block; font-size: .95rem; font-weight: 800; }
-.demo__cura li span { display: block; font-size: .76rem; line-height: 1.25; color: rgba(255, 255, 255, .78); }
-.demo__cura li.is-ativo { background: white; color: var(--azul-escuro); }
-.demo__cura li.is-ativo span { color: var(--azul-escuro); }
 
-.demo__controles { display: flex; align-items: center; gap: .7rem; margin-top: .85rem; }
+.demo__cura li b {
+  display: block;
+  font-size: .95rem;
+  font-weight: 800;
+}
+
+.demo__cura li span {
+  display: block;
+  font-size: .76rem;
+  line-height: 1.25;
+  color: rgba(255, 255, 255, .78);
+}
+
+.demo__cura li.is-ativo {
+  background: var(--branco);
+  color: var(--azul);
+}
+
+.demo__cura li.is-ativo span {
+  color: var(--azul);
+}
+
+/* tocar/pausar e linha do tempo, com o laranja do guia */
+.demo__controles {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+}
+
+.demo__painel> :not(.demo__controles)+.demo__controles {
+  margin-top: .85rem;
+}
+
 .demo__tocar {
   flex: none;
   display: grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
+  width: 3rem;
+  height: 3rem;
   border: 0;
   border-radius: 50%;
   cursor: pointer;
-  background: white;
-  color: var(--azul-escuro);
+  background: var(--laranja);
+  color: var(--branco);
+  box-shadow: 0 .4rem 1rem -.4rem rgba(237, 107, 6, .9);
 }
-.demo__tocar svg { width: 24px; height: 24px; display: none; }
+
+.demo__tocar:hover {
+  background: var(--laranja-claro);
+}
+
+.demo__tocar svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: none;
+}
+
 .demo__tocar[data-estado="tocando"] .demo__i-pausa,
 .demo__tocar:not([data-estado]) .demo__i-pausa,
 .demo__tocar[data-estado="pausado"] .demo__i-toca,
-.demo__tocar[data-estado="fim"] .demo__i-repete { display: block; }
-.demo__tempo { flex: 1; min-width: 0; height: 30px; accent-color: var(--Logolaranja); cursor: pointer; }
+.demo__tocar[data-estado="fim"] .demo__i-repete {
+  display: block;
+}
 
-.demo__fonte { margin-top: .5rem; font-size: .72rem; color: rgba(255, 255, 255, .6); }
-.demo__fonte a { color: inherit; }
+/* linha do tempo: trilho branco translúcido, parte já vista e bolinha em laranja */
+.demo__tempo {
+  flex: 1;
+  min-width: 0;
+  height: 2rem;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  --feito: 0%;
+}
+
+.demo__tempo::-webkit-slider-runnable-track {
+  height: .4rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--laranja) var(--feito), rgba(255, 255, 255, .28) var(--feito));
+}
+
+.demo__tempo::-moz-range-track {
+  height: .4rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .28);
+}
+
+.demo__tempo::-moz-range-progress {
+  height: .4rem;
+  border-radius: 999px;
+  background: var(--laranja);
+}
+
+.demo__tempo::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: -.375rem;
+  border-radius: 50%;
+  background: var(--branco);
+  border: .22rem solid var(--laranja);
+}
+
+.demo__tempo::-moz-range-thumb {
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  background: var(--branco);
+  border: .22rem solid var(--laranja);
+}
+
+.demo__fonte {
+  margin-top: .5rem;
+  font-size: .72rem;
+  color: rgba(255, 255, 255, .6);
+}
+
+.demo__fonte a {
+  color: inherit;
+}
+
 .demo[data-carregando="true"] .demo__controles,
-.demo[data-carregando="true"] .demo__cura { visibility: hidden; }
-
-/* celular em pé: o painel vira uma faixa embaixo, mais baixa */
-@media (max-width: 720px) {
-  .demo__painel { left: 8px; right: 8px; bottom: 8px; width: auto; padding: .85rem .9rem .8rem; }
-  .demo__titulo { font-size: 1.25rem; }
-  .demo__legenda { min-height: 3.4em; font-size: .95rem; }
-  .demo__como { display: none; }
-  .demo__fonte { display: none; }
-  .demo__cura li span { font-size: .7rem; }
-  /* no celular os diferenciais ficam numa linha só, que rola de lado (o painel não cresce) */
-  .demo__diferenciais { flex-wrap: nowrap; gap: .25rem; margin-top: .4rem; overflow-x: auto; scrollbar-width: none; }
-  .demo__diferenciais::-webkit-scrollbar { display: none; }
-  .demo__diferenciais li { flex: none; white-space: nowrap; font-size: .7rem; padding: .25rem .55rem .25rem .48rem; }
+.demo[data-carregando="true"] .demo__cura {
+  visibility: hidden;
 }

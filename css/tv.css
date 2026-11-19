@@ -1,0 +1,56 @@
+/* =====================================================================================
+   TV (com toque) — carregado pelo index.html quando a tela tem 1920 px de largura ou mais.
+   Força: index.html?tela=tv (use na TV da feira se ela informar uma largura menor, como
+   algumas TVs que dizem ter 960 px).
+   Tudo fica maior, porque o público vê de mais longe e toca com o dedo de pé na frente da tela:
+   as medidas do index.css são em rem, então basta aumentar a letra da página.
+   ===================================================================================== */
+
+:root {
+  --topo: 5.25rem;
+  --margem: 3rem;
+  --gaveta: 44rem;
+  --colunas: 3;
+}
+
+html {
+  font-size: clamp(20px, 1.05vw, 34px);      /* 20 px numa TV Full HD, 34 px numa 4K */
+}
+
+.abertura {
+  width: min(56rem, calc(100% - 2 * var(--margem)));
+}
+
+.abertura h1 {
+  font-size: clamp(4.5rem, 6.4vw, 8rem);
+}
+
+.botao {
+  min-height: 3.8rem;
+  font-size: 1.2rem;
+}
+
+/* gotas maiores: o dedo é grande para a tela de longe */
+.pino__gota {
+  width: 2.3rem;
+  height: 2.3rem;
+  margin-left: -1.15rem;
+  margin-top: -2.3rem;
+}
+
+.pino__nome {
+  margin-top: -2.3rem;
+  font-size: .9rem;
+}
+
+.gaveta__cabeca h2 {
+  font-size: 2.2rem;
+}
+
+.item__nome {
+  font-size: 1.3rem;
+}
+
+.demo__painel {
+  width: 30rem;
+}
