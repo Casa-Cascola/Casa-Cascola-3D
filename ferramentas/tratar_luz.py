@@ -12,7 +12,7 @@ import numpy as np
 
 ESCURO_DEMAIS = 0.02      # luz linear do bake abaixo disso = ponto enterrado
 
-
+# teste
 def srgb(x):
     return np.where(x <= 0.0031308, 12.92 * x, 1.055 * np.power(np.clip(x, 0.0031308, None), 1 / 2.4) - 0.055)
 
