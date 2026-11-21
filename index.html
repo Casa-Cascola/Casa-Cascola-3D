@@ -1,172 +1,380 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Casa Cascola</title>
-  <link rel="shortcut icon" href="Img/image.png" type="image/x-icon">
-  <!-- Estilo comum a todas as telas (cores, fonte e peças do guia da marca) -->
-  <link rel="stylesheet" href="css/fontes.css">
-  <link rel="stylesheet" href="css/index.css">
-  <link rel="stylesheet" href="css/demo.css">
-  <!-- Um arquivo por tipo de tela: o navegador carrega o que combina com o tamanho da tela.
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Casa Cascola</title>
+    <link rel="shortcut icon" href="Img/image.png" type="image/x-icon" />
+    <!-- Estilo comum a todas as telas (cores, fonte e peças do guia da marca) -->
+    <link rel="stylesheet" href="css/fontes.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/demo.css" />
+    <!-- Um arquivo por tipo de tela: o navegador carrega o que combina com o tamanho da tela.
        Para forçar um deles (na TV da feira, por exemplo): index.html?tela=tv -->
-  <link rel="stylesheet" href="css/celular.css" data-tela="celular" media="(max-width: 599px), (orientation: landscape) and (max-height: 499px)">
-  <link rel="stylesheet" href="css/tablet.css" data-tela="tablet" media="(min-width: 600px) and (max-width: 1199px) and (min-height: 500px)">
-  <link rel="stylesheet" href="css/notebook.css" data-tela="notebook" media="(min-width: 1200px) and (max-width: 1919px) and (min-height: 500px)">
-  <link rel="stylesheet" href="css/tv.css" data-tela="tv" media="(min-width: 1920px) and (min-height: 500px)">
-</head>
+    <link
+      rel="stylesheet"
+      href="css/celular.css"
+      data-tela="celular"
+      media="(max-width: 599px), (orientation: landscape) and (max-height: 499px)"
+    />
+    <link
+      rel="stylesheet"
+      href="css/tablet.css"
+      data-tela="tablet"
+      media="(min-width: 600px) and (max-width: 1199px) and (min-height: 500px)"
+    />
+    <link
+      rel="stylesheet"
+      href="css/notebook.css"
+      data-tela="notebook"
+      media="(min-width: 1200px) and (max-width: 1919px) and (min-height: 500px)"
+    />
+    <link
+      rel="stylesheet"
+      href="css/tv.css"
+      data-tela="tv"
+      media="(min-width: 1920px) and (min-height: 500px)"
+    />
+  </head>
 
-<body>
-  <header>
-    <!-- logo oficial, recortado do guia da marca (sempre em fundo azul, com a iluminação) -->
-    <a class="header_logo" href="#Home"><img src="Img/logo-cascola.webp" alt="Cascola" width="293" height="220"></a>
-    <nav></nav>
-  </header>
+  <body>
+    <header>
+      <!-- logo oficial, recortado do guia da marca (sempre em fundo azul, com a iluminação) -->
+      <a class="header_logo" href="#Home"
+        ><img
+          src="Img/logo-cascola.webp"
+          alt="Cascola"
+          width="293"
+          height="220"
+      /></a>
+      <nav></nav>
+    </header>
 
-  <main>
-    <!-- 1. A casa -->
-    <section class="palco" id="casa" data-palco data-modo="abertura" aria-label="Casa Cascola em 3D">
-      <picture>
-        <source media="(max-aspect-ratio: 1/1)" srcset="Img/casa-poster-celular.webp">
-        <img class="palco__poster" src="Img/casa-poster.webp" alt="" width="1600" height="900">
-      </picture>
-      <canvas class="palco__cena" data-cena aria-hidden="true"></canvas>
-      <div class="palco__veu" aria-hidden="true"></div>
-      <!-- Escurece a tela por um instante quando a câmera entra ou sai de um cômodo -->
-      <div class="palco__cortina" data-cortina aria-hidden="true"></div>
-      <!-- Gotas dos cômodos: o modelo abaixo é copiado uma vez para cada cômodo -->
-      <div class="pinos" data-pinos>
-        <template data-modelo="pino">
-          <button class="pino" type="button">
-            <span class="pino__gota"></span>
-            <span class="pino__nome" data-texto="nome"></span>
-          </button>
-        </template>
-      </div>
-
-      <!-- Pontos de aplicação dentro do cômodo (vaso, box): o modelo abaixo é copiado uma vez para cada ponto -->
-      <div class="pontos" data-pontos>
-        <template data-modelo="ponto">
-          <button class="ponto" type="button">
-            <span class="ponto__marca">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6.5v11l9-5.5z" fill="currentColor" /></svg>
-            </span>
-            <span class="ponto__nome"><b data-texto="nome"></b><span>Ver aplicação</span></span>
-          </button>
-        </template>
-      </div>
-
-      <div class="abertura" data-abertura>
-        <h1>Orgulho de <span>fazer bem&nbsp;feito.</span></h1>
-
-        <div class="abertura__acoes">
-          <button class="botao botao--laranja" type="button" data-acao="ver-casa">Ver a casa 3D</button>
-        </div>
-      </div>
-
-      <button class="palco__voltar" type="button" data-acao="voltar" hidden>
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
-            stroke-linejoin="round" />
-        </svg>
-        Voltar
-      </button>
-      <div class="carregando" data-carregando aria-hidden="true">
-        <span class="carregando__barra"><span data-carregando-barra></span></span>
-      </div>
-      <aside class="gaveta" data-gaveta data-aberta="false" data-vista="todos" aria-label="Produtos Cascola">
-        <button class="gaveta__alca" type="button" data-acao="menu" aria-expanded="false" aria-controls="gaveta-corpo">
-          <svg class="gaveta__icone" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M3 11 12 4l9 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
-              stroke-linejoin="round" />
-            <path d="M6 10v10h12V10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />
-            <path d="M10.5 20v-5.5h3V20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />
-          </svg>
-          <span class="gaveta__rotulo">Produtos</span>
-          <svg class="gaveta__seta" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
-              stroke-linejoin="round" />
-          </svg>
-        </button>
-        <div class="gaveta__corpo" id="gaveta-corpo">
-
-          <!-- Cabeçalho do menu quando ele mostra todos os produtos -->
-          <div class="gaveta__cabeca" data-menu-todos>
-            <h2>Uma Cascola para cada canto da casa.</h2>
-            <div class="filtros" role="group" aria-label="Categorias">
-              <button class="filtro" type="button" data-filtro="todos" aria-pressed="true">Todos</button>
-              <button class="filtro" type="button" data-filtro="contato" aria-pressed="false">Colas de contato</button>
-              <button class="filtro" type="button" data-filtro="pva" aria-pressed="false">Colas (PVA)</button>
-              <button class="filtro" type="button" data-filtro="montagem" aria-pressed="false">Adesivos de
-                montagem</button>
-              <button class="filtro" type="button" data-filtro="selantes" aria-pressed="false">Silicones e
-                selantes</button>
-            </div>
-          </div>
-
-          <!-- Cabeçalho do menu quando ele mostra um cômodo -->
-          <div class="gaveta__cabeca" data-menu-comodo hidden>
-            <button class="gaveta__todos" type="button" data-acao="todos">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
-                  stroke-linejoin="round" />
-              </svg>
-              Todos os produtos
-            </button>
-            <p class="gaveta__sobre">Indicado para</p>
-            <h2 data-texto="comodo"></h2>
-          </div>
-
-          <!-- Cartão do produto: o modelo abaixo é copiado uma vez para cada produto -->
-          <ul class="vitrine" data-vitrine>
-            <template data-modelo="cartao">
-              <li class="item">
-                <!-- <p class="item__problema" data-texto="problema"></p> -->
-                <div class="item__casa">
-                  <img class="item__embalagem" data-imagem="produtos" alt="" loading="lazy">
-                  <img class="item__aplicacao" data-imagem="aplicacao" alt="" loading="lazy">
-                </div>
-                <h3 class="item__nome" data-texto="nome"></h3>
-                <!-- <p class="item__chamada" data-texto="chamada"></p> -->
-                <ul class="item__dif" data-lista="diferenciais">
-                  <li></li>
-                </ul>
-                <!-- Só aparece nos produtos que têm demonstração 3D: um botão por demonstração -->
-                <div class="item__aplicacoes" data-aplicacoes hidden></div>
-                <!-- <div class="item__acoes">
-                  <button class="item__mais" type="button" data-detalhes>
-                    Mais detalhes
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </button>
-                  <button class="item__onde" type="button" data-ver-comodo>Na casa: <span data-texto="comodo"></span></button>
-                </div> -->
-              </li>
-            </template>
-          </ul>
-          <!-- Botão "Ver aplicação" do cartão: o modelo abaixo é copiado uma vez para cada demonstração -->
-          <template data-modelo="ver-aplicacao">
-            <button class="item__aplicar" type="button">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg>
-              <span>Ver aplicação: <b data-texto="titulo"></b></span>
+    <main>
+      <!-- 1. A casa -->
+      <section
+        class="palco"
+        id="casa"
+        data-palco
+        data-modo="abertura"
+        aria-label="Casa Cascola em 3D"
+      >
+        <picture>
+          <source
+            media="(max-aspect-ratio: 1/1)"
+            srcset="Img/casa-poster-celular.webp"
+          />
+          <img
+            class="palco__poster"
+            src="Img/casa-poster.webp"
+            alt=""
+            width="1600"
+            height="900"
+          />
+        </picture>
+        <canvas class="palco__cena" data-cena aria-hidden="true"></canvas>
+        <div class="palco__veu" aria-hidden="true"></div>
+        <!-- Escurece a tela por um instante quando a câmera entra ou sai de um cômodo -->
+        <div class="palco__cortina" data-cortina aria-hidden="true"></div>
+        <!-- Gotas dos cômodos: o modelo abaixo é copiado uma vez para cada cômodo -->
+        <div class="pinos" data-pinos>
+          <template data-modelo="pino">
+            <button class="pino" type="button">
+              <span class="pino__gota"></span>
+              <span class="pino__nome" data-texto="nome"></span>
             </button>
           </template>
         </div>
-      </aside>
-      <p class="palco__aviso" data-aviso hidden></p>
 
-      <!-- Demonstração de aplicação: aparece quando alguém toca em "Ver aplicação" ou num ponto do cômodo -->
-      <div class="demo" data-demo-painel hidden>
-        <button class="demo__fechar" type="button" data-acao="fechar-demo">
+        <!-- Pontos de aplicação dentro do cômodo (vaso, box): o modelo abaixo é copiado uma vez para cada ponto -->
+        <div class="pontos" data-pontos>
+          <template data-modelo="ponto">
+            <button class="ponto" type="button">
+              <span class="ponto__marca">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M9 6.5v11l9-5.5z" fill="currentColor" />
+                </svg>
+              </span>
+              <span class="ponto__nome">
+                <b data-texto="nome"></b>
+                <!-- <span>Ver aplicação</span> -->
+                </span>
+            </button>
+          </template>
+        </div>
+
+        <div class="abertura" data-abertura>
+          <h1>Orgulho de <span>fazer bem&nbsp;feito.</span></h1>
+
+          <div class="abertura__acoes">
+            <button
+              class="botao botao--laranja"
+              type="button"
+              data-acao="ver-casa">
+              Ver a casa 3D
+            </button>
+          </div>
+        </div>
+
+        <button class="palco__voltar" type="button" data-acao="voltar" hidden>
           <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
-              stroke-linejoin="round" />
+            <path
+              d="M15 5l-7 7 7 7"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </svg>
           Voltar
         </button>
-        <div class="demo__painel">
-          <!-- <p class="demo__produto" data-texto="produto"></p>
+
+        <!-- Barra de carregamento do arquivo glb da casa 3D: o elemento abaixo é mostrado enquanto o arquivo é carregado, e depois escondido. -->
+        <div class="carregando" data-carregando aria-hidden="true">
+          <span class="carregando__barra"
+            ><span data-carregando-barra></span
+          ></span>
+        </div>
+
+
+        <aside
+          class="gaveta"
+          data-gaveta
+          data-aberta="false"
+          data-vista="todos"
+          aria-label="Produtos Cascola"
+        >
+          <button
+            class="gaveta__alca"
+            type="button"
+            data-acao="menu"
+            aria-expanded="false"
+            aria-controls="gaveta-corpo"
+          >
+            <svg class="gaveta__icone" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M3 11 12 4l9 7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M6 10v10h12V10"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M10.5 20v-5.5h3V20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span class="gaveta__rotulo">Produtos</span>
+            <svg class="gaveta__seta" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M15 5l-7 7 7 7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <div class="gaveta__corpo" id="gaveta-corpo">
+            <!-- Cabeçalho do menu quando ele mostra todos os produtos -->
+            <div class="gaveta__cabeca" data-menu-todos>
+              <h2>Uma Cascola para cada canto da casa.</h2>
+              <div class="filtros" role="group" aria-label="Categorias">
+                <button
+                  class="filtro"
+                  type="button"
+                  data-filtro="todos"
+                  aria-pressed="true"
+                >
+                  Todos
+                </button>
+                <button
+                  class="filtro"
+                  type="button"
+                  data-filtro="contato"
+                  aria-pressed="false"
+                >
+                  Colas de contato
+                </button>
+                <button
+                  class="filtro"
+                  type="button"
+                  data-filtro="pva"
+                  aria-pressed="false"
+                >
+                  Colas (PVA)
+                </button>
+                <button
+                  class="filtro"
+                  type="button"
+                  data-filtro="montagem"
+                  aria-pressed="false"
+                >
+                  Adesivos de montagem
+                </button>
+                <button
+                  class="filtro"
+                  type="button"
+                  data-filtro="selantes"
+                  aria-pressed="false"
+                >
+                  Silicones e selantes
+                </button>
+              </div>
+            </div>
+
+            <!-- Cabeçalho do menu quando ele mostra onde um produto é aplicado (botão "Ver cômodos") -->
+            <div class="gaveta__cabeca" data-menu-produto hidden>
+              <button
+                class="gaveta__todos"
+                type="button"
+                data-acao="voltar-produtos">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M15 5l-7 7 7 7"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                Todos os produtos
+              </button>
+              <p class="gaveta__sobre">Onde aplicar</p>
+              <h2 data-texto="nome"></h2>
+            </div>
+
+            <!-- Cabeçalho do menu quando ele mostra um cômodo -->
+            <div class="gaveta__cabeca" data-menu-comodo hidden>
+              <button class="gaveta__todos" type="button" data-acao="todos">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M15 5l-7 7 7 7"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                Todos os produtos
+              </button>
+              <p class="gaveta__sobre">Indicado para</p>
+              <h2 data-texto="comodo"></h2>
+            </div>
+
+            <!-- Cartão do produto: o modelo abaixo é copiado uma vez para cada produto -->
+            <ul class="vitrine" data-vitrine>
+              <template data-modelo="cartao">
+                <li class="item">
+                  <!-- Texto que descreve o problema que o produto resolve (de dados.js) -->
+                  <!-- <p class="item__problema" data-texto="problema"></p> -->
+                  <div class="item__casa">
+                    <img
+                      class="item__embalagem"
+                      data-imagem="produtos"
+                      alt=""
+                      loading="lazy"
+                    />
+                    <img
+                      class="item__aplicacao"
+                      data-imagem="aplicacao"
+                      alt=""
+                      loading="lazy"
+                    />
+                  </div>
+                  <h3 class="item__nome" data-texto="nome"></h3>
+                  <!-- frases de efeito -->
+                  <!-- <p class="item__chamada" data-texto="chamada"></p> -->
+                  <ul class="item__dif" data-lista="diferenciais">
+                    <li></li>
+                  </ul>
+                  <!-- Vista "todos": ficha do produto e cômodos onde ele é aplicado -->
+                  <div class="item__acoes">
+                    <!-- <button class="item__mais" type="button" data-detalhes>
+                      Ver detalhes
+                    </button> -->
+                    <button class="item__onde" type="button" data-ver-comodos>
+                      Ver cômodos
+                    </button>
+                  </div>
+                  <!-- Vista "comodo": um botão por objeto do cômodo que recebe o produto -->
+                  <div class="item__aplicacoes" data-aplicacoes hidden></div>
+                </li>
+              </template>
+            </ul>
+            <!-- Botão de aplicação do cartão (vista "comodo"): o modelo é copiado uma vez para cada objeto.
+               Com demonstração, o botão recebe data-demo; sem, fica desativado e mostra "em breve". -->
+            <template data-modelo="ver-aplicacao">
+              <button class="item__aplicar" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
+                </svg>
+                <span
+                  ><span class="item__ver">Ver aplicação: </span
+                  ><b data-texto="nome"></b
+                  ><span class="item__breve"> (em breve)</span></span
+                >
+              </button>
+            </template>
+
+            <!-- Vista "produto": um cartão por objeto que recebe o produto (imagem, nome, cômodo e botão) -->
+            <ul class="objetos" data-objetos hidden>
+              <template data-modelo="objeto">
+                <li class="objeto">
+                  <img
+                    class="objeto__imagem"
+                    data-imagem="objetos"
+                    alt=""
+                    loading="lazy"
+                  />
+                  <h3 class="objeto__nome" data-texto="nome"></h3>
+                  <p class="objeto__comodo" data-texto="comodo"></p>
+                  <button class="objeto__aplicar" type="button">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
+                    </svg>
+                    <span class="objeto__ver">Ver aplicação</span>
+                    <span class="objeto__breve">Em breve</span>
+                  </button>
+                </li>
+              </template>
+            </ul>
+          </div>
+        </aside>
+        <p class="palco__aviso" data-aviso hidden></p>
+
+        <!-- Demonstração de aplicação: aparece quando alguém toca em "Ver aplicação" ou num ponto do cômodo -->
+        <div class="demo" data-demo-painel hidden>
+          <button class="demo__fechar" type="button" data-acao="fechar-demo">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M15 5l-7 7 7 7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Voltar
+          </button>
+          <div class="demo__painel">
+            <!-- <p class="demo__produto" data-texto="produto"></p>
           <h2 class="demo__titulo" data-texto="titulo"></h2>
           <ol class="demo__etapas">
             <li><button type="button" data-etapa="porque">Por que usar</button></li>
@@ -174,132 +382,187 @@
             <li><button type="button" data-etapa="resultado">Resultado</button></li>
           </ol>
           <p class="demo__legenda" data-demo-legenda aria-live="polite"></p> -->
-          <!-- Diferenciais do produto (de dados.js): acendem quando a demonstração fala de cada um -->
-          <!-- <ul class="demo__diferenciais" data-lista="diferenciais" data-se="diferenciais">
+            <!-- Diferenciais do produto (de dados.js): acendem quando a demonstração fala de cada um -->
+            <!-- <ul class="demo__diferenciais" data-lista="diferenciais" data-se="diferenciais">
             <li></li>
           </ul> -->
-          <!-- Como o produto cura: os tempos acendem conforme a animação avança -->
-          <!-- <div class="demo__cura" data-se="cura">
+            <!-- Como o produto cura: os tempos acendem conforme a animação avança -->
+            <!-- <div class="demo__cura" data-se="cura">
             <p class="demo__como" data-texto="comoCura"></p>
             <ul data-lista="cura">
               <li><b data-texto="tempo"></b><span data-texto="texto"></span></li>
             </ul>
           </div>
           -->
-          <div class="demo__controles">
-            <button class="demo__tocar" type="button" data-acao="demo-tocar" aria-label="Pausar">
-              <svg class="demo__i-pausa" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor" /></svg>
-              <svg class="demo__i-toca" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg>
-              <svg class="demo__i-repete" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12a7 7 0 1 0 2.2-5.1M5 4.5V9h4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
-            </button>
-            <input class="demo__tempo" type="range" min="0" max="1000" value="0" data-demo-tempo aria-label="Linha do tempo">
+            <div class="demo__controles">
+              <button
+                class="demo__tocar"
+                type="button"
+                data-acao="demo-tocar"
+                aria-label="Pausar"
+              >
+                <svg
+                  class="demo__i-pausa"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor" />
+                </svg>
+                <svg
+                  class="demo__i-toca"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
+                </svg>
+                <svg
+                  class="demo__i-repete"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M5 12a7 7 0 1 0 2.2-5.1M5 4.5V9h4.5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+              <input
+                class="demo__tempo"
+                type="range"
+                min="0"
+                max="1000"
+                value="0"
+                data-demo-tempo
+                aria-label="Linha do tempo"
+              />
+            </div>
+            <!-- <p class="demo__fonte">Fonte: <a data-link="fonteUrl" data-texto="fonteNome" target="_blank" rel="noopener"></a></p> -->
           </div>
-          <!-- <p class="demo__fonte">Fonte: <a data-link="fonteUrl" data-texto="fonteNome" target="_blank" rel="noopener"></a></p> -->
-        </div> 
-      </div>
-    </section>
+        </div>
+      </section>
 
-
-    <!-- 1b. Ficha do produto: aparece quando alguém toca em "Mais detalhes" -->
-    <section class="ficha" id="detalhes" data-ficha hidden aria-label="Ficha do produto">
-      <div class="largura">
-        <div data-ficha-conteudo>
-          <div class="ficha__topo">
-            <p class="ficha__sobre">Ficha do produto</p>
-            <button class="ficha__voltar" type="button" data-acao="topo">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.4"
-                  stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              Voltar para a casa 3D
-            </button>
-          </div>
-
-          <div class="ficha__grade">
-            <div class="ficha__vitrine">
-              <div class="item__casa">
-                <img class="item__embalagem" data-imagem="produtos" alt="">
-                <img class="item__aplicacao" data-imagem="aplicacao" alt="">
-              </div>
-              <ul class="item__dif" data-lista="diferenciais">
-                <li></li>
-              </ul>
-              <button class="item__onde" type="button" data-ver-comodo>Ver na casa: <span
-                  data-texto="comodo"></span></button>
+      <!-- 1b. Ficha do produto: aparece quando alguém toca em "Mais detalhes" -->
+      <section
+        class="ficha"
+        id="detalhes"
+        data-ficha
+        hidden
+        aria-label="Ficha do produto"
+      >
+        <div class="largura">
+          <div data-ficha-conteudo>
+            <div class="ficha__topo">
+              <p class="ficha__sobre">Ficha do produto</p>
+              <button class="ficha__voltar" type="button" data-acao="topo">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 19V5M6 11l6-6 6 6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                Voltar para a casa 3D
+              </button>
             </div>
 
-            <div class="ficha__texto">
-              <p class="ficha__categoria" data-texto="categoria"></p>
-              <h2 tabindex="-1" data-texto="nome"></h2>
-              <p class="ficha__resumo" data-texto="resumo"></p>
-
-              <dl class="ficha__numeros" data-lista="numeros">
-                <div>
-                  <dt data-texto="rotulo"></dt>
-                  <dd><b data-texto="valor"></b> <span data-texto="unidade"></span></dd>
+            <div class="ficha__grade">
+              <div class="ficha__vitrine">
+                <div class="item__casa">
+                  <img class="item__embalagem" data-imagem="produtos" alt="" />
+                  <img class="item__aplicacao" data-imagem="aplicacao" alt="" />
                 </div>
-              </dl>
-
-              <div data-se="materiais">
-                <h3>Onde usar</h3>
-                <ul class="ficha__chips" data-lista="materiais">
+                <ul class="item__dif" data-lista="diferenciais">
                   <li></li>
                 </ul>
-                <p class="ficha__usos" data-texto="usos"></p>
+                <button class="item__onde" type="button" data-ver-comodo>
+                  Ver na casa: <span data-texto="comodo"></span>
+                </button>
               </div>
 
-              <div data-se="passos">
-                <h3>Como aplicar</h3>
-                <ol class="ficha__passos" data-lista="passos">
-                  <li></li>
-                </ol>
-              </div>
+              <div class="ficha__texto">
+                <p class="ficha__categoria" data-texto="categoria"></p>
+                <h2 tabindex="-1" data-texto="nome"></h2>
+                <p class="ficha__resumo" data-texto="resumo"></p>
 
-              <div data-se="atencao">
-                <h3>Atenção</h3>
-                <ul class="ficha__atencao" data-lista="atencao">
-                  <li></li>
-                </ul>
-              </div>
-
-              <div data-se="dados">
-                <h3>Dados técnicos</h3>
-                <dl class="ficha__dados" data-lista="dados">
+                <dl class="ficha__numeros" data-lista="numeros">
                   <div>
-                    <dt data-texto="nome"></dt>
-                    <dd data-texto="valor"></dd>
+                    <dt data-texto="rotulo"></dt>
+                    <dd>
+                      <b data-texto="valor"></b>
+                      <span data-texto="unidade"></span>
+                    </dd>
                   </div>
                 </dl>
-              </div>
 
-              <p class="ficha__fonte" data-se="fonteUrl">Fonte: <a data-link="fonteUrl" data-texto="fonteNome"
-                  target="_blank" rel="noopener"></a>, Henkel. Antes de aplicar, leia as instruções da embalagem.</p>
+                <div data-se="materiais">
+                  <h3>Onde usar</h3>
+                  <ul class="ficha__chips" data-lista="materiais">
+                    <li></li>
+                  </ul>
+                  <p class="ficha__usos" data-texto="usos"></p>
+                </div>
+
+                <div data-se="passos">
+                  <h3>Como aplicar</h3>
+                  <ol class="ficha__passos" data-lista="passos">
+                    <li></li>
+                  </ol>
+                </div>
+
+                <div data-se="atencao">
+                  <h3>Atenção</h3>
+                  <ul class="ficha__atencao" data-lista="atencao">
+                    <li></li>
+                  </ul>
+                </div>
+
+                <div data-se="dados">
+                  <h3>Dados técnicos</h3>
+                  <dl class="ficha__dados" data-lista="dados">
+                    <div>
+                      <dt data-texto="nome"></dt>
+                      <dd data-texto="valor"></dd>
+                    </div>
+                  </dl>
+                </div>
+
+                <p class="ficha__fonte" data-se="fonteUrl">
+                  Fonte:
+                  <a
+                    data-link="fonteUrl"
+                    data-texto="fonteNome"
+                    target="_blank"
+                    rel="noopener"
+                  ></a
+                  >, Henkel. Antes de aplicar, leia as instruções da embalagem.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Outros produtos: o modelo abaixo é copiado uma vez para cada produto -->
+          <div class="ficha__outros">
+            <h3>Outros produtos</h3>
+            <div class="ficha__faixa" data-ficha-outros>
+              <template data-modelo="mini">
+                <button class="ficha__mini" type="button" data-detalhes>
+                  <img data-imagem="produtos" alt="" loading="lazy" />
+                  <span data-texto="nome"></span>
+                </button>
+              </template>
             </div>
           </div>
         </div>
+      </section>
+    </main>
 
-        <!-- Outros produtos: o modelo abaixo é copiado uma vez para cada produto -->
-        <div class="ficha__outros">
-          <h3>Outros produtos</h3>
-          <div class="ficha__faixa" data-ficha-outros>
-            <template data-modelo="mini">
-              <button class="ficha__mini" type="button" data-detalhes>
-                <img data-imagem="produtos" alt="" loading="lazy">
-                <span data-texto="nome"></span>
-              </button>
-            </template>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-
-  </main>
-
-
-
-  <script src="js/app.js"></script>
-</body>
-
+    <script src="js/app.js"></script>
+  </body>
 </html>

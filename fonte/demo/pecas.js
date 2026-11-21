@@ -67,21 +67,68 @@ export function embalagem(id, altura, { achatar = false } = {}) {
 // A pistola aplicadora modelada no Blender (ferramentas_cascola.blend -> modelos/ferramentas/pistola.glb,
 // pelo ferramentas/exportar_pistola.py), com o cartucho Banheiro e Cozinha. Mesma pose da pistola
 // feita aqui embaixo: ponta do bico na origem, cartucho para +Y, cabo para +Z.
-// Sem o arquivo, ou para outro produto, fica a pistola feita aqui.
+// Os cartuchos dos outros produtos vêm de modelos/ferramentas/cartuchos_cascola.glb (também do
+// Blender): um nó Cartucho_<nome> por produto, com os filhos Cartucho_<nome>_Bico, _Corpo (plástico
+// + rótulo) e _Embolo, na mesma posição local do cartucho que está dentro da pistola.
+// Sem a pistola, ou para um produto sem cartucho, fica a pistola feita aqui.
 const ARQUIVO_PISTOLA = 'modelos/ferramentas/pistola.glb';
+const ARQUIVO_CARTUCHOS = 'modelos/ferramentas/cartuchos_cascola.glb';
 const PRODUTO_DA_PISTOLA = 'silicone-banheiro-cozinha';
+const PARTES_DO_CARTUCHO = ['Bico', 'Corpo', 'Embolo'];
+// <nome> no arquivo de cartuchos -> id do produto em dados.js, quando os dois são diferentes
+const ID_DO_CARTUCHO = { 'adesivo-montagem-pl500': 'pl500', 'adesivo-montagem-pl600': 'pl600', 'adesivo-montagem-pl700': 'pl700' };
+const cartuchos = {};                            // id do produto -> nó Cartucho_<nome> do arquivo
 let pistolaBlender = null, carregandoPistola = null;
+
+// Indexa os cartuchos do arquivo pelo id do produto. Os nós ficam só na memória (não vão para a
+// cena); as cópias usadas na pistola compartilham malhas, materiais e texturas com eles.
+function indexarCartuchos(raiz) {
+  for (const no of raiz.children) {
+    const nome = no.name.replace(/^Cartucho_/, '');
+    if (nome === no.name) continue;
+    cartuchos[ID_DO_CARTUCHO[nome] || nome] = no;
+  }
+}
+
+// Carrega a pistola e os cartuchos do Blender. Chamada uma vez; as chamadas seguintes devolvem a
+// mesma promessa. Se a pistola falhar, as demonstrações usam a pistola feita em código; se só os
+// cartuchos falharem, a pistola do Blender continua com o cartucho Banheiro e Cozinha.
 export function carregarFerramentas(carregar) {
-  carregandoPistola ||= carregar(ARQUIVO_PISTOLA).then((m) => (pistolaBlender = m), (e) => {
+  carregandoPistola ||= Promise.all([
+    carregar(ARQUIVO_PISTOLA),
+    carregar(ARQUIVO_CARTUCHOS).then(indexarCartuchos, (e) => console.warn('Os cartuchos do Blender não carregaram.', e)),
+  ]).then(([m]) => (pistolaBlender = m), (e) => {
     console.warn('A pistola do Blender não carregou; as demonstrações usam a pistola simples.', e);
     return null;
   });
   return carregandoPistola;
 }
 
-function pistolaDoBlender() {
+// Troca o cartucho de dentro da pistola `g` pelo cartucho do produto `id`: cada parte
+// (Cartucho_Bico, _Corpo, _Embolo) é substituída por uma cópia da parte correspondente do arquivo
+// de cartuchos, com o mesmo nome, o mesmo pai e a mesma posição local da parte original, para que
+// apertar() e virarRotulo() continuem achando as peças pelo nome.
+function trocarCartucho(g, id) {
+  const fonte = cartuchos[id];
+  if (!fonte) return;
+  for (const parte of PARTES_DO_CARTUCHO) {
+    const velha = g.getObjectByName('Cartucho_' + parte), modelo = fonte.getObjectByName(fonte.name + '_' + parte);
+    if (!velha || !modelo) continue;
+    const nova = modelo.clone(true);
+    nova.name = velha.name;
+    nova.position.copy(velha.position);
+    nova.quaternion.copy(velha.quaternion);
+    nova.scale.copy(velha.scale);
+    const pai = velha.parent;
+    pai.remove(velha);
+    pai.add(nova);
+  }
+}
+
+function pistolaDoBlender(id = PRODUTO_DA_PISTOLA) {
   const g = pistolaBlender.clone(true);          // malhas e materiais compartilhados entre as cópias
   const peca = (nome) => g.getObjectByName(nome);
+  trocarCartucho(g, id);
   const haste = peca('Pistola_Haste'), embolo = peca('Cartucho_Embolo'), gatilho = peca('Pistola_Gatilho');
   const corpo = peca('Cartucho_Corpo');
   const yHaste = haste.position.y, yEmbolo = embolo.position.y;
@@ -111,8 +158,10 @@ function pistolaDoBlender() {
   return g;
 }
 
+// Pistola com o cartucho do produto `id`: a do Blender, quando ela carregou e existe cartucho do
+// produto (o de dentro da pistola ou um do arquivo de cartuchos); senão, a pistola feita em código.
 export function pistola(id, opcoes = {}) {
-  if (pistolaBlender && id === PRODUTO_DA_PISTOLA) return pistolaDoBlender();
+  if (pistolaBlender && (id === PRODUTO_DA_PISTOLA || cartuchos[id])) return pistolaDoBlender(id);
   return pistolaSimples(id, opcoes);
 }
 

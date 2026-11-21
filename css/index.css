@@ -104,16 +104,6 @@ main>section {
   color: var(--laranja);
 }
 
-.titulo-marca::before,
-.gaveta__cabeca h2::before {
-  content: '';
-  flex: none;
-  width: .36em;
-  height: .62em;
-  background: currentColor;
-  -webkit-mask: var(--chevron) center / contain no-repeat;
-  mask: var(--chevron) center / contain no-repeat;
-}
 
 /* ---------------------------------------------------------------- cabeçalho
    A marca é soberana: o logo fica no topo e no centro, sempre em fundo azul, com a área de
@@ -425,6 +415,15 @@ header nav:empty {
   animation: pulso 1.8s ease-out infinite;
 }
 
+/* vista "Ver cômodos": gotas dos cômodos que recebem o produto escolhido */
+.pino.is-destaque .pino__nome {
+  background: var(--laranja);
+}
+
+.pino.is-destaque .pino__gota::before {
+  animation: pulso 1.8s ease-out infinite;
+}
+
 .pino.is-apagado {
   opacity: .35;
 }
@@ -451,7 +450,8 @@ header nav:empty {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pino.is-ativo .pino__gota::before {
+  .pino.is-ativo .pino__gota::before,
+  .pino.is-destaque .pino__gota::before {
     animation: none;
     opacity: .7;
   }
@@ -670,7 +670,8 @@ header nav:empty {
   margin-bottom: .35rem;
 }
 
-.gaveta[data-vista="comodo"] .gaveta__cabeca h2 {
+.gaveta[data-vista="comodo"] .gaveta__cabeca h2,
+.gaveta[data-vista="produto"] .gaveta__cabeca h2 {
   font-size: clamp(2.1rem, 3.6vw, 2.8rem);
   margin-bottom: 0;
 }
@@ -685,6 +686,11 @@ header nav:empty {
   display: grid;
   grid-template-columns: repeat(var(--colunas), minmax(0, 1fr));
   gap: 2rem 1.4rem;
+}
+
+/* o atributo hidden (vista "produto") precisa vencer o display: grid acima */
+.vitrine[hidden] {
+  display: none;
 }
 
 .item {
@@ -808,15 +814,27 @@ header nav:empty {
   background: var(--laranja);
 }
 
+/* Ver detalhes e Ver cômodos lado a lado: duas colunas iguais que ocupam a largura do cartão */
 .item__acoes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .4rem;
   margin-top: 1rem;
 }
 
-.item__acoes .item__onde {
+.item__acoes .item__onde,
+.item__acoes .item__mais {
+  justify-content: center;
   margin-top: 0;
+  min-height: 2.4rem;
+  padding: 0 .45rem;
+  font-size: .8rem;
+  white-space: nowrap;
+}
+
+.item__acoes .item__mais svg {
+  width: .95rem;
+  height: .95rem;
 }
 
 .item__mais {
@@ -859,7 +877,8 @@ header nav:empty {
   color: var(--azul);
 }
 
-.gaveta[data-vista="comodo"] .item__onde {
+/* vista do cômodo: o cartão mostra só os botões de aplicação (Ver detalhes e Ver cômodos somem) */
+.gaveta[data-vista="comodo"] .item__acoes {
   display: none;
 }
 
@@ -1181,3 +1200,108 @@ header nav:empty {
 .ficha__mini[aria-current="true"] {
   box-shadow: inset 0 0 0 3px var(--laranja);
 }
+
+/* ---------------------------------------------------------------- vista do produto
+   Lista dos objetos que recebem o produto (botão "Ver cômodos"): grade de cartões com a imagem do
+   objeto, o nome, o cômodo e o botão de aplicação. auto-fill cria quantas colunas couberem com
+   pelo menos 10rem cada; como o rem cresce na TV, a grade se ajusta a cada tela sozinha. */
+.objetos {
+  list-style: none;
+  margin: 0;
+  padding: 2.2rem 1.5rem 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 1.6rem 1.2rem;
+}
+
+.objetos[hidden] {
+  display: none;
+}
+
+.objeto {
+  display: flex;
+  flex-direction: column;
+}
+
+.objeto__imagem {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--raio);
+  background: var(--nevoa);
+  box-shadow: 0 .6rem 1.4rem -1rem rgba(0, 34, 74, .6);
+}
+
+.objeto__nome {
+  margin-top: .75rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--azul);
+}
+
+.objeto__comodo {
+  margin-top: .2rem;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+/* botão de aplicação do objeto; o texto "Em breve" só aparece quando o objeto não tem
+   demonstração (classe is-breve, colocada pelo menu.js junto com o atributo disabled) */
+.objeto__aplicar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  margin-top: .7rem;
+  min-height: 2.6rem;
+  padding: .4rem .9rem;
+  border: 0;
+  border-radius: var(--raio);
+  cursor: pointer;
+  background: var(--laranja);
+  color: var(--branco);
+  font: inherit;
+  font-weight: 700;
+  font-size: .9rem;
+  box-shadow: 0 .6rem 1.4rem -.8rem rgba(237, 107, 6, .9);
+}
+
+.objeto__aplicar svg {
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.objeto__aplicar:hover:not([disabled]) {
+  background: var(--laranja-claro);
+}
+
+.objeto__breve,
+.item__breve {
+  display: none;
+}
+
+.objeto__aplicar.is-breve .objeto__ver,
+.item__aplicar.is-breve .item__ver,
+.objeto__aplicar.is-breve svg,
+.item__aplicar.is-breve svg {
+  display: none;
+}
+
+.objeto__aplicar.is-breve .objeto__breve,
+.item__aplicar.is-breve .item__breve {
+  display: inline;
+}
+
+/* botão desativado: cinza, sem sombra e sem a mãozinha do cursor */
+.objeto__aplicar[disabled],
+.item__aplicar[disabled] {
+  cursor: default;
+  background: var(--cinza);
+  color: var(--texto-suave);
+  box-shadow: none;
+}
+

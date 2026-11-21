@@ -23,16 +23,19 @@ await build({
 // Fonte: a Outfit (SIL Open Font License), no lugar da Brandon Grotesque do guia da marca, que é paga.
 // Embutida em base64 para funcionar sem internet. Se a empresa tiver a licença da Brandon, é só
 // acrescentar o @font-face dela no fim do css/fontes.css (o index.css já procura por ela primeiro).
+// Se o pacote da fonte não estiver instalado (falta rodar npm install), o css/fontes.css que já
+// existe é mantido e o build continua; só a fonte não é regerada.
 const fonte = path.join(p('node_modules/@fontsource-variable/outfit'), 'files/outfit-latin-wght-normal.woff2');
-const b64 = fs.readFileSync(fonte).toString('base64');
-fs.writeFileSync(p('css/fontes.css'),
+if (!fs.existsSync(fonte)) {
+  console.warn('Aviso: fonte Outfit não encontrada em node_modules (rode "npm install"). O css/fontes.css atual foi mantido.');
+} else fs.writeFileSync(p('css/fontes.css'),
 `/* Outfit (SIL Open Font License), embutida para funcionar sem internet. Gerado por ferramentas/build.mjs */
 @font-face {
   font-family: 'Outfit Variable';
   font-style: normal;
   font-display: swap;
   font-weight: 100 900;
-  src: url(data:font/woff2;base64,${b64}) format('woff2-variations');
+  src: url(data:font/woff2;base64,${fs.readFileSync(fonte).toString('base64')}) format('woff2-variations');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 `);

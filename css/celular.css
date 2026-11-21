@@ -62,6 +62,10 @@ html {
 .item__dif { grid-area: dif; margin-top: .45rem; }
 .item__dif li { font-size: .88rem; }
 .item__aplicacoes { grid-area: acoes; margin-top: .7rem; }
+/* os botões Ver detalhes e Ver cômodos ocupam a mesma área dos botões de aplicação: as duas caixas
+   nunca aparecem juntas (uma é da vista "todos", a outra da vista "comodo") */
+.item__acoes { grid-area: acoes; margin-top: .7rem; }
+.objetos { padding: 1.4rem 1rem 2rem; gap: 1.2rem .9rem; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); }
 .item__aplicar { font-size: .82rem; min-height: 2.5rem; }
 
 .gaveta__cabeca {

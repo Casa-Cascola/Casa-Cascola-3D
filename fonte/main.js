@@ -15,7 +15,7 @@
 
 import { VISAO_GERAL } from './dados.js';
 import { $, $$, estado, comodoPorId, reduzMovimento, rolagem } from './util.js';
-import { montarMenu, abrirMenu, mostrarTodos, mostrarComodo, filtrar } from './menu.js';
+import { montarMenu, abrirMenu, mostrarTodos, mostrarComodo, mostrarProduto, filtrar } from './menu.js';
 import { montarDetalhes, mostrarDetalhes } from './detalhes.js';
 import { camadaPinos, atualizarPinos } from './pinos.js';
 import { iniciarCena } from './cena.js';
@@ -62,6 +62,7 @@ const estreito = () => matchMedia('(max-width: 720px)').matches;
 // O banheiro tem o cômodo por dentro: a câmera entra nele.
 function selecionarComodo(id) {
   entrarNaCasa();
+  estado.produto = null;
   estado.comodo = id;
   mostrarComodo(id);
   atualizarPinos();
@@ -86,6 +87,7 @@ function selecionarComodo(id) {
 function sairDoComodo() {
   clearTimeout(esperaMenu);
   estado.comodo = null;
+  estado.produto = null;
   mostrarTodos();
   atualizarPinos();
   if (cena) sair(VISAO_GERAL);
@@ -97,6 +99,7 @@ function voltarParaAbertura() {
   menu(false);
   estado.modo = 'abertura';
   estado.comodo = null;
+  estado.produto = null;
   palco.dataset.modo = 'abertura';
   botaoVoltar.hidden = true;
   mostrarTodos();
@@ -107,6 +110,27 @@ function voltarParaAbertura() {
 
 const subir = () => window.scrollTo({ top: 0, behavior: rolagem() });
 
+// "Ver cômodos" (no cartão do produto): o menu continua aberto e passa para a vista do produto,
+// com os objetos que recebem o produto; estado.produto faz o pinos.js destacar as gotas dos
+// cômodos do produto e apagar as outras. A câmera vai para a vista geral, onde todas as gotas
+// aparecem.
+function comodosDoProduto(id) {
+  entrarNaCasa();
+  estado.comodo = null;
+  estado.produto = id;
+  mostrarProduto(id);
+  atualizarPinos();
+  menu(true);
+  if (cena) sair(VISAO_GERAL);
+}
+
+// "Todos os produtos" na vista do produto: volta à lista de produtos e tira o destaque das gotas.
+function voltarAosProdutos() {
+  estado.produto = null;
+  mostrarTodos();
+  atualizarPinos();
+}
+
 // "Ver aplicação" (no cartão do produto ou na gota do vaso e do box): abre a demonstração.
 // Se a câmera ainda está fora, ela entra no cômodo antes.
 function verAplicacao(id) {
@@ -115,7 +139,9 @@ function verAplicacao(id) {
   entrarNaCasa();
   menu(false);
   subir();
-  if (estado.comodo !== def.comodo) { estado.comodo = def.comodo; mostrarComodo(def.comodo); atualizarPinos(); }
+  estado.produto = null;
+  if (estado.comodo !== def.comodo) { estado.comodo = def.comodo; mostrarComodo(def.comodo); }
+  atualizarPinos();
   abrirDemo(id);
 }
 // Sai da demonstração e volta para a vista do cômodo
@@ -129,7 +155,7 @@ function sairDaDemo() {
 document.addEventListener('click', (e) => {
   const t = e.target.closest('button, a');
   if (!t) return;
-  const { acao, filtro, detalhes, verComodo, comodo, demo, ponto, etapa } = t.dataset;
+  const { acao, filtro, detalhes, verComodo, verComodos, comodo, demo, ponto, etapa } = t.dataset;
   if (demo) return verAplicacao(demo);
   if (ponto) return verAplicacao(ponto);
   if (acao === 'fechar-demo') return sairDaDemo();
@@ -138,6 +164,8 @@ document.addEventListener('click', (e) => {
   if (acao === 'menu') return menu(!estado.menuAberto);
   if (acao === 'produtos') { e.preventDefault(); subir(); return menu(true); }
   if (acao === 'todos') return sairDoComodo();
+  if (acao === 'voltar-produtos') return voltarAosProdutos();
+  if (verComodos) return comodosDoProduto(verComodos);
   // dentro do banheiro, "Voltar" sai para a casa; da casa, volta para o título
   if (acao === 'voltar') return estado.dentro ? sairDoComodo() : voltarParaAbertura();
   if (acao === 'ver-casa') { entrarNaCasa(); cena?.voar(VISAO_GERAL); return; }

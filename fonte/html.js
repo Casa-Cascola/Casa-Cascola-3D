@@ -42,5 +42,7 @@ export function preencher(raiz, d) {
   cada('[data-link]', (el) => { if (d[el.dataset.link]) el.href = d[el.dataset.link]; });
   cada('[data-detalhes]', (el) => { if (d.id) el.dataset.detalhes = d.id; });
   cada('[data-ver-comodo]', (el) => { el.dataset.verComodo = d.comodoId || ''; el.hidden = !d.comodoId; });
+  // botão "Ver cômodos" do cartão: guarda o id do produto (o clique é tratado no main.js)
+  cada('[data-ver-comodos]', (el) => { if (d.id) el.dataset.verComodos = d.id; });
   return raiz;
 }

@@ -27,6 +27,13 @@ let atual = null;           // a demonstração aberta
 let ultimoQuadro = 0;
 const guardado = {};        // ajustes da câmera, para devolver ao fechar
 
+// Enquadramento `nome` da demonstração para a tela atual: se a tela está em pé (largura menor que
+// a altura) e a tomada tem a variante `retrato`, usa a variante; senão, a tomada normal.
+function tomadaDe(def, nome) {
+  const t = def.tomadas[nome], c = tres?.renderer.domElement;
+  return t?.retrato && c && c.clientWidth < c.clientHeight ? t.retrato : t;
+}
+
 // As demonstrações de um produto (no cômodo `comodo`, ou em todos se for null), na ordem da lista.
 export const demosDe = (produto, comodo) => Object.values(DEMOS).filter((d) => d.produto === produto && (!comodo || d.comodo === comodo));
 export const demoAberta = () => !!atual;
@@ -66,7 +73,7 @@ export async function abrirDemo(id, { t = 0, pausado = false, direto = false } =
   if (elLegenda) elLegenda.textContent = 'Preparando a demonstração…';
   prepararCamera(def);
   cena.aoMudarModo();
-  cena.voar({ ...def.tomadas.geral, exato: true }, 1.4);
+  cena.voar({ ...tomadaDe(def, 'geral'), exato: true }, 1.4);
 
   try {
     const [comodo] = await Promise.all([objetoDoComodo(def.comodo), carregarRotulos(), carregarFerramentas((url) => carregarGlb(url, tres.renderer))]);
@@ -238,12 +245,12 @@ export function ir(t, pulo = false) {
   }
   if (tomada && (tomada !== m.tomada || pulo)) {
     m.tomada = tomada;
-    const destino = { ...eu.def.tomadas[tomada.nome], exato: true };
+    const destino = { ...tomadaDe(eu.def, tomada.nome), exato: true };
     const mexeu = performance.now() - cena.ultimoToque() < 6000;   // quem está girando a câmera não é interrompido
     if (pulo) {
       // chegou aqui de um salto: a câmera vai direto para onde estaria neste instante
       const i = r.tomadas.indexOf(tomada), f = tomada.reto && i > 0 ? Math.min(1, (eu.t - tomada.t) / tomada.dur) : 1;
-      const de = i > 0 ? eu.def.tomadas[r.tomadas[i - 1].nome] : destino;
+      const de = i > 0 ? tomadaDe(eu.def, r.tomadas[i - 1].nome) : destino;
       cena.enquadrar({ camera: mistura(de.camera, destino.camera, f), alvo: mistura(de.alvo, destino.alvo, f), exato: true });
       if (f < 1 && eu.tocando) cena.voar(destino, tomada.dur * (1 - f), true);
     } else if (!mexeu) cena.voar(destino, tomada.dur, tomada.reto);

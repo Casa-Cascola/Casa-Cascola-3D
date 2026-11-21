@@ -36,6 +36,8 @@
   .item__nome { grid-area: nome; margin-top: .3rem; }
   .item__dif { grid-area: dif; }
   .item__aplicacoes { grid-area: acoes; }
+  /* mesma área dos botões de aplicação: as duas caixas nunca aparecem juntas */
+  .item__acoes { grid-area: acoes; }
 
   .abertura {
     bottom: 3.5rem;

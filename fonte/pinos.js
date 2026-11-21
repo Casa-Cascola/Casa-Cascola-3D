@@ -2,7 +2,7 @@
 // A posição de cada gota (em metros) fica em fonte/dados.js, no campo `pino`.
 import * as THREE from 'three';
 import { COMODOS } from './dados.js';
-import { $, estado } from './util.js';
+import { $, estado, produtoPorId } from './util.js';
 import { clonar, preencher } from './html.js';
 
 const palco = $('[data-palco]');
@@ -19,11 +19,18 @@ const pinos = COMODOS.flatMap((c) => {
   return [{ el: b, c, p: new THREE.Vector3(...c.pino), n: c.normal ? new THREE.Vector3(...c.normal) : null }];
 });
 
-// Marca a gota do cômodo escolhido e apaga as outras.
+// Atualiza as classes das gotas a partir do estado:
+//   - com um cômodo escolhido (estado.comodo), a gota dele fica ativa (is-ativo) e as outras apagadas;
+//   - sem cômodo e com um produto na vista "Ver cômodos" (estado.produto), as gotas dos cômodos do
+//     produto (campo `comodos` em dados.js) ficam em destaque (is-destaque) e as outras apagadas;
+//   - sem nenhum dos dois, todas as gotas ficam normais.
 export function atualizarPinos() {
+  const doProduto = !estado.comodo && estado.produto ? new Set(produtoPorId[estado.produto]?.comodos || []) : null;
   for (const { el, c } of pinos) {
+    const destaque = !!doProduto && doProduto.has(c.id);
     el.classList.toggle('is-ativo', estado.comodo === c.id);
-    el.classList.toggle('is-apagado', !!estado.comodo && estado.comodo !== c.id);
+    el.classList.toggle('is-destaque', destaque);
+    el.classList.toggle('is-apagado', (!!estado.comodo && estado.comodo !== c.id) || (!!doProduto && !destaque));
   }
 }
 

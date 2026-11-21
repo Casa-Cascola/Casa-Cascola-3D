@@ -1,16 +1,18 @@
 // Menu lateral de produtos (o único menu da casa).
 // O HTML do menu e do cartão de produto fica no index.html; aqui só entra o comportamento.
 import { PRODUTOS } from './dados.js';
-import { $, $$, estado, comodoPorId, produtosDoComodo, rolagem } from './util.js';
+import { $, $$, estado, comodoPorId, produtoPorId, produtosDoComodo, objetosDoProduto, rolagem } from './util.js';
 import { clonar, preencher } from './html.js';
-import { demosDe } from './demo/palco.js';
+import { DEMOS } from './demo/demos.js';
 
 const gaveta = $('[data-gaveta]');
 const alca = $('[data-acao="menu"]');
 const corpo = $('.gaveta__corpo');
 const cabecaTodos = $('[data-menu-todos]');
 const cabecaComodo = $('[data-menu-comodo]');
+const cabecaProduto = $('[data-menu-produto]');
 const lista = $('[data-vitrine]');
+const listaObjetos = $('[data-objetos]');
 const itens = () => $$('[data-produto]', lista);
 
 // Um cartão por produto, copiado do <template data-modelo="cartao"> do index.html.
@@ -33,29 +35,63 @@ export function abrirMenu(sim) {
   alca.setAttribute('aria-expanded', String(sim));
 }
 
+// Troca a vista do menu. `nome` é 'todos', 'comodo' ou 'produto'. O atributo data-vista da gaveta
+// é lido pelo CSS; cada vista mostra o seu cabeçalho, e a vista 'produto' troca a vitrine de
+// produtos pela lista de objetos.
 function vista(nome) {
   gaveta.dataset.vista = nome;
   if (cabecaTodos) cabecaTodos.hidden = nome !== 'todos';
   if (cabecaComodo) cabecaComodo.hidden = nome !== 'comodo';
+  if (cabecaProduto) cabecaProduto.hidden = nome !== 'produto';
+  lista.hidden = nome === 'produto';
+  if (listaObjetos) listaObjetos.hidden = nome !== 'produto';
   corpo.scrollTop = 0;
   botoesDeAplicacao(nome === 'comodo' ? estado.comodo : null);
 }
 
-// Os botões "Ver aplicação" de cada cartão: um por demonstração do produto
-// (só as do cômodo aberto, se houver um). Produto sem demonstração fica sem botão.
+// Ajusta um botão de aplicação para o objeto `o`: se o objeto tem demonstração cadastrada em
+// DEMOS, o botão recebe data-demo (o clique abre a demonstração, no main.js); se não tem, o
+// botão fica desativado e a classe is-breve faz o CSS mostrar o texto "em breve".
+function ligarAplicacao(botao, o) {
+  const temDemo = !!(o.demo && DEMOS[o.demo]);
+  if (temDemo) botao.dataset.demo = o.demo;
+  botao.disabled = !temDemo;
+  botao.classList.toggle('is-breve', !temDemo);
+  return botao;
+}
+
+// Vista 'comodo': em cada cartão, um botão por objeto daquele cômodo que recebe o produto.
+// Nas outras vistas (`comodo` nulo) a caixa dos botões fica vazia e escondida.
 function botoesDeAplicacao(comodo) {
   for (const li of itens()) {
     const caixa = $('[data-aplicacoes]', li);
     if (!caixa) continue;
-    const demos = demosDe(li.dataset.produto, comodo);
-    caixa.replaceChildren(...demos.flatMap((d) => {
+    const objetos = comodo ? objetosDoProduto(li.dataset.produto, comodo) : [];
+    caixa.replaceChildren(...objetos.flatMap((o) => {
       const b = clonar('ver-aplicacao');
-      if (!b) return [];
-      b.dataset.demo = d.id;
-      return [preencher(b, { titulo: d.titulo })];
+      return b ? [ligarAplicacao(preencher(b, o), o)] : [];
     }));
-    caixa.hidden = !demos.length;
+    caixa.hidden = !objetos.length;
   }
+}
+
+// Vista 'produto' (botão "Ver cômodos"): título com o nome do produto e um cartão por objeto que
+// recebe o produto, em qualquer cômodo, copiado do <template data-modelo="objeto">. Os cartões
+// anteriores são apagados; o <template> continua dentro da lista.
+export function mostrarProduto(id) {
+  const p = produtoPorId[id];
+  if (!p || !listaObjetos) return;
+  if (cabecaProduto) preencher(cabecaProduto, { nome: p.nome });
+  $$('.objeto', listaObjetos).forEach((li) => li.remove());
+  for (const o of objetosDoProduto(id)) {
+    const li = clonar('objeto');
+    if (!li) break;
+    li.dataset.objeto = o.id;
+    preencher(li, { ...o, comodo: comodoPorId[o.comodo]?.nome });
+    ligarAplicacao($('.objeto__aplicar', li), o);
+    listaObjetos.appendChild(li);
+  }
+  vista('produto');
 }
 
 // Vista 'todos': título, filtros e os 12 produtos.

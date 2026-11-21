@@ -137,6 +137,53 @@ export const PRODUTOS = [
   },
 ];
 
+// Objetos da casa que recebem cada produto. São os pontos de aplicação dos arquivos .blend dos
+// cômodos (coleção Pontos_Aplicacao). Cada entrada liga um objeto a um produto; um objeto que
+// recebe dois produtos aparece duas vezes, uma para cada produto.
+//   id       identificador único da entrada
+//   produto  id do produto em PRODUTOS
+//   comodo   id do cômodo em COMODOS (precisa estar no campo `comodos` do produto)
+//   nome     nome do objeto, mostrado no menu
+//   imagem   nome do arquivo em Img/objetos/, sem o .webp ('teste' = imagem provisória)
+//   demo     id da demonstração 3D em fonte/demo/demos.js; sem ele, o botão fica como "Em breve"
+export const OBJETOS = [
+  { id: 'cozinha-paneleiro', produto: 'contato-tradicional', comodo: 'cozinha', nome: 'Paneleiro laminado', imagem: 'teste' },
+  { id: 'banheiro-fita-borda', produto: 'contato-extraforte', comodo: 'banheiro', nome: 'Fita de borda do gabinete', imagem: 'teste' },
+  { id: 'quarto-sapato', produto: 'contato-extraforte', comodo: 'quarto', nome: 'Sola do tênis', imagem: 'teste' },
+  { id: 'quarto-criado', produto: 'cola-madeira', comodo: 'quarto', nome: 'Gaveta do criado-mudo', imagem: 'teste' },
+  { id: 'quarto-guarda-roupa', produto: 'cola-madeira', comodo: 'quarto', nome: 'Porta do guarda-roupa', imagem: 'teste' },
+  { id: 'banheiro-gabinete', produto: 'cola-madeira', comodo: 'banheiro', nome: 'Lateral do gabinete', imagem: 'teste' },
+  { id: 'cozinha-gaveta', produto: 'cola-madeira', comodo: 'cozinha', nome: 'Gaveta de MDF', imagem: 'teste' },
+  { id: 'escritorio-estante', produto: 'pva-extraforte', comodo: 'escritorio', nome: 'Prateleira da estante', imagem: 'teste' },
+  { id: 'cozinha-mesa', produto: 'pva-extraforte', comodo: 'cozinha', nome: 'Pé da mesa', imagem: 'teste' },
+  { id: 'cozinha-cadeira', produto: 'pva-extraforte', comodo: 'cozinha', nome: 'Pé da cadeira', imagem: 'teste' },
+  { id: 'sala-rodape-solto', produto: 'nao-mais-pregos', comodo: 'sala', nome: 'Rodapé', imagem: 'teste' },
+  { id: 'sala-ripado', produto: 'nao-mais-pregos', comodo: 'sala', nome: 'Painel ripado', imagem: 'teste' },
+  { id: 'sala-guarnicao', produto: 'nao-mais-pregos', comodo: 'sala', nome: 'Guarnição da porta', imagem: 'teste' },
+  { id: 'banheiro-porta-toalha', produto: 'pl600', comodo: 'banheiro', nome: 'Porta-toalha', imagem: 'teste' },
+  { id: 'banheiro-saboneteira', produto: 'pl600', comodo: 'banheiro', nome: 'Saboneteira', imagem: 'teste' },
+  { id: 'fachada-pedra', produto: 'pl600', comodo: 'jardim', nome: 'Pedra do revestimento', imagem: 'teste' },
+  { id: 'banheiro-espelho', produto: 'pl700', comodo: 'banheiro', nome: 'Espelho', imagem: 'espelho', demo: 'banheiro-espelho' },
+  { id: 'banheiro-bancada', produto: 'pl700', comodo: 'banheiro', nome: 'Bancada de mármore', imagem: 'teste' },
+  { id: 'lavanderia-tanque', produto: 'silicone-uso-geral', comodo: 'lavanderia', nome: 'Tanque', imagem: 'teste' },
+  { id: 'fachada-janela', produto: 'silicone-uso-geral', comodo: 'jardim', nome: 'Janela da sala', imagem: 'teste' },
+  { id: 'banheiro-vaso', produto: 'silicone-banheiro-cozinha', comodo: 'banheiro', nome: 'Vaso sanitário', imagem: 'vaso', demo: 'banheiro-vaso' },
+  { id: 'banheiro-box', produto: 'silicone-banheiro-cozinha', comodo: 'banheiro', nome: 'Box', imagem: 'box', demo: 'banheiro-box' },
+  { id: 'cozinha-cuba', produto: 'silicone-banheiro-cozinha', comodo: 'cozinha', nome: 'Cuba da cozinha', imagem: 'teste' },
+  { id: 'sala-rodape-cordao', produto: 'acabamentos', comodo: 'sala', nome: 'Rodapé', imagem: 'teste' },
+  { id: 'sala-batente-acabamentos', produto: 'acabamentos', comodo: 'sala', nome: 'Batente da porta', imagem: 'teste' },
+  { id: 'quarto-trinca', produto: 'acabamentos', comodo: 'quarto', nome: 'Trinca na parede', imagem: 'teste' },
+  { id: 'calcada-junta', produto: 'pu40', comodo: 'jardim', nome: 'Junta da calçada', imagem: 'teste' },
+  { id: 'telhado-calha', produto: 'pu-veda-calha', comodo: 'telhado', nome: 'Emenda da calha', imagem: 'teste' },
+  { id: 'sala-batente-portas', produto: 'portas-janelas', comodo: 'sala', nome: 'Batente da porta', imagem: 'teste' },
+  { id: 'fachada-porta', produto: 'portas-janelas', comodo: 'jardim', nome: 'Batente da porta de entrada', imagem: 'teste' },
+  { id: 'varanda-guarda-corpo', produto: 'silicone-construcao', comodo: 'varanda', nome: 'Guarda-corpo da varanda', imagem: 'teste' },
+  { id: 'garagem-alcapao', produto: 'massa-calafetar', comodo: 'garagem', nome: 'Alçapão', imagem: 'teste' },
+  { id: 'quarto-banco', produto: 'cascorez-universal', comodo: 'quarto', nome: 'Banco ripado', imagem: 'teste' },
+  { id: 'sala-quadro', produto: 'cascorez-artesanato', comodo: 'sala', nome: 'Quadro de quebra-cabeça', imagem: 'teste' },
+  { id: 'garagem-ferramentas', produto: 'reducola', comodo: 'garagem', nome: 'Pincel e espátula sujos de cola', imagem: 'teste' },
+];
+
 // Posições em metros, no sistema do Casa.glb (Y para cima, rua em +Z).
 // `pino`: onde a gota aparece; `normal`: para onde a fachada olha; `camera`/`alvo`: o enquadramento.
 export const COMODOS = [

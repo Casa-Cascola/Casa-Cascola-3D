@@ -1,4 +1,4 @@
-// Prepara as ferramentas exportadas do Blender (pistola com o cartucho) para a web:
+// Prepara as ferramentas exportadas do Blender (pistola e cartuchos dos produtos) para a web:
 //   node ferramentas/otimizar-ferramentas.mjs pasta/com/os/glb
 // Grava em modelos/ferramentas/<arquivo>.glb, com geometria meshopt e texturas WebP.
 // O rótulo do cartucho fica com até 2048 px (precisa dar para ler de perto); o resto, 512 px.
@@ -25,7 +25,9 @@ for (const arquivo of fs.readdirSync(pasta).filter((f) => f.endsWith('.glb')).so
   await doc.transform(
     dedup(), prune(),
     textureCompress({ encoder: sharp, targetFormat: 'webp', pattern: /^rotulo_/, resize: [2048, 2048], quality: 90 }),
-    textureCompress({ encoder: sharp, targetFormat: 'webp', pattern: /^(?!rotulo_)/, resize: [512, 512], quality: 85 }),
+    // O padrão é testado no nome e na URI da textura; a URI vem vazia do .glb, e /^(?!rotulo_)./
+    // exige pelo menos um caractere, então não casa com a URI vazia nem com os nomes rotulo_*.
+    textureCompress({ encoder: sharp, targetFormat: 'webp', pattern: /^(?!rotulo_)./, resize: [512, 512], quality: 85 }),
     reorder({ encoder: MeshoptEncoder }),
     quantize({ pattern: /^(NORMAL|TANGENT)$/ }),
   );

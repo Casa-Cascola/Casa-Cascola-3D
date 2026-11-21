@@ -27,6 +27,7 @@ export const COMODOS3D = {
     pontos: [
       { demo: 'banheiro-vaso', nome: 'Vaso sanitário', pos: [3.40, 3.30, -2.45] },
       { demo: 'banheiro-box', nome: 'Box', pos: [3.885, 3.85, -3.80] },
+      { demo: 'banheiro-espelho', nome: 'Espelho', pos: [3.30, 4.42, -3.79] },
     ],
   },
 };
