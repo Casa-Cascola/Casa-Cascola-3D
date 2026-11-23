@@ -72,9 +72,7 @@ html {
   padding: 1.25rem 1rem 1.2rem;
 }
 
-.gaveta__cabeca::after {
-  left: 1rem;
-}
+
 
 .gaveta__cabeca h2 {
   font-size: 1.45rem;
