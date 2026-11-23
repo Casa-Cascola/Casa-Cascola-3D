@@ -28,14 +28,16 @@ export const MATERIA = {
   },
   // PL700: pasta incolor; depois de curado, filme transparente e flexível (ficha técnica).
   // opac < 1 liga a transparência do material (criarMateria); a opacidade cai na cura.
-  pl700: {
+    pl700: {
+    // Gel incolor: opacidade baixa e verniz alto nos três estados, inclusive no curado.
+    // A borda translúcida (fresnel) e o brilho marcam o contorno do cordão sobre o vidro e a parede.
     estados: [
-      { cor: '#eef1f2', rug: 0.06, verniz: 1, opac: 0.78 },      // pasta incolor, brilhante
-      { cor: '#eef1f2', rug: 0.12, verniz: 0.8, opac: 0.62 },    // formou película
-      { cor: '#f2f4f4', rug: 0.2, verniz: 0.6, opac: 0.48 },     // curado: filme transparente
+      { cor: '#e8f1f4', rug: 0.03, verniz: 1, opac: 0.38 },   // gel úmido, bem brilhante
+      { cor: '#e8f1f4', rug: 0.05, verniz: 1, opac: 0.34 },   // formou película
+      { cor: '#e8f1f4', rug: 0.08, verniz: 0.9, opac: 0.30 },  // curado: continua transparente
     ],
-    relevo: { tipo: 'liso', forca: 0.08 },
-    borda: 0.25,
+    relevo: { tipo: 'liso', forca: 0.05 },
+    borda: 0.6,   // contorno mais marcado, para o cordão não sumir
     comoCura: 'Polímero modificado por silano, sem solventes: cura com a umidade do ar, de fora para dentro.',
     cura: [['10 min', 'para ajustar a peça'], ['10–20 min', 'forma a película'], ['24–72 h', 'cura total']],
     fonte: { nome: 'Ficha técnica Cascola PL700', url: FDT + 'CASCOLA-PL700-pt_BR.pdf' },
