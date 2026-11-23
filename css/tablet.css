@@ -13,6 +13,7 @@
   font-size: clamp(3.4rem, 8.6vw, 5.6rem);
 }
 
+
 /* em pé o menu ocupa quase a metade da tela: um cartão por linha, deitado */
 @media (orientation: portrait) {
   :root {

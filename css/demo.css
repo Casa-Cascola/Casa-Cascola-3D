@@ -435,7 +435,7 @@
   position: absolute;
   z-index: 1;
   bottom: clamp(1rem, 4vh, 2.5rem);
-  width: 12%;
+  width: 12rem;
   left: var(--margem);
 }
 
