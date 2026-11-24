@@ -1,11 +1,9 @@
 // A "matéria" de cada produto: como ele é ao sair da embalagem, como fica enquanto cura
 // e o texto que explica a cura. É o que dá a cor, o brilho e a textura dos cordões e filmes.
-// Os tempos vêm das fichas técnicas da Henkel (endereço em `fonte`). O jeito de curar
-// (umidade do ar, evaporação da água ou do solvente) é a química de cada família.
+// Os tempos e os textos vêm das fichas técnicas oficiais da pasta FichaTecnica/ (endereço em `fonte`).
 import * as THREE from 'three';
 import { mistura, limita } from './motor.js';
-
-const FDT = 'https://datasheets.tdx.henkel.com/';
+import { FICHAS, caminhoFicha } from '../fichas.js';
 
 // Cor da amostra curada do Banheiro e Cozinha na placa Henkel em formato de casa, medida nas
 // fotos de 17/11/2026 (com a cor da luz corrigida pelo branco da placa): #ebf0f4.
@@ -22,9 +20,9 @@ export const MATERIA = {
     ],
     relevo: { tipo: 'liso', forca: 0.08 },
     borda: 0.16,
-    comoCura: 'Cura acética: reage com a umidade do ar e cura de fora para dentro. Enquanto cura, tem cheiro de vinagre.',
-    cura: [['5–10 min', 'forma a película'], ['2–3 mm por dia', 'cura por dentro'], ['24–72 h', 'cura total']],
-    fonte: { nome: 'Ficha técnica Cascola Banheiro e Cozinha', url: FDT + 'CASCOLA-Banheiro-e-Cozinha-pt_BR.pdf' },
+    comoCura: 'Silicone de cura acética: durante a aplicação, tem odor característico de vinagre.',
+    cura: [['5–10 min', 'forma a película'], ['2–3 mm a cada 24 h', 'tempo de cura'], ['24–72 h', 'cura total']],
+    fonte: { nome: 'Ficha técnica Cascola Banheiro e Cozinha', url: caminhoFicha(FICHAS['silicone-banheiro-cozinha']) },
   },
   // PL700: pasta incolor; depois de curado, filme transparente e flexível (ficha técnica).
   // opac < 1 liga a transparência do material (criarMateria); a opacidade cai na cura.
@@ -38,9 +36,9 @@ export const MATERIA = {
     ],
     relevo: { tipo: 'liso', forca: 0.05 },
     borda: 0.6,   // contorno mais marcado, para o cordão não sumir
-    comoCura: 'Polímero modificado por silano, sem solventes: cura com a umidade do ar, de fora para dentro.',
+    comoCura: 'Polímero modificado por silano. Depois de curado, fica transparente e flexível.',
     cura: [['10 min', 'para ajustar a peça'], ['10–20 min', 'forma a película'], ['24–72 h', 'cura total']],
-    fonte: { nome: 'Ficha técnica Cascola PL700', url: FDT + 'CASCOLA-PL700-pt_BR.pdf' },
+    fonte: { nome: 'Ficha técnica Cascola PL700', url: caminhoFicha(FICHAS.pl700) },
   },
 };
 

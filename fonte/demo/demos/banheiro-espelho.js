@@ -380,7 +380,7 @@ export default {
       .destaca(/Agarre/)
       .espera(4);
     r.legenda(
-      "É transparente, veda e cola, e pode ser aplicado em superfície molhada.",
+      "É transparente, veda e cola: também pode ser usado como selante.",
     )
       .destaca(/Veda/)
       .espera(4);
@@ -400,7 +400,7 @@ export default {
     r.vai("pano.s", 1, 3.2, reto);
     terminar("pano");
     r.legenda(
-      "Corte o bico em 45° e aplique o PL700 em cordões verticais, com a pistola a 45°.",
+      "Corte o bico em 45° e aplique o PL700 em cordões verticais.",
     );
     chegar("pistola");
     // nos cordões a ponta anda com velocidade constante; nos trechos pelo ar, com aceleração suave
