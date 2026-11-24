@@ -437,6 +437,7 @@
   bottom: clamp(1rem, 4vh, 2.5rem);
   width: 12rem;
   left: var(--margem);
+  pointer-events: none;
 }
 
 /* tocar/pausar e linha do tempo, com o laranja do guia */
