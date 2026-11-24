@@ -26,15 +26,22 @@
     grid-template-columns: 42% minmax(0, 1fr);
     grid-template-areas:
       "casa nome"
+      "casa ind"
       "casa dif"
       "casa acoes";
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: auto auto auto 1fr;
     column-gap: 1.1rem;
     align-items: start;
   }
 
   .item__casa { grid-area: casa; }
   .item__nome { grid-area: nome; margin-top: .3rem; }
+  .item__indicacao { grid-area: ind; }
+
+  /* ficha do produto em pé: uma coluna só, com a imagem do produto menor no topo */
+  .ficha__grade { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .ficha__vitrine { position: static; }
+  .ficha__vitrine .item__casa { width: min(17rem, 50%); }
   .item__dif { grid-area: dif; }
   .item__aplicacoes { grid-area: acoes; }
   /* mesma área dos botões de aplicação: as duas caixas nunca aparecem juntas */

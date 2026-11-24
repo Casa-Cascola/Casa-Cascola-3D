@@ -751,6 +751,19 @@ header nav:empty {
   color: var(--azul);
 }
 
+/* frase de indicação do cartão (para que serve o produto): texto curto, abaixo do nome */
+.item__indicacao {
+  margin-top: .45rem;
+  font-size: .9rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--texto-suave);
+}
+
+.item__indicacao:empty {
+  display: none;
+}
+
 .item__chamada {
   margin-top: .5rem;
   font-weight: 600;
@@ -1020,15 +1033,16 @@ header nav:empty {
 
 .ficha__numeros dd {
   margin: 0;
-  font-size: clamp(2rem, 3.4vw, 2.8rem);
+  font-size: clamp(1.7rem, 2.6vw, 2.4rem);
   font-weight: 900;
   line-height: .95;
   color: var(--azul);
-  white-space: nowrap;
 }
 
+
+
 .ficha__numeros dd span {
-  font-size: .45em;
+  font-size: .5em;
   font-weight: 800;
   white-space: nowrap;
 }
@@ -1137,10 +1151,152 @@ header nav:empty {
 }
 
 .ficha__fonte {
-  margin-top: 1.25rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 46, 95, .15);
   font-size: .9rem;
+  line-height: 1.5;
   color: var(--texto-suave);
   max-width: 46em;
+}
+
+/* botão da ficha técnica oficial (PDF da pasta FichaTecnica/) */
+.ficha__pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: 1.3rem;
+  min-height: 2.9rem;
+  padding: 0 1.2rem 0 .95rem;
+  border-radius: 999px;
+  background: var(--laranja);
+  color: var(--branco);
+  font-weight: 750;
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: 0 .8rem 2rem -.9rem rgba(237, 107, 6, .9);
+}
+
+.ficha__pdf[hidden] {
+  display: none;
+}
+
+.ficha__pdf svg {
+  flex: none;
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.ficha__pdf:hover {
+  background: var(--laranja-claro);
+}
+
+/* nota pequena: condições de medição dos tempos e observações das tabelas */
+.ficha__nota {
+  margin-top: .7rem;
+  max-width: 46em;
+  font-size: .85rem;
+  line-height: 1.45;
+  color: var(--texto-suave);
+}
+
+.ficha__nota:empty {
+  display: none;
+}
+
+.ficha__chips:empty {
+  display: none;
+}
+
+.ficha__usos b {
+  font-weight: 750;
+  color: var(--texto);
+}
+
+/* blocos de casos específicos (aplicação com pistola, fita de borda, uso como selante...) */
+.ficha__lista {
+  margin: 0;
+  padding-left: 1.3rem;
+  max-width: 42em;
+  display: grid;
+  gap: .45rem;
+  line-height: 1.5;
+}
+
+.ficha__lista li::marker {
+  color: var(--laranja);
+}
+
+/* tabelas de prensagem: rolam de lado quando não cabem (celular) */
+.ficha__tabela + .ficha__tabela {
+  margin-top: 1.6rem;
+}
+
+.ficha__tabela h4 {
+  margin: 0 0 .6rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--azul);
+  text-transform: uppercase;
+}
+
+.ficha__rolar {
+  overflow-x: auto;
+  max-width: 100%;
+  background: var(--branco);
+  border-radius: var(--raio);
+  -webkit-overflow-scrolling: touch;
+}
+
+.ficha__rolar table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: .88rem;
+  line-height: 1.35;
+}
+
+.ficha__rolar th,
+.ficha__rolar td {
+  padding: .55rem .7rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(0, 46, 95, .12);
+}
+
+.ficha__rolar th {
+  background: var(--azul);
+  color: var(--branco);
+  font-weight: 750;
+}
+
+/* pendências de validação: só aparecem no modo revisão (index.html?revisao) */
+.ficha__pendencias {
+  margin-top: 1.6rem;
+  padding: 1rem 1.2rem 1.1rem;
+  max-width: 46em;
+  border: 2px dashed var(--laranja);
+  border-radius: var(--raio);
+  background: #fff6ee;
+}
+
+.ficha__pendencias[hidden] {
+  display: none;
+}
+
+.ficha__pendencias h3 {
+  margin: 0 0 .6rem;
+  font-size: 1.05rem;
+  color: var(--laranja);
+}
+
+.ficha__pendencias ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: .45rem;
+  font-size: .92rem;
+  line-height: 1.45;
 }
 
 .ficha__outros {
