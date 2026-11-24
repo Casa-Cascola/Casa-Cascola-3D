@@ -20,16 +20,17 @@ export const FICHAS = {
       ['5–10', 'min', 'Secagem antes de unir as peças'],
       ['90', 'min', 'Tempo em aberto depois da secagem'],
       ['140–175', 'g/m²', 'Rendimento com pincel, nas duas superfícies'],
+      ['200–250', 'g/m²', 'Rendimento com espátula, nas duas superfícies']
     ],
     materiais: ['Madeira', 'Compensado', 'Lâminas decorativas', 'Couro', 'Espuma', 'Vidro', 'Carpete'],
     usos: 'Também cola esses materiais sobre cimento, cerâmica e madeira.',
     passos: [
       'Deixe as superfícies firmes, limpas e secas, sem poeira, óleo ou graxa. Lixe se precisar.',
       'Mexa bem o produto, até o fundo da embalagem.',
-      'Aplique nas duas partes com espátula e aguarde de 5 a 10 minutos.',
+      'Aplique nas duas partes com espátula ou pincel e aguarde de 5 a 10 minutos.',
       'Alinhe as peças na posição exata e pressione do centro para as bordas, para não formar bolhas.',
       'Em materiais porosos, faça uma segunda aplicação de 20 a 30 minutos depois da primeira.',
-      'Para pincel ou pistola, dilua com Cascola Reducola sem Toluol (de 10:1 a 10:5) e aguarde de 10 a 15 minutos antes de unir.',
+      'Para pistola, dilua com Cascola Reducola sem Toluol (de 10:1 a 10:5) e aguarde de 10 a 15 minutos antes de unir.',
     ],
     atencao: [
       'Produto inflamável: mantenha longe de calor, faíscas e chamas.',
