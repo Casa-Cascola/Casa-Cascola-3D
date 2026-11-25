@@ -18,8 +18,12 @@ const modeloDaLista = new WeakMap();
 export function preencher(raiz, d) {
   // O que está dentro de uma lista é preenchido com o item da lista, não com `d`.
   const deLista = (el) => { const l = el.parentElement?.closest('[data-lista]'); return !!l && raiz.contains(l); };
+  // Os alvos são escolhidos todos antes de qualquer mudança. Assim uma lista dentro de outra lista
+  // (ex.: os itens de cada bloco de `extras`) não é confundida com uma lista solta depois que o
+  // modelo da lista de fora sai da página.
   const cada = (seletor, fn) => {
-    for (const el of [raiz, ...raiz.querySelectorAll(seletor)]) if (el.matches(seletor) && !deLista(el)) fn(el);
+    const alvos = [raiz, ...raiz.querySelectorAll(seletor)].filter((el) => el.matches(seletor) && !deLista(el));
+    alvos.forEach(fn);
   };
 
   cada('[data-se]', (el) => { el.hidden = vazio(d[el.dataset.se]); });
@@ -38,8 +42,18 @@ export function preencher(raiz, d) {
   });
 
   cada('[data-texto]', (el) => { el.textContent = vazio(d[el.dataset.texto]) ? '' : texto(d[el.dataset.texto]); });
-  cada('[data-imagem]', (el) => { if (d.imagem) el.src = `Img/${el.dataset.imagem}/${d.imagem}.webp`; });
-  cada('[data-link]', (el) => { if (d[el.dataset.link]) el.href = d[el.dataset.link]; });
+  // Imagem que não existe na pasta (ex.: Img/aplicacao/ de um produto sem foto) fica escondida,
+  // em vez de aparecer o ícone de imagem quebrada.
+  cada('[data-imagem]', (el) => {
+    if (!d.imagem) return;
+    // produto sem a foto de aplicação (fotoAplicacao: false em dados.js): a imagem nem é pedida
+    if (el.dataset.imagem === 'aplicacao' && d.fotoAplicacao === false) { el.hidden = true; el.removeAttribute('src'); return; }
+    el.hidden = false;
+    el.onerror = () => { el.hidden = true; };
+    el.src = `Img/${el.dataset.imagem}/${d.imagem}.webp`;
+  });
+  // sem endereço, o link perde o href (assim não fica apontando para o produto anterior)
+  cada('[data-link]', (el) => { const url = d[el.dataset.link]; if (url) el.href = url; else el.removeAttribute('href'); });
   cada('[data-detalhes]', (el) => { if (d.id) el.dataset.detalhes = d.id; });
   cada('[data-ver-comodo]', (el) => { el.dataset.verComodo = d.comodoId || ''; el.hidden = !d.comodoId; });
   // botão "Ver cômodos" do cartão: guarda o id do produto (o clique é tratado no main.js)

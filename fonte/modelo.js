@@ -43,7 +43,10 @@ export async function carregarCasa({ scene, renderer, aoProgresso, redesenhar })
   scene.add(tudo);
   tudo.add(casa);
   corrigirModelo(casa, tudo);
-  tentarCarro(tudo, redesenhar);
+  // O carro saiu do projeto (arquivo pesado e sem licença comercial). A chamada abaixo pedia
+  // modelos/carro.glb ao servidor a cada abertura e deixava um erro 404 no console.
+  // Para voltar com um carro licenciado, exporte modelos/carro.glb e descomente a linha.
+  // tentarCarro(tudo, redesenhar);
 }
 
 // Baixa e prepara um .glb qualquer (os cômodos por dentro). Devolve o grupo 3D.

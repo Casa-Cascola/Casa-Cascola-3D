@@ -16,7 +16,9 @@ export const produtoPorId = Object.fromEntries(PRODUTOS.map((p) => [p.id, p]));
 export const categoriaPorId = Object.fromEntries(CATEGORIAS.map((c) => [c.id, c]));
 export const produtosDoComodo = (id) => PRODUTOS.filter((p) => p.comodos.includes(id));
 // Objetos (OBJETOS de dados.js) que recebem o produto `produto`; com `comodo`, só os daquele cômodo.
-export const objetosDoProduto = (produto, comodo = null) => OBJETOS.filter((o) => o.produto === produto && (!comodo || o.comodo === comodo));
+// Os objetos marcados com `pendente` (aplicação ainda não confirmada pelo técnico) ficam de fora.
+export const objetosDoProduto = (produto, comodo = null) =>
+  OBJETOS.filter((o) => !o.pendente && o.produto === produto && (!comodo || o.comodo === comodo));
 
 // O que está na tela agora. Todos os arquivos leem daqui; só o main.js muda.
 export const estado = {

@@ -20,7 +20,7 @@ export const PRODUTOS = [
     nome: 'Cola de Contato Tradicional',
     chamada: 'A clássica da Cascola, desde 1955.',
     indicacao: 'Cola madeira, couro, compensado, lâminas decorativas, espuma, vidro e carpete. Inflamável.',
-    diferenciais: ['Rende 2x mais que a fórmula anterior', 'Sem toluol', 'Sem cheiro após 10 min', 'Fácil aplicação', 'Sem grumos, fácil de espalhar'],
+    diferenciais: ['Rende 2x mais', 'Sem toluol', 'Sem cheiro após 10 min', 'Fácil aplicação', 'Sem grumos, fácil de espalhar'],
     comodos: ['cozinha'], problema: 'Laminado dos armários e móveis soltando',
   },
   {
@@ -140,7 +140,7 @@ export const PRODUTOS = [
   },
   {
     id: 'cascorez-universal', categoria: 'pva', imagem: 'cascorez-universal', fotoAplicacao: false,
-    nome: 'Cola Branca PVA Cascorez Universal',
+    nome: 'Cacola Cascorez Universal',
     chamada: 'Uma cola branca para colar quase tudo.',
     indicacao: 'Colagem de madeira, laminados plásticos, papel, papelão e materiais porosos.',
     diferenciais: ['Mais cola, menos água', 'Alta durabilidade', 'Flexibilidade + força', 'Seca transparente'],
@@ -148,7 +148,7 @@ export const PRODUTOS = [
   },
   {
     id: 'cascorez-artesanato', categoria: 'pva', imagem: 'cascorez-artesanato', fotoAplicacao: false,
-    nome: 'Cola Branca PVA Cascorez Artesanato',
+    nome: 'Cascola Cascorez Artesanato',
     chamada: 'Para criar, montar e dar acabamento.',
     indicacao: 'Para artesanato em papel, tecido, madeira, MDF, cortiça, couro e isopor.',
     diferenciais: ['Seca transparente, com alto brilho', 'Mais cola, menos água', 'Flexível depois de seco', 'Papel, tecido, madeira, MDF, isopor e mais'],

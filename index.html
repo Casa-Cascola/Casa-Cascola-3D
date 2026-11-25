@@ -60,10 +60,8 @@
         aria-label="Casa Cascola em 3D"
       >
         <picture>
-          <source
-            media="(max-aspect-ratio: 1/1)"
-            srcset="Img/casa-poster-celular.webp"
-          />
+          <!-- Se um dia existir Img/casa-poster-celular.webp (pôster em pé), é só voltar com:
+          <source media="(max-aspect-ratio: 1/1)" srcset="Img/casa-poster-celular.webp" /> -->
           <img
             class="palco__poster"
             src="Img/casa-poster.webp"
@@ -305,9 +303,9 @@
                   </ul>
                   <!-- Vista "todos": ficha do produto e cômodos onde ele é aplicado -->
                   <div class="item__acoes">
-                    <!-- <button class="item__mais" type="button" data-detalhes>
+                    <button class="item__mais" type="button" data-detalhes>
                       Ver detalhes
-                    </button> -->
+                    </button>
                     <button class="item__onde" type="button" data-ver-comodos>
                       Ver cômodos
                     </button>
@@ -328,6 +326,7 @@
                   <span class="item__ver">
                     Ver aplicação: 
                   </span>
+                  <span class="item__breve">Em breve: </span>
                   <b data-texto="nome"></b>
                   </span>
               </button>
@@ -447,7 +446,7 @@
         </div>
       </section>
 
-      <!-- 1b. Ficha do produto: aparece quando alguém toca em "Mais detalhes" -->
+      <!-- 1b. Ficha do produto: aparece quando alguém toca em "Ver detalhes" (dados de fonte/fichas.js) -->
       <section
         class="ficha"
         id="detalhes"
@@ -493,6 +492,34 @@
                 <h2 tabindex="-1" data-texto="nome"></h2>
                 <p class="ficha__resumo" data-texto="resumo"></p>
 
+                <!-- Documento oficial: abre o PDF da pasta FichaTecnica/ (nível 2, para o profissional) -->
+                <a
+                  class="ficha__pdf"
+                  data-se="pdfUrl"
+                  data-link="pdfUrl"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Ficha técnica oficial (PDF)</span>
+                </a>
+
+                <!-- Pendências de validação: só aparecem com ?revisao no endereço (detalhes.js) -->
+                <div class="ficha__pendencias" data-se="pendencias">
+                  <h3>Pendências de validação técnica</h3>
+                  <ul data-lista="pendencias">
+                    <li></li>
+                  </ul>
+                </div>
+
                 <dl class="ficha__numeros" data-lista="numeros">
                   <div>
                     <dt data-texto="rotulo"></dt>
@@ -502,13 +529,17 @@
                     </dd>
                   </div>
                 </dl>
+                <p class="ficha__nota" data-texto="condicoes"></p>
 
-                <div data-se="materiais">
+                <!-- Onde usar: etiquetas com os materiais e, abaixo, as aplicações recomendadas -->
+                <div data-se="ondeUsar">
                   <h3>Onde usar</h3>
                   <ul class="ficha__chips" data-lista="materiais">
                     <li></li>
                   </ul>
-                  <p class="ficha__usos" data-texto="usos"></p>
+                  <p class="ficha__usos" data-se="usos">
+                    <b>Aplicações recomendadas:</b> <span data-texto="usos"></span>
+                  </p>
                 </div>
 
                 <div data-se="passos">
@@ -518,8 +549,26 @@
                   </ol>
                 </div>
 
+                <!-- Tabelas da ficha (prensagem dos adesivos PVA): montadas pelo detalhes.js -->
+                <div data-se="tabelas">
+                  <h3>Condições de prensagem</h3>
+                  <div data-tabelas></div>
+                </div>
+
+                <!-- Casos específicos da ficha (pistola, fita de borda, uso como selante...): um bloco por item de `extras` -->
+                <div data-se="extras">
+                  <div data-lista="extras">
+                    <div class="ficha__extra">
+                      <h3 data-texto="titulo"></h3>
+                      <ul class="ficha__lista" data-lista="itens">
+                        <li></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
                 <div data-se="atencao">
-                  <h3>Atenção</h3>
+                  <h3>Restrições e cuidados</h3>
                   <ul class="ficha__atencao" data-lista="atencao">
                     <li></li>
                   </ul>
@@ -535,15 +584,18 @@
                   </dl>
                 </div>
 
-                <p class="ficha__fonte" data-se="fonteUrl">
-                  Fonte:
+                <p class="ficha__fonte" data-se="pdfUrl">
+                  Resumo da Folha de Dados Técnicos
                   <a
-                    data-link="fonteUrl"
-                    data-texto="fonteNome"
+                    data-link="pdfUrl"
+                    data-texto="nomeFicha"
                     target="_blank"
                     rel="noopener"
                   ></a
-                  >, Henkel. Antes de aplicar, leia as instruções da embalagem.
+                  >
+                  (<span data-texto="revisao"></span>), Henkel. Este resumo não substitui a
+                  ficha técnica oficial nem as instruções da embalagem. Em caso de dúvida, vale a
+                  ficha oficial. SAC Cascola: 0800-704-2334.
                 </p>
               </div>
             </div>
