@@ -128,13 +128,13 @@ html {
   right: .5rem;
   bottom: .5rem;
   width: auto;
-  padding: .7rem .9rem .7rem 5.7rem;
+  padding: .7rem .9rem .7rem 9.4rem;
 }
 .Zeca{
-  width: 25%;
-  bottom: .5rem;
+  width: 11rem;
+  left: .05rem;
+  bottom: .3rem;
 }
-
 .demo__titulo { font-size: 1.2rem; }
 .demo__legenda { min-height: 3.4em; font-size: .95rem; }
 .demo__como, .demo__fonte { display: none; }
@@ -236,6 +236,10 @@ html {
 
 /* ---------------------------------------------------------------- deitado: menu do lado */
 @media (orientation: landscape) {
+ .Zeca{
+  width: 11rem;
+  left: .05rem;
+  }
   :root {
     --topo: 2.9rem;
     --gaveta: 22rem;
@@ -302,6 +306,7 @@ html {
   /* deitado o painel da demonstração fica no canto, não na largura toda */
   .demo__painel {
     right: auto;
-    width: min(24rem, 55%);
+    width: min(34.2rem, 62%);
+    padding: .7rem .9rem .7rem 9.9rem;
   }
 }

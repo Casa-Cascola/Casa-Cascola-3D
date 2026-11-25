@@ -233,12 +233,11 @@
    (título, etapas, legenda, diferenciais, cura) estão comentados no index.html e voltam
    prontos, com este estilo, se forem descomentados */
 .demo__painel {
- 
   position: absolute;
   left: var(--margem);
   bottom: clamp(1rem, 4vh, 2.5rem);
-  width: min(27rem, calc(100% - 2rem));
-  padding: .85rem 1.1rem .85rem 8.45rem;
+  width: min(35rem, calc(100% - 2rem));
+  padding: .85rem 1.1rem .85rem 10.18rem;
   border-radius: var(--raio);
   background: rgba(0, 46, 95, .94);
   color: var(--branco);
@@ -436,7 +435,7 @@
   z-index: 1;
   bottom: clamp(1rem, 4vh, 2.5rem);
   width: 12rem;
-  left: var(--margem);
+  left: 2rem;
   pointer-events: none;
 }
 
